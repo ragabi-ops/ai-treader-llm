@@ -12,6 +12,7 @@ from ai_treader_llm.datasets.manifests import validate_manifest
 from ai_treader_llm.datasets.outcomes import validate_outcomes
 from ai_treader_llm.datasets.samples import build_messages, context_for, read_jsonl, validate_dataset, validate_sample
 from ai_treader_llm.evaluation.runner import evaluate
+from ai_treader_llm.evaluation.tools import FAILURE_CATEGORIES, evaluate_tool_calls
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -286,6 +287,142 @@ class OutcomeTests(unittest.TestCase):
                 self.contracts,
                 embargo=timedelta(days=-1),
             )
+
+
+class ToolEvaluationTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.contracts = Contracts(ROOT / "contracts")
+
+    def setUp(self):
+        self.fixture = {
+            "schema_version": "1",
+            "case_id": "tool-case-1",
+            "description": "Synthetic price lookup fixture.",
+            "messages": [{"role": "user", "content": "Get SYNTH price history."}],
+            "trusted_scope": {
+                "symbol": "SYNTH",
+                "as_of_timestamp": "2025-01-10T16:00:00Z",
+            },
+            "allowed_tools": ["get_price_history"],
+            "expected_tool_names": ["get_price_history"],
+        }
+        self.call = {
+            "call_id": "call-1",
+            "name": "get_price_history",
+            "arguments": {
+                "symbol": "SYNTH",
+                "start_timestamp": "2025-01-02T16:00:00Z",
+                "end_timestamp": "2025-01-10T16:00:00Z",
+                "interval": "1d",
+            },
+        }
+
+    def prediction(self, calls=None):
+        return {
+            "schema_version": "1",
+            "case_id": self.fixture["case_id"],
+            "tool_calls": copy.deepcopy([self.call] if calls is None else calls),
+        }
+
+    def evaluate(self, prediction):
+        return evaluate_tool_calls([self.fixture], [prediction], self.contracts)
+
+    def test_valid_tool_call_fixture(self):
+        report = self.evaluate(self.prediction([self.call]))
+        self.assertEqual(report["correctness_rate"], 1)
+        self.assertEqual(report["predicted_calls"], 1)
+        self.assertFalse(report["promotion_eligible"])
+        self.assertEqual(report["failure_counts"], {name: 0 for name in FAILURE_CATEGORIES})
+
+    def test_missing_prediction_is_counted(self):
+        report = evaluate_tool_calls([self.fixture], [], self.contracts)
+        self.assertEqual(report["correct_cases"], 0)
+        self.assertEqual(report["failure_counts"]["missing_prediction"], 1)
+
+    def test_unauthorized_tool_is_counted(self):
+        call = copy.deepcopy(self.call)
+        call["name"] = "get_filings"
+        call["arguments"] = {"symbol": "SYNTH", "forms": ["10-Q"], "limit": 1}
+        report = self.evaluate(self.prediction([call]))
+        self.assertEqual(report["failure_counts"]["unauthorized_tool"], 1)
+        self.assertEqual(report["failure_counts"]["missing_required_call"], 1)
+
+    def test_unknown_tool_is_unauthorized_not_operational_error(self):
+        call = copy.deepcopy(self.call)
+        call["name"] = "execute_trade"
+        call["arguments"] = {}
+        report = self.evaluate(self.prediction([call]))
+        self.assertEqual(report["failure_counts"]["unauthorized_tool"], 1)
+
+    def test_tool_arguments_reject_unknown_fields(self):
+        call = copy.deepcopy(self.call)
+        call["arguments"]["adjusted_return"] = 0.5
+        report = self.evaluate(self.prediction([call]))
+        self.assertEqual(report["failure_counts"]["invalid_arguments"], 1)
+
+    def test_tool_arguments_require_an_object(self):
+        call = copy.deepcopy(self.call)
+        call["arguments"] = "not parsed JSON"
+        report = self.evaluate(self.prediction([call]))
+        self.assertEqual(report["failure_counts"]["invalid_arguments"], 1)
+
+    def test_trusted_symbol_is_enforced(self):
+        call = copy.deepcopy(self.call)
+        call["arguments"]["symbol"] = "OTHER"
+        report = self.evaluate(self.prediction([call]))
+        self.assertEqual(report["failure_counts"]["symbol_violation"], 1)
+
+    def test_trusted_as_of_boundary_is_enforced(self):
+        call = copy.deepcopy(self.call)
+        call["arguments"]["end_timestamp"] = "2025-01-10T16:00:01Z"
+        report = self.evaluate(self.prediction([call]))
+        self.assertEqual(report["failure_counts"]["timestamp_violation"], 1)
+
+    def test_reversed_time_range_is_enforced(self):
+        call = copy.deepcopy(self.call)
+        call["arguments"]["start_timestamp"] = "2025-01-10T15:00:00Z"
+        call["arguments"]["end_timestamp"] = "2025-01-09T15:00:00Z"
+        report = self.evaluate(self.prediction([call]))
+        self.assertEqual(report["failure_counts"]["timestamp_violation"], 1)
+
+    def test_unnecessary_call_is_counted(self):
+        self.fixture["expected_tool_names"] = []
+        report = self.evaluate(self.prediction([self.call]))
+        self.assertEqual(report["failure_counts"]["unnecessary_call"], 1)
+
+    def test_wrong_allowlisted_tool_is_counted(self):
+        self.fixture["allowed_tools"].append("get_filings")
+        call = copy.deepcopy(self.call)
+        call["name"] = "get_filings"
+        call["arguments"] = {"symbol": "SYNTH", "forms": ["10-Q"], "limit": 1}
+        report = self.evaluate(self.prediction([call]))
+        self.assertEqual(report["failure_counts"]["incorrect_tool"], 1)
+        self.assertEqual(report["failure_counts"]["missing_required_call"], 1)
+
+    def test_extra_duplicate_call_is_unnecessary(self):
+        report = self.evaluate(self.prediction([self.call, self.call]))
+        self.assertEqual(report["failure_counts"]["unnecessary_call"], 1)
+
+    def test_invalid_prediction_is_counted(self):
+        prediction = self.prediction([self.call])
+        prediction["unexpected"] = True
+        report = self.evaluate(prediction)
+        self.assertEqual(report["failure_counts"]["invalid_prediction"], 1)
+
+    def test_invalid_fixture_tool_configuration_is_rejected(self):
+        self.fixture["allowed_tools"] = ["execute_trade"]
+        self.fixture["expected_tool_names"] = []
+        with self.assertRaisesRegex(ContractError, "allows unknown tools"):
+            evaluate_tool_calls([self.fixture], [], self.contracts)
+
+    def test_duplicate_and_unknown_predictions_are_rejected(self):
+        prediction = self.prediction([self.call])
+        with self.assertRaisesRegex(ContractError, "duplicate or unknown"):
+            evaluate_tool_calls([self.fixture], [prediction, prediction], self.contracts)
+        prediction["case_id"] = "unknown"
+        with self.assertRaisesRegex(ContractError, "duplicate or unknown"):
+            evaluate_tool_calls([self.fixture], [prediction], self.contracts)
 
 
 class ManifestTests(unittest.TestCase):

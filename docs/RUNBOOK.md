@@ -8,10 +8,13 @@ Prerequisites: Git and `uv`. Run from the repository root:
 uv sync --frozen --python 3.12
 make check
 uv run --frozen ai-treader-llm build-inputs examples/samples.jsonl
+uv run --frozen ai-treader-llm evaluate-tools \
+  examples/tool-call-fixtures.jsonl examples/tool-call-predictions.jsonl
 ```
 
-Fixtures are synthetic. The evaluator checks schema and reference validity only;
-a passing fixture run does not demonstrate a useful financial model.
+Fixtures are synthetic. The evaluators check schema/reference validity and offline
+tool-call correctness; a passing run does not demonstrate a useful financial model,
+actual tool execution, or deployed template/parser compatibility.
 
 ## Server: after hardware, Ubuntu, SSH, and GPU setup
 

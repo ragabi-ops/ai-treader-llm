@@ -27,13 +27,14 @@ There is no standalone gateway, queue, vector database, or model registry servic
 
 | Module | Public boundary | Responsibility |
 |---|---|---|
-| `contracts.py` | `Contracts.validate`, `Contracts.analysis` | JSON Schema, trusted request identity, evidence/metric references |
+| `contracts.py` | `Contracts.validate`, `Contracts.analysis`, `Contracts.tool_arguments` | JSON Schema, trusted request identity, evidence/metric references, strict tool arguments |
 | `datasets/samples.py` | `validate_sample`, `validate_dataset` | Source availability, ingestion cutoff, content hashes, IDs, chronological split order |
 | `datasets/samples.py` | `build_messages` | Fixed prompt plus validated sources; never serializes target/outcome fields |
 | `datasets/duplicates.py` | `validate_cross_split_duplicates` | Deterministic cross-split exact/near-duplicate sample-input checks |
 | `datasets/outcomes.py` | `validate_outcomes` | Separate labels, exact sample coverage, finite values, split purge/embargo |
 | `datasets/manifests.py` | `validate_manifest` | Artifact hashes/counts, contained paths, split/policy/provenance consistency |
 | `evaluation/runner.py` | `evaluate` | Counts every expected sample; missing/invalid responses are failures |
+| `evaluation/tools.py` | `evaluate_tool_calls` | Scores allowlists, required/unnecessary calls, strict arguments, and trusted symbol/time boundaries |
 | `inference/client.py` | `smoke` | Health and first completion; not a production orchestration client |
 | `cli.py` | CLI entry point | Local jobs, JSON output, stable success/failure exit codes |
 
@@ -43,7 +44,24 @@ resolve locally; remote schema retrieval is not enabled.
 
 Exit codes: `0` completed with no contract failures; `1` evaluation includes failed
 predictions; `2` invalid input or operational failure. JSON reports go to stdout;
-errors go to stderr. The current evaluator never permits model promotion.
+errors go to stderr. Neither evaluator permits model promotion.
+
+## Offline tool-call evaluation
+
+Tool-call fixtures contain model-visible messages plus a separately named trusted
+scope, per-case allowlist, and expected tool names. The evaluator never adds
+`trusted_scope` or `expected_tool_names` to the messages. Fixture allowlists must
+resolve to schemas in `contracts/tools/`, and expected names must be a subset of the
+allowlist. Saved predictions use a strict envelope; each proposed argument object is
+validated against the named tool's strict schema.
+
+A case passes only when all required calls are present and no unauthorized,
+incorrect, unnecessary, schema-invalid, wrong-symbol, or out-of-bound time call is
+present. Missing and malformed predictions remain in the denominator. Reports expose
+stable per-category counts and individual failure records. These checks do not
+execute tools, assess returned data, or prove prompt/template parsing, grounding, or
+financial quality. The Go dispatcher must independently repeat authorization and
+trusted-boundary enforcement at runtime.
 
 ## Dataset design refinement
 

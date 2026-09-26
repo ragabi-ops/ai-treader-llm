@@ -9,6 +9,9 @@
 - Strict analysis, trusted context, sample, and initial tool argument schemas.
 - CPU CLI: validate analysis/datasets, construct inputs, score saved predictions,
   and smoke-test an inference endpoint.
+- Offline tool-call fixture evaluator for allowlisted names, strict arguments,
+  trusted symbol/time boundaries, required/unnecessary calls, and categorized
+  failure accounting.
 - Dataset checks for availability/ingestion cutoffs, content hashes, unique IDs,
   chronological split order, and target exclusion from constructed inputs.
 - Strict, separately stored outcome records with exact sample coverage, finite
@@ -16,7 +19,8 @@
 - Deterministic cross-split normalized exact and high-similarity sample-input checks.
 - Immutable dataset-manifest validation for contained artifact paths, hashes, row
   counts, split summaries, horizons, purge policy, licensing, and review metadata.
-- Synthetic fixtures, dependency locks, CPU job image, regression tests, and CI.
+- Synthetic analysis, dataset, outcome, and tool-call fixtures; dependency locks;
+  CPU job image; regression tests; and CI.
 - Explicit configuration/module boundaries for later QLoRA, retrieval, export,
   evaluation expansion, and promotion.
 
@@ -27,17 +31,21 @@
 - Go client/orchestrator, platform migrations, and Postgres registry integration.
 - Real dataset collection, licensing, reviewed analysis targets, trading-calendar
   label construction, survivorship controls, and prospective financial evaluation.
+- Reviewed tool-call suite population and model/template response capture.
 - RAG ingestion/search, trainer, GPU scheduling lock, adapter export, or promotion.
-- Semantic grounding, tool execution, performance, and financial evaluation metrics.
+- Semantic grounding, actual tool execution, performance, and financial evaluation
+  metrics.
 
 ## Verified locally during scaffolding
 
-- `make check`: 41 regression tests and all five fixture commands passed.
+- `make check`: 56 regression tests and all six fixture commands passed.
 - Compose configuration and shell script syntax validation passed.
 - CPU job image built on the Mac's Linux ARM64 Docker engine; the evaluation job
   completed successfully through Compose as a non-root, read-only, offline container.
 - Input construction, Python compilation, and local documentation link checks passed.
 
-The structural evaluator always returns `promotion_eligible: false`. Hardware
-checklist items stay open until executed on the target machine. No GPU inference,
-model download, host provisioning, or live platform integration was performed.
+Both offline evaluators always return `promotion_eligible: false`. Tool-call fixture
+success checks proposed calls but does not execute a tool or prove model/template
+behavior. Hardware checklist items stay open until executed on the target machine.
+No GPU inference, model download, host provisioning, or live platform integration
+was performed.

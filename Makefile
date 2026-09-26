@@ -11,5 +11,6 @@ fixtures:
 	uv run --frozen ai-treader-llm validate-outcomes examples/samples.jsonl examples/outcomes.jsonl
 	uv run --frozen ai-treader-llm validate-manifest examples/dataset-manifest.json
 	uv run --frozen ai-treader-llm evaluate examples/samples.jsonl examples/predictions.jsonl
+	uv run --frozen ai-treader-llm evaluate-tools examples/tool-call-fixtures.jsonl examples/tool-call-predictions.jsonl
 
 check: test fixtures

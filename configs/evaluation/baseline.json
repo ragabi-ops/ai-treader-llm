@@ -8,10 +8,13 @@
     "tool_call_correctness": 0.95
   },
   "implemented_metrics": [
-    "schema_and_reference_validity"
+    "schema_and_reference_validity",
+    "offline_tool_call_correctness",
+    "unauthorized_tool_calls",
+    "timestamp_violations",
+    "unnecessary_tool_calls"
   ],
   "pending_metrics": [
-    "tool_call_correctness",
     "factual_grounding",
     "risk_identification",
     "abstention",
