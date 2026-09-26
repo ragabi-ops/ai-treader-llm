@@ -25,6 +25,8 @@ uv run --frozen ai-treader-llm build-inputs examples/samples.jsonl
 uv run --frozen ai-treader-llm validate-outcomes \
   examples/samples.jsonl examples/outcomes.jsonl --embargo-days 0
 uv run --frozen ai-treader-llm validate-manifest examples/dataset-manifest.json
+uv run --frozen ai-treader-llm evaluate-tools \
+  examples/tool-call-fixtures.jsonl examples/tool-call-predictions.jsonl
 ```
 
 The CPU checks need no NVIDIA GPU or Docker daemon. Example data is synthetic.
@@ -44,10 +46,17 @@ docs/            Plan, design, runbook, and delivery status
 ```
 
 Training, RAG, export, promotion, and Go integration are designed but not yet
-implemented. The current evaluator measures structural/reference validity only.
-It never certifies financial quality or authorizes promotion. Schemas and timestamp
-checks cannot detect misleading source metadata or future facts hidden in prose;
-source provenance and reviewed labels remain essential.
+implemented. The offline evaluators measure structural/reference validity and
+fixture-based tool-call correctness. They never certify financial quality or
+authorize promotion. Schemas and timestamp checks cannot detect misleading source
+metadata or future facts hidden in prose; source provenance and reviewed labels
+remain essential.
+
+`evaluate-tools` checks saved calls against per-case allowlists, the strict schemas
+in `contracts/tools/`, expected call names, and trusted symbol/as-of boundaries. It
+counts missing, malformed, unauthorized, incorrect, unnecessary, schema-invalid,
+and boundary-violating outputs explicitly. The included cases are synthetic and do
+not execute tools or demonstrate that a deployed model/template emits valid calls.
 
 Outcome records are validated from a separate JSONL file and are never accepted by
 the sample schema or input builder. `validate-outcomes` requires exact sample

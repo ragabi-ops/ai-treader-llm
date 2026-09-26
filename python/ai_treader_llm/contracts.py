@@ -23,6 +23,7 @@ def timestamp(value: str) -> datetime:
 class Contracts:
     def __init__(self, directory: Path):
         self.schemas = {}
+        self.tool_schemas = {}
         resources = []
         for path in directory.glob("*.schema.json"):
             contents = json.loads(path.read_text())
@@ -32,10 +33,29 @@ class Contracts:
         if not self.schemas:
             raise ContractError(f"no schemas in {directory}")
         self.registry = Registry().with_resources(resources)
+        for path in (directory / "tools").glob("*.schema.json"):
+            contents = json.loads(path.read_text())
+            Draft202012Validator.check_schema(contents)
+            name = path.name.removesuffix(".schema.json")
+            if name in self.tool_schemas:
+                raise ContractError(f"duplicate tool schema: {name}")
+            self.tool_schemas[name] = contents
 
     def validate(self, name: str, value: object) -> None:
         validator = Draft202012Validator(
             self.schemas[name], registry=self.registry, format_checker=FormatChecker()
+        )
+        errors = list(validator.iter_errors(value))
+        if errors:
+            error = errors[0]
+            location = ".".join(str(part) for part in error.absolute_path) or "$"
+            raise ContractError(f"{location}: {error.message}")
+
+    def tool_arguments(self, name: str, value: object) -> None:
+        if name not in self.tool_schemas:
+            raise ContractError(f"unknown tool: {name}")
+        validator = Draft202012Validator(
+            self.tool_schemas[name], format_checker=FormatChecker()
         )
         errors = list(validator.iter_errors(value))
         if errors:
