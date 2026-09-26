@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OutcomeRecordV1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1"
+    },
+    "sample_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "label_end_timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "return_1d": {
+      "type": "number"
+    },
+    "return_5d": {
+      "type": "number"
+    },
+    "return_30d": {
+      "type": "number"
+    },
+    "return_90d": {
+      "type": "number"
+    },
+    "max_drawdown": {
+      "type": "number"
+    },
+    "volatility": {
+      "type": "number",
+      "minimum": 0
+    }
+  },
+  "required": [
+    "schema_version",
+    "sample_id",
+    "label_end_timestamp",
+    "return_1d",
+    "return_5d",
+    "return_30d",
+    "return_90d",
+    "max_drawdown",
+    "volatility"
+  ]
+}

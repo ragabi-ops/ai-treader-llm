@@ -1,9 +1,12 @@
 import copy
+import hashlib
 import json
 import unittest
+from datetime import timedelta
 from pathlib import Path
 
 from ai_treader_llm.contracts import ContractError, Contracts
+from ai_treader_llm.datasets.outcomes import validate_outcomes
 from ai_treader_llm.datasets.samples import build_messages, context_for, read_jsonl, validate_dataset, validate_sample
 from ai_treader_llm.evaluation.runner import evaluate
 
@@ -111,6 +114,40 @@ class ContractTests(unittest.TestCase):
         with self.assertRaisesRegex(ContractError, "splits overlap"):
             validate_dataset([other, self.sample], self.contracts)
 
+    def test_cross_split_exact_source_duplicate_rejected(self):
+        other = self.later_sample("another", "validation")
+        self.sample["split"] = "train"
+        with self.assertRaisesRegex(ContractError, "cross-split duplicate"):
+            validate_dataset([self.sample, other], self.contracts)
+
+    def test_cross_split_near_duplicate_rejected(self):
+        self.sample["split"] = "train"
+        words = [f"token{number}" for number in range(30)]
+        self.set_source_content(self.sample, " ".join(words))
+        other = self.later_sample("another", "validation")
+        words[-1] = "replacement"
+        self.set_source_content(other, " ".join(words))
+        with self.assertRaisesRegex(ContractError, "cross-split duplicate"):
+            validate_dataset([self.sample, other], self.contracts)
+
+    def test_same_split_duplicate_source_allowed(self):
+        other = copy.deepcopy(self.sample)
+        other["sample_id"] = "another"
+        validate_dataset([self.sample, other], self.contracts)
+
+    def test_historical_source_may_recur_in_distinct_later_input(self):
+        self.sample["split"] = "train"
+        other = self.later_sample("another", "validation")
+        new_source = copy.deepcopy(other["sources"][0])
+        new_source["evidence_id"] = "news-2"
+        new_source["content"] = (
+            "A genuinely new later source adds enough distinct context to make this "
+            "a different analysis case while retaining the historical source."
+        )
+        new_source["content_sha256"] = hashlib.sha256(new_source["content"].encode("utf-8")).hexdigest()
+        other["sources"].append(new_source)
+        validate_dataset([self.sample, other], self.contracts)
+
     def test_empty_dataset_rejected(self):
         with self.assertRaisesRegex(ContractError, "empty"):
             validate_dataset([], self.contracts)
@@ -136,6 +173,116 @@ class ContractTests(unittest.TestCase):
         report = evaluate([self.sample], [{"sample_id": self.sample["sample_id"], "analysis": {}}], self.contracts)
         self.assertEqual(report["total"], 1)
         self.assertEqual(report["valid"], 0)
+
+    def later_sample(self, sample_id, split):
+        other = copy.deepcopy(self.sample)
+        other["sample_id"] = sample_id
+        other["split"] = split
+        other["as_of_timestamp"] = "2025-02-02T15:00:00Z"
+        other["expected_analysis"]["as_of_timestamp"] = "2025-02-02T15:00:00Z"
+        other["expected_analysis"]["timestamp"] = "2025-02-02T15:00:01Z"
+        return other
+
+    @staticmethod
+    def set_source_content(sample, content):
+        sample["sources"][0]["content"] = content
+        sample["sources"][0]["content_sha256"] = hashlib.sha256(content.encode("utf-8")).hexdigest()
+
+
+class OutcomeTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.contracts = Contracts(ROOT / "contracts")
+        cls.fixture = read_jsonl(ROOT / "examples/samples.jsonl")[0]
+
+    def setUp(self):
+        self.train = copy.deepcopy(self.fixture)
+        self.train["split"] = "train"
+        self.validation = copy.deepcopy(self.fixture)
+        self.validation["sample_id"] = "synthetic-002"
+        self.validation["split"] = "validation"
+        self.validation["as_of_timestamp"] = "2025-01-08T15:00:00Z"
+        self.validation["expected_analysis"]["as_of_timestamp"] = "2025-01-08T15:00:00Z"
+        self.validation["expected_analysis"]["timestamp"] = "2025-01-08T15:00:01Z"
+        validation_content = "Synthetic fixture: a distinct later source with no financial figures supplied."
+        self.validation["sources"][0]["content"] = validation_content
+        self.validation["sources"][0]["content_sha256"] = hashlib.sha256(
+            validation_content.encode("utf-8")
+        ).hexdigest()
+        self.outcomes = [
+            self.outcome("synthetic-001", "2025-01-07T15:00:00Z"),
+            self.outcome("synthetic-002", "2025-04-08T15:00:00Z"),
+        ]
+
+    @staticmethod
+    def outcome(sample_id, label_end):
+        return {
+            "schema_version": "1",
+            "sample_id": sample_id,
+            "label_end_timestamp": label_end,
+            "return_1d": 0.01,
+            "return_5d": 0.02,
+            "return_30d": -0.03,
+            "return_90d": 0.04,
+            "max_drawdown": -0.08,
+            "volatility": 0.2,
+        }
+
+    def test_valid_separate_outcomes(self):
+        validate_outcomes([self.train, self.validation], self.outcomes, self.contracts)
+
+    def test_outcome_schema_rejects_unknown_fields(self):
+        self.outcomes[0]["future_feature"] = 1
+        with self.assertRaises(ContractError):
+            validate_outcomes([self.train, self.validation], self.outcomes, self.contracts)
+
+    def test_outcomes_require_exact_sample_coverage(self):
+        with self.assertRaisesRegex(ContractError, "missing outcome"):
+            validate_outcomes([self.train, self.validation], self.outcomes[:1], self.contracts)
+        unknown = self.outcome("unknown", "2025-01-09T15:00:00Z")
+        with self.assertRaisesRegex(ContractError, "unknown sample"):
+            validate_outcomes([self.train, self.validation], self.outcomes + [unknown], self.contracts)
+
+    def test_duplicate_outcomes_rejected(self):
+        with self.assertRaisesRegex(ContractError, "duplicate outcome"):
+            validate_outcomes(
+                [self.train, self.validation],
+                self.outcomes + [copy.deepcopy(self.outcomes[0])],
+                self.contracts,
+            )
+
+    def test_label_end_must_follow_cutoff(self):
+        self.outcomes[0]["label_end_timestamp"] = self.train["as_of_timestamp"]
+        with self.assertRaisesRegex(ContractError, "label end"):
+            validate_outcomes([self.train, self.validation], self.outcomes, self.contracts)
+
+    def test_non_finite_outcome_rejected(self):
+        self.outcomes[0]["return_1d"] = float("nan")
+        with self.assertRaisesRegex(ContractError, "non-finite"):
+            validate_outcomes([self.train, self.validation], self.outcomes, self.contracts)
+
+    def test_cross_split_outcome_window_rejected(self):
+        self.outcomes[0]["label_end_timestamp"] = "2025-01-09T15:00:00Z"
+        with self.assertRaisesRegex(ContractError, "cross split"):
+            validate_outcomes([self.train, self.validation], self.outcomes, self.contracts)
+
+    def test_configured_embargo_enforced(self):
+        with self.assertRaisesRegex(ContractError, "embargo"):
+            validate_outcomes(
+                [self.train, self.validation],
+                self.outcomes,
+                self.contracts,
+                embargo=timedelta(days=2),
+            )
+
+    def test_negative_embargo_rejected(self):
+        with self.assertRaisesRegex(ContractError, "negative"):
+            validate_outcomes(
+                [self.train, self.validation],
+                self.outcomes,
+                self.contracts,
+                embargo=timedelta(days=-1),
+            )
 
 
 if __name__ == "__main__":

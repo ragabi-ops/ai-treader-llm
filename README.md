@@ -22,6 +22,8 @@ With `uv` installed, from the repository root:
 uv sync --frozen --python 3.12
 make check
 uv run --frozen ai-treader-llm build-inputs examples/samples.jsonl
+uv run --frozen ai-treader-llm validate-outcomes \
+  examples/samples.jsonl examples/outcomes.jsonl --embargo-days 0
 ```
 
 The CPU checks need no NVIDIA GPU or Docker daemon. Example data is synthetic.
@@ -45,3 +47,9 @@ implemented. The current evaluator measures structural/reference validity only.
 It never certifies financial quality or authorizes promotion. Schemas and timestamp
 checks cannot detect misleading source metadata or future facts hidden in prose;
 source provenance and reviewed labels remain essential.
+
+Outcome records are validated from a separate JSONL file and are never accepted by
+the sample schema or input builder. `validate-outcomes` requires exact sample
+coverage and rejects label windows that cross chronological split boundaries. Use
+`--embargo-days` to require an additional gap after the earlier split's latest
+label end. This is dataset-integrity validation, not financial scoring.

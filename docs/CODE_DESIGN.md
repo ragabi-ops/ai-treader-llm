@@ -30,6 +30,8 @@ There is no standalone gateway, queue, vector database, or model registry servic
 | `contracts.py` | `Contracts.validate`, `Contracts.analysis` | JSON Schema, trusted request identity, evidence/metric references |
 | `datasets/samples.py` | `validate_sample`, `validate_dataset` | Source availability, ingestion cutoff, content hashes, IDs, chronological split order |
 | `datasets/samples.py` | `build_messages` | Fixed prompt plus validated sources; never serializes target/outcome fields |
+| `datasets/duplicates.py` | `validate_cross_split_duplicates` | Deterministic cross-split exact/near-duplicate sample-input checks |
+| `datasets/outcomes.py` | `validate_outcomes` | Separate labels, exact sample coverage, finite values, split purge/embargo |
 | `evaluation/runner.py` | `evaluate` | Counts every expected sample; missing/invalid responses are failures |
 | `inference/client.py` | `smoke` | Health and first completion; not a production orchestration client |
 | `cli.py` | CLI entry point | Local jobs, JSON output, stable success/failure exit codes |
@@ -59,10 +61,16 @@ metadata, so later collection timestamps never reach the model.
 These checks cannot detect dishonest metadata or future facts embedded in prose.
 Source ingestion must establish provenance; reviewed labels must use only the
 contemporaneous evidence. Source hashes detect modification, not truthfulness.
-Chronological ordering is implemented; horizon-aware purge/embargo, cross-split
-near-duplicate checks, survivorship controls, and licensing review remain pending.
-Outcome labels belong in a separately permissioned dataset, never this sample
-schema or a trainer mount. Synthetic examples are not financial training data.
+Chronological ordering and explicit label-window purge/embargo checks are
+implemented. Embargo is measured in calendar days; real label generation must use
+the platform's point-in-time trading calendar. Cross-split checks compare each
+sample's complete source-content input, rejecting normalized exact matches and,
+for inputs with at least 20 tokens, multiset-token Jaccard similarity of 0.90 or
+greater. Individual historical sources may legitimately recur in later samples.
+This is a deterministic leakage heuristic, not proof that lower-scoring inputs are
+independent. Survivorship controls and licensing review remain pending. Outcome
+labels belong in a separately permissioned dataset, never the sample schema or a
+trainer mount. Synthetic examples are not financial training data.
 
 ## Go integration contract (implement in the platform repository)
 

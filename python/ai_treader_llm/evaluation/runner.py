@@ -29,5 +29,6 @@ def evaluate(samples: list[dict], predictions: list[dict], contracts: Contracts)
         "validity_rate": (count - len(failures)) / count,
         "failures": failures, "promotion_eligible": False,
         "limitations": ["No semantic grounding score", "No tool execution score",
-                        "No performance or financial evaluation", "No outcome-window embargo validation"],
+                        "No performance or financial evaluation",
+                        "Outcome records are not part of this structural report"],
     }

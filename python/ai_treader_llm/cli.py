@@ -3,10 +3,12 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from datetime import timedelta
 from pathlib import Path
 from urllib.error import URLError
 
 from ai_treader_llm.contracts import ContractError, Contracts
+from ai_treader_llm.datasets.outcomes import validate_outcomes
 from ai_treader_llm.datasets.samples import build_messages, read_jsonl, validate_dataset
 from ai_treader_llm.evaluation.runner import evaluate
 from ai_treader_llm.inference.client import smoke
@@ -22,6 +24,10 @@ def main() -> int:
     for name in ("validate-dataset", "build-inputs"):
         command = commands.add_parser(name)
         command.add_argument("samples", type=Path)
+    outcomes = commands.add_parser("validate-outcomes")
+    outcomes.add_argument("samples", type=Path)
+    outcomes.add_argument("outcomes", type=Path)
+    outcomes.add_argument("--embargo-days", type=int, default=0)
     evaluation = commands.add_parser("evaluate")
     evaluation.add_argument("samples", type=Path)
     evaluation.add_argument("predictions", type=Path)
@@ -40,7 +46,16 @@ def main() -> int:
             return 0
         samples = read_jsonl(args.samples)
         validate_dataset(samples, contracts)
-        if args.command == "validate-dataset":
+        if args.command == "validate-outcomes":
+            outcome_rows = read_jsonl(args.outcomes)
+            validate_outcomes(
+                samples,
+                outcome_rows,
+                contracts,
+                embargo=timedelta(days=args.embargo_days),
+            )
+            print(json.dumps({"valid": True, "samples": len(samples), "outcomes": len(outcome_rows)}))
+        elif args.command == "validate-dataset":
             print(json.dumps({"valid": True, "samples": len(samples)}))
         elif args.command == "build-inputs":
             for sample in samples:

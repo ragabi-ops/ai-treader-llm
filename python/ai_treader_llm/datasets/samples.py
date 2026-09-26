@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 from ai_treader_llm.contracts import ContractError, Contracts, timestamp
+from ai_treader_llm.datasets.duplicates import validate_cross_split_duplicates
 
 
 def read_jsonl(path: Path) -> list[dict]:
@@ -74,6 +75,7 @@ def validate_dataset(samples: list[dict], contracts: Contracts) -> None:
     for earlier, later in zip(ordered, ordered[1:]):
         if max(earlier) >= min(later):
             raise ContractError("chronological splits overlap")
+    validate_cross_split_duplicates(samples)
 
 
 def build_messages(sample: dict, contracts: Contracts) -> list[dict]:

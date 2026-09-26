@@ -11,6 +11,9 @@
   and smoke-test an inference endpoint.
 - Dataset checks for availability/ingestion cutoffs, content hashes, unique IDs,
   chronological split order, and target exclusion from constructed inputs.
+- Strict, separately stored outcome records with exact sample coverage, finite
+  values, label-window split purging, and configurable calendar-day embargo.
+- Deterministic cross-split normalized exact and high-similarity sample-input checks.
 - Synthetic fixtures, dependency locks, CPU job image, regression tests, and CI.
 - Explicit configuration/module boundaries for later QLoRA, retrieval, export,
   evaluation expansion, and promotion.
@@ -20,14 +23,14 @@
 - Ubuntu installation and physical server checks.
 - RTX 3080 runtime fit, generation throughput, tool-template behavior, and QLoRA fit.
 - Go client/orchestrator, platform migrations, and Postgres registry integration.
-- Real dataset collection, licensing, reviewed analysis targets, temporal purge/
-  embargo, near-duplicate checks, and prospective financial evaluation.
+- Real dataset collection, licensing, reviewed analysis targets, trading-calendar
+  label construction, survivorship controls, and prospective financial evaluation.
 - RAG ingestion/search, trainer, GPU scheduling lock, adapter export, or promotion.
 - Semantic grounding, tool execution, performance, and financial evaluation metrics.
 
 ## Verified locally during scaffolding
 
-- `make check`: 22 regression tests and all three fixture commands passed.
+- `make check`: 35 regression tests and all four fixture commands passed.
 - Compose configuration and shell script syntax validation passed.
 - CPU job image built on the Mac's Linux ARM64 Docker engine; the evaluation job
   completed successfully through Compose as a non-root, read-only, offline container.
