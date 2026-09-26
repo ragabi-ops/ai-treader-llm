@@ -9,6 +9,7 @@ fixtures:
 	uv run --frozen ai-treader-llm validate-analysis examples/analysis.json --context examples/context.json
 	uv run --frozen ai-treader-llm validate-dataset examples/samples.jsonl
 	uv run --frozen ai-treader-llm validate-outcomes examples/samples.jsonl examples/outcomes.jsonl
+	uv run --frozen ai-treader-llm validate-manifest examples/dataset-manifest.json
 	uv run --frozen ai-treader-llm evaluate examples/samples.jsonl examples/predictions.jsonl
 
 check: test fixtures

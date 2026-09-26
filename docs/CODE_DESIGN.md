@@ -32,6 +32,7 @@ There is no standalone gateway, queue, vector database, or model registry servic
 | `datasets/samples.py` | `build_messages` | Fixed prompt plus validated sources; never serializes target/outcome fields |
 | `datasets/duplicates.py` | `validate_cross_split_duplicates` | Deterministic cross-split exact/near-duplicate sample-input checks |
 | `datasets/outcomes.py` | `validate_outcomes` | Separate labels, exact sample coverage, finite values, split purge/embargo |
+| `datasets/manifests.py` | `validate_manifest` | Artifact hashes/counts, contained paths, split/policy/provenance consistency |
 | `evaluation/runner.py` | `evaluate` | Counts every expected sample; missing/invalid responses are failures |
 | `inference/client.py` | `smoke` | Health and first completion; not a production orchestration client |
 | `cli.py` | CLI entry point | Local jobs, JSON output, stable success/failure exit codes |
@@ -154,6 +155,12 @@ No library or container here loads GPU training dependencies on the Mac.
 Schema version `1` is explicit. Breaking contract changes require a new version and
 consumer migration. Pin datasets by manifest/content hashes, models by repository
 commit and artifact hash, and images by digest. Record prompt and template hashes.
+
+Dataset manifest paths are relative and must resolve within the manifest directory.
+The validator hashes raw artifact bytes, checks declared row counts, revalidates
+samples and optional outcomes, and compares split summaries and analysis horizons.
+Licensing and review status are explicit metadata; schema validity does not prove
+that a claimed review occurred.
 
 `uv.lock` is authoritative for CPU dependencies. `requirements.lock.txt` is a
 hash-locked export used by the CPU Docker image and CI. Regenerate together:

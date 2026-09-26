@@ -1,11 +1,14 @@
 import copy
 import hashlib
 import json
+import shutil
+import tempfile
 import unittest
 from datetime import timedelta
 from pathlib import Path
 
 from ai_treader_llm.contracts import ContractError, Contracts
+from ai_treader_llm.datasets.manifests import validate_manifest
 from ai_treader_llm.datasets.outcomes import validate_outcomes
 from ai_treader_llm.datasets.samples import build_messages, context_for, read_jsonl, validate_dataset, validate_sample
 from ai_treader_llm.evaluation.runner import evaluate
@@ -283,6 +286,65 @@ class OutcomeTests(unittest.TestCase):
                 self.contracts,
                 embargo=timedelta(days=-1),
             )
+
+
+class ManifestTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.contracts = Contracts(ROOT / "contracts")
+
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        for name in ("dataset-manifest.json", "samples.jsonl", "outcomes.jsonl"):
+            shutil.copy2(ROOT / "examples" / name, self.root / name)
+        self.path = self.root / "dataset-manifest.json"
+
+    def manifest(self):
+        return json.loads(self.path.read_text())
+
+    def write_manifest(self, manifest):
+        self.path.write_text(json.dumps(manifest))
+
+    def test_valid_manifest(self):
+        summary = validate_manifest(self.path, self.contracts)
+        self.assertEqual(summary, {"dataset_id": "synthetic-fixture-v1", "samples": 1, "outcomes": 1})
+
+    def test_manifest_detects_artifact_tampering(self):
+        with (self.root / "samples.jsonl").open("a") as stream:
+            stream.write("\n")
+        with self.assertRaisesRegex(ContractError, "hash mismatch"):
+            validate_manifest(self.path, self.contracts)
+
+    def test_manifest_artifact_cannot_escape_directory(self):
+        manifest = self.manifest()
+        manifest["samples"]["path"] = "../samples.jsonl"
+        self.write_manifest(manifest)
+        with self.assertRaisesRegex(ContractError, "escapes"):
+            validate_manifest(self.path, self.contracts)
+
+    def test_manifest_split_summary_must_match(self):
+        manifest = self.manifest()
+        manifest["splits"]["test"]["sample_count"] = 2
+        self.write_manifest(manifest)
+        with self.assertRaisesRegex(ContractError, "split count mismatch"):
+            validate_manifest(self.path, self.contracts)
+
+    def test_reviewed_manifest_requires_provenance(self):
+        manifest = self.manifest()
+        manifest["review"]["status"] = "reviewed"
+        self.write_manifest(manifest)
+        with self.assertRaisesRegex(ContractError, "requires reviewer"):
+            validate_manifest(self.path, self.contracts)
+
+    def test_manifest_may_exclude_separate_outcomes(self):
+        manifest = self.manifest()
+        manifest["outcomes"] = None
+        manifest["split_policy"]["outcome_window_purged"] = False
+        self.write_manifest(manifest)
+        summary = validate_manifest(self.path, self.contracts)
+        self.assertEqual(summary["outcomes"], 0)
 
 
 if __name__ == "__main__":

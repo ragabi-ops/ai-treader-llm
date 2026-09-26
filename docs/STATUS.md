@@ -14,6 +14,8 @@
 - Strict, separately stored outcome records with exact sample coverage, finite
   values, label-window split purging, and configurable calendar-day embargo.
 - Deterministic cross-split normalized exact and high-similarity sample-input checks.
+- Immutable dataset-manifest validation for contained artifact paths, hashes, row
+  counts, split summaries, horizons, purge policy, licensing, and review metadata.
 - Synthetic fixtures, dependency locks, CPU job image, regression tests, and CI.
 - Explicit configuration/module boundaries for later QLoRA, retrieval, export,
   evaluation expansion, and promotion.
@@ -30,7 +32,7 @@
 
 ## Verified locally during scaffolding
 
-- `make check`: 35 regression tests and all four fixture commands passed.
+- `make check`: 41 regression tests and all five fixture commands passed.
 - Compose configuration and shell script syntax validation passed.
 - CPU job image built on the Mac's Linux ARM64 Docker engine; the evaluation job
   completed successfully through Compose as a non-root, read-only, offline container.

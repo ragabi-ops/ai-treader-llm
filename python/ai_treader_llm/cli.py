@@ -8,6 +8,7 @@ from pathlib import Path
 from urllib.error import URLError
 
 from ai_treader_llm.contracts import ContractError, Contracts
+from ai_treader_llm.datasets.manifests import validate_manifest
 from ai_treader_llm.datasets.outcomes import validate_outcomes
 from ai_treader_llm.datasets.samples import build_messages, read_jsonl, validate_dataset
 from ai_treader_llm.evaluation.runner import evaluate
@@ -28,6 +29,8 @@ def main() -> int:
     outcomes.add_argument("samples", type=Path)
     outcomes.add_argument("outcomes", type=Path)
     outcomes.add_argument("--embargo-days", type=int, default=0)
+    manifest = commands.add_parser("validate-manifest")
+    manifest.add_argument("manifest", type=Path)
     evaluation = commands.add_parser("evaluate")
     evaluation.add_argument("samples", type=Path)
     evaluation.add_argument("predictions", type=Path)
@@ -43,6 +46,10 @@ def main() -> int:
         if args.command == "validate-analysis":
             contracts.analysis(json.loads(args.analysis.read_text()), json.loads(args.context.read_text()))
             print('{"valid":true}')
+            return 0
+        if args.command == "validate-manifest":
+            summary = validate_manifest(args.manifest, contracts)
+            print(json.dumps({"valid": True, **summary}))
             return 0
         samples = read_jsonl(args.samples)
         validate_dataset(samples, contracts)

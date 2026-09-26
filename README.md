@@ -24,6 +24,7 @@ make check
 uv run --frozen ai-treader-llm build-inputs examples/samples.jsonl
 uv run --frozen ai-treader-llm validate-outcomes \
   examples/samples.jsonl examples/outcomes.jsonl --embargo-days 0
+uv run --frozen ai-treader-llm validate-manifest examples/dataset-manifest.json
 ```
 
 The CPU checks need no NVIDIA GPU or Docker daemon. Example data is synthetic.
@@ -53,3 +54,8 @@ the sample schema or input builder. `validate-outcomes` requires exact sample
 coverage and rejects label windows that cross chronological split boundaries. Use
 `--embargo-days` to require an additional gap after the earlier split's latest
 label end. This is dataset-integrity validation, not financial scoring.
+
+Dataset manifests pin sample and optional outcome files by SHA-256 and row count.
+Validation resolves only paths contained by the manifest directory, re-runs all
+dataset checks, verifies split boundaries and analysis horizons, and requires
+explicit licensing/reviewer status. The included manifest is synthetic-only.

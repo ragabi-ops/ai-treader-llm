@@ -15,3 +15,14 @@ Dataset manifests additionally describe immutable source snapshots, chronologica
 splits, label horizons, purge/embargo policy, licensing, and reviewer provenance.
 The platform registry is the source of truth for the active deployment. Git/files
 hold artifacts and reproducibility metadata, not a second active-state database.
+
+Validate a dataset manifest and every artifact it references with:
+
+```bash
+uv run --frozen ai-treader-llm validate-manifest /path/to/dataset-manifest.json
+```
+
+Artifact paths must be relative to and remain inside the manifest directory. An
+outcome artifact is optional so training inputs can be distributed without outcome
+labels; when present, its purge/embargo policy is revalidated. See the explicitly
+synthetic example under `examples/`; do not copy its provenance claims to real data.

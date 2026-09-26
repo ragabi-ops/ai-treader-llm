@@ -1,0 +1,39 @@
+{
+  "schema_version": "1",
+  "dataset_id": "synthetic-fixture-v1",
+  "created_at": "2026-09-26T00:00:00Z",
+  "samples": {
+    "path": "samples.jsonl",
+    "sha256": "ee86352ca18c28d594881aac21f20a0277bf9a272f875a1d2b73ae5da52833a2",
+    "count": 1
+  },
+  "outcomes": {
+    "path": "outcomes.jsonl",
+    "sha256": "af9842f603b7f4499f3c837ca00010a0a86031c622262adf381b5e871731840f",
+    "count": 1
+  },
+  "splits": {
+    "train": {"sample_count": 0, "as_of_start": null, "as_of_end": null},
+    "validation": {"sample_count": 0, "as_of_start": null, "as_of_end": null},
+    "test": {
+      "sample_count": 1,
+      "as_of_start": "2025-01-02T15:00:00Z",
+      "as_of_end": "2025-01-02T15:00:00Z"
+    }
+  },
+  "analysis_horizons": ["5d"],
+  "split_policy": {
+    "chronological": true,
+    "outcome_window_purged": true,
+    "embargo_days": 0
+  },
+  "licensing": {
+    "status": "synthetic_only",
+    "notes": "Generated repository fixture; not financial training data."
+  },
+  "review": {
+    "status": "synthetic_only",
+    "reviewer": null,
+    "reviewed_at": null
+  }
+}
