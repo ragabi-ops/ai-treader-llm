@@ -1,0 +1,8 @@
+{
+  "symbol": "EXAMPLE",
+  "as_of_timestamp": "2025-01-02T15:00:00Z",
+  "evidence_ids": [
+    "news-1"
+  ],
+  "metric_ids": []
+}

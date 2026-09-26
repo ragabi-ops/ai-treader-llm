@@ -1,0 +1,10 @@
+{
+  "model_alias": "ai-treader-analyst",
+  "context_tokens": 4096,
+  "max_output_tokens": 1024,
+  "parallel_requests": 1,
+  "enable_thinking": false,
+  "max_tool_rounds": 6,
+  "request_timeout_seconds": 120,
+  "max_repair_attempts": 1
+}

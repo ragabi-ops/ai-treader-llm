@@ -1,0 +1,67 @@
+name: ai-treader-llm
+services:
+  inference:
+    image: ${LLAMA_IMAGE:?Run scripts/bootstrap/pin-runtime.sh first}
+    platform: linux/amd64
+    restart: on-failure
+    ports:
+      - "127.0.0.1:${INFERENCE_PORT:-8080}:8080"
+    volumes:
+      - type: bind
+        source: ${MODEL_DIR:-/data/models}
+        target: /models
+        read_only: true
+        bind:
+          create_host_path: false
+    command:
+      - --model
+      - /models/${MODEL_FILE:-Qwen3-8B-Q4_K_M.gguf}
+      - --alias
+      - ai-treader-analyst
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8080"
+      - --n-gpu-layers
+      - "99"
+      - --ctx-size
+      - "4096"
+      - --parallel
+      - "1"
+      - --jinja
+      - --chat-template-kwargs
+      - '{"enable_thinking":false}'
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: [ALL]
+    networks: [llm]
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  jobs:
+    profiles: [jobs]
+    build:
+      context: .
+      dockerfile: docker/jobs.Dockerfile
+    command: [validate-dataset, examples/samples.jsonl]
+    read_only: true
+    tmpfs: [/tmp]
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    network_mode: none
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: [ALL]
+
+networks:
+  llm:
+    internal: true

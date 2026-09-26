@@ -1,0 +1,18 @@
+[Unit]
+Description=AI-Treader local LLM inference
+Requires=docker.service
+After=docker.service network-online.target
+Wants=network-online.target
+RequiresMountsFor=/data
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/srv/ai-treader
+ExecStartPre=/usr/bin/mountpoint -q /data
+ExecStart=/usr/bin/docker compose --env-file .env --env-file configs/runtime.lock.env up -d inference
+ExecStop=/usr/bin/docker compose --env-file .env --env-file configs/runtime.lock.env stop inference
+TimeoutStartSec=180
+
+[Install]
+WantedBy=multi-user.target

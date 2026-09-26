@@ -1,0 +1,31 @@
+{
+  "status": "proposed_not_gpu_validated",
+  "base_model": "Qwen/Qwen3-8B",
+  "base_revision": null,
+  "dataset_manifest": null,
+  "image_digest": null,
+  "quantization": {
+    "format": "nf4",
+    "double_quantization": true
+  },
+  "compute_dtype": "bfloat16_if_supported",
+  "max_sequence_length": 1024,
+  "microbatch_size": 1,
+  "gradient_accumulation_steps": 16,
+  "lora": {
+    "rank": 8,
+    "alpha": 16,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj"
+    ]
+  },
+  "gradient_checkpointing": true,
+  "optimizer": "paged_adamw_8bit",
+  "learning_rate": 0.0001,
+  "epochs": 1,
+  "assistant_only_loss": true,
+  "seed": 42
+}

@@ -1,0 +1,24 @@
+{
+  "suite_version": "1",
+  "target_reviewed_cases": 200,
+  "gates": {
+    "persisted_schema_validity": 1.0,
+    "unauthorized_tool_calls": 0,
+    "timestamp_violations": 0,
+    "tool_call_correctness": 0.95
+  },
+  "implemented_metrics": [
+    "schema_and_reference_validity"
+  ],
+  "pending_metrics": [
+    "tool_call_correctness",
+    "factual_grounding",
+    "risk_identification",
+    "abstention",
+    "latency_p50_p95",
+    "tokens_per_second",
+    "peak_vram",
+    "financial_walk_forward"
+  ],
+  "promotion_enabled": false
+}

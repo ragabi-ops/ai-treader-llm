@@ -1,0 +1,16 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ai-treader-llm"
+version = "0.1.0"
+description = "Local LLM contracts, dataset integrity, and evaluation tooling for AI-Treader"
+requires-python = ">=3.11"
+dependencies = ["jsonschema>=4.23,<5", "referencing>=0.36,<0.38", "rfc3339-validator>=0.1.4,<0.2"]
+
+[project.scripts]
+ai-treader-llm = "ai_treader_llm.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["python/ai_treader_llm"]

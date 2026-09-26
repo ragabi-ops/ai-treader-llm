@@ -1,0 +1,9 @@
+.git
+.venv
+.env
+.env.*
+__pycache__
+artifacts
+*.gguf
+*.safetensors
+configs/runtime.lock.env

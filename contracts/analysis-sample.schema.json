@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AnalysisSampleV1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1"
+    },
+    "sample_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "instrument_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "symbol": {
+      "type": "string",
+      "minLength": 1
+    },
+    "as_of_timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "replay_mode": {
+      "enum": [
+        "public_information",
+        "platform_replay"
+      ]
+    },
+    "split": {
+      "enum": [
+        "train",
+        "validation",
+        "test"
+      ]
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "evidence_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "price",
+              "fundamentals",
+              "news",
+              "filing",
+              "earnings",
+              "technicals",
+              "market_context",
+              "previous_analysis",
+              "research"
+            ]
+          },
+          "event_at": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "Z$"
+          },
+          "available_at": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "Z$"
+          },
+          "ingested_at": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "Z$"
+          },
+          "revision": {
+            "type": "string",
+            "minLength": 1
+          },
+          "content_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "metric_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "content": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "evidence_id",
+          "kind",
+          "event_at",
+          "available_at",
+          "ingested_at",
+          "revision",
+          "content_sha256",
+          "metric_ids",
+          "content"
+        ]
+      }
+    },
+    "task": {
+      "enum": [
+        "financial_analysis"
+      ]
+    },
+    "expected_analysis": {
+      "$ref": "analysis.schema.json"
+    }
+  },
+  "required": [
+    "schema_version",
+    "sample_id",
+    "instrument_id",
+    "symbol",
+    "as_of_timestamp",
+    "replay_mode",
+    "split",
+    "sources",
+    "task",
+    "expected_analysis"
+  ]
+}

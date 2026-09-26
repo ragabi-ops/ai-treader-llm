@@ -1,0 +1,186 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AnalysisV1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1"
+    },
+    "symbol": {
+      "type": "string",
+      "minLength": 1
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "as_of_timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "horizon": {
+      "enum": [
+        "1d",
+        "5d",
+        "30d",
+        "90d"
+      ]
+    },
+    "thesis": {
+      "$ref": "#/$defs/claim"
+    },
+    "bull_case": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/claim"
+      }
+    },
+    "bear_case": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/claim"
+      }
+    },
+    "catalysts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/claim"
+      }
+    },
+    "risks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/claim"
+      }
+    },
+    "fundamentals": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/section"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "technicals": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/section"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "sentiment": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/section"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "market_context": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/section"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "confidence": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "missing_data": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "suggested_signal_state": {
+      "enum": [
+        "bullish",
+        "neutral",
+        "bearish",
+        "insufficient_evidence"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "symbol",
+    "timestamp",
+    "as_of_timestamp",
+    "horizon",
+    "thesis",
+    "bull_case",
+    "bear_case",
+    "catalysts",
+    "risks",
+    "fundamentals",
+    "technicals",
+    "sentiment",
+    "market_context",
+    "confidence",
+    "missing_data",
+    "suggested_signal_state"
+  ],
+  "$defs": {
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "text",
+        "evidence_ids"
+      ]
+    },
+    "section": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "summary": {
+          "$ref": "#/$defs/claim"
+        },
+        "metric_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "summary",
+        "metric_refs"
+      ]
+    }
+  }
+}
