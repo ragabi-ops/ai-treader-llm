@@ -99,6 +99,37 @@ The default URL is `http://127.0.0.1:18080`; the server-local URL is port 8080.
 Do not publish the inference port on all interfaces. A containerized Go backend
 needs an explicit tunnel/network integration; its own localhost is not the Mac's.
 
+For an always-on Mac tunnel, include both forwards and failure detection in the
+`Host ai-treader-llm` block of `~/.ssh/config`:
+
+```sshconfig
+ServerAliveInterval 30
+ServerAliveCountMax 3
+LocalForward 18080 127.0.0.1:8080
+LocalForward 18090 127.0.0.1:8090
+ExitOnForwardFailure yes
+```
+
+Install the supplied per-user launch agent, after closing any manual
+`ssh ai-treader-llm` session that owns port 18080:
+
+```bash
+install -d -m 0700 ~/Library/LaunchAgents
+install -m 0600 scripts/bootstrap/com.ai-treader.llm-tunnel.plist \
+  ~/Library/LaunchAgents/com.ai-treader.llm-tunnel.plist
+launchctl bootstrap "gui/$(id -u)" \
+  ~/Library/LaunchAgents/com.ai-treader.llm-tunnel.plist
+launchctl kickstart -k "gui/$(id -u)/com.ai-treader.llm-tunnel"
+curl --fail http://127.0.0.1:18080/health
+curl --fail http://127.0.0.1:18090/health
+```
+
+`launchd` starts the tunnel at Mac login and restarts it after network or SSH
+failures. The dashboard is therefore reachable at both the direct LAN address and
+`http://127.0.0.1:18090/`; inference remains private at
+`http://127.0.0.1:18080/`. The launch agent uses batch mode and the dedicated key,
+so it cannot stop for an interactive password or host-key prompt.
+
 ## Start after reboot
 
 The inference unit starts Compose only after `/data` is mounted. The dashboard runs
