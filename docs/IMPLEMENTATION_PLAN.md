@@ -18,6 +18,22 @@ Accepted architecture, 2026-09-26. This document preserves the complete planning
 | Persistence | Existing Postgres + versioned artifacts on disk |
 | Retrieval | Existing Postgres, with pgvector when document retrieval is introduced |
 
+Deployment decision, accepted 2026-09-29: keep inference in the pinned Docker
+container on the interim host, run the read-only operations dashboard as a
+restricted native systemd service, and run future training/evaluation containers
+only on demand. Linux containers use the host kernel and direct NVIDIA device
+access; the image digest keeps llama.cpp and CUDA userspace reproducible while the
+host driver remains independently managed.
+
+Reassess native llama.cpp when the future dedicated host is commissioned. Reopen
+the decision earlier only for a repeated container-specific reliability problem or
+a Docker/NVIDIA compatibility blocker. Compare the same model hash, context, request
+fixtures, and concurrency while measuring p50/p95 latency, generation throughput,
+VRAM, cold start, restart/recovery, and rollback. Adopt native serving only when the
+measured operational or performance benefit justifies pinning and recording the
+native binary hash, build flags, CUDA libraries, and service configuration. Preserve
+the OpenAI-compatible HTTP boundary so either runtime remains replaceable.
+
 ```text
 Mac ── SSH / Git ───────────────────────► Ubuntu AI server
  │                                          │

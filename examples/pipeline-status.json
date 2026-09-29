@@ -1,0 +1,20 @@
+{
+  "schema_version": "1",
+  "updated_at": "2026-09-29T20:00:05Z",
+  "run_id": "analysis-run-example",
+  "status": "running",
+  "stage": "inference",
+  "attempt": 1,
+  "progress": {
+    "completed": 3,
+    "total": 7
+  },
+  "work": {
+    "listing_id": 7,
+    "symbol": "AAPL",
+    "horizon": "1m",
+    "as_of_timestamp": "2026-09-29T20:00:00Z",
+    "replay_mode": "platform_replay"
+  },
+  "message": "Waiting for schema-constrained analysis"
+}

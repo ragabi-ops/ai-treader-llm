@@ -31,6 +31,7 @@ services:
       - --jinja
       - --reasoning
       - "off"
+      - --metrics
     deploy:
       resources:
         reservations:

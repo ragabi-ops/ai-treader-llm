@@ -87,3 +87,12 @@ Read-only audit on 2026-09-29 after reboot:
   repository key authenticates successfully, and SSH file modes are restricted.
   Model artifacts, inference endpoints, and the systemd inference unit are not
   present yet.
+
+## Deployment decision
+
+Accepted 2026-09-29: retain digest-pinned Docker inference on the interim host, use
+containers on demand for future training/evaluation, and run the read-only dashboard
+as a restricted native service. Reassess native llama.cpp when the dedicated host is
+commissioned, or earlier only for a repeated container-specific reliability or GPU
+compatibility blocker. Preserve the HTTP contract and require an evidence-backed
+latency/throughput/VRAM/startup/recovery comparison before changing runtimes.

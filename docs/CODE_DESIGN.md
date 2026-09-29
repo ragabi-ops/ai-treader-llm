@@ -23,6 +23,15 @@ This repository
 Dependencies flow toward contracts; no module imports trading execution code.
 There is no standalone gateway, queue, vector database, or model registry service.
 
+Runtime placement is an explicit deployment choice, not an API boundary. The
+accepted interim deployment keeps digest-pinned llama.cpp inference in Docker,
+future GPU training/evaluation jobs in on-demand containers, and the read-only host
+dashboard in a restricted native systemd process. Reassess native inference at the
+dedicated-host migration, or earlier only for a demonstrated container-specific
+reliability or GPU compatibility blocker. A native candidate must pass the same
+provider contracts and be compared against the container on latency, throughput,
+VRAM, startup/recovery, and reproducible rollback.
+
 ## Runnable modules
 
 | Module | Public boundary | Responsibility |

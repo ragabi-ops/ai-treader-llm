@@ -1,0 +1,31 @@
+[Unit]
+Description=AI-Treader LLM operations dashboard
+After=network-online.target docker.service ai-treader-llm.service
+Wants=network-online.target docker.service ai-treader-llm.service
+RequiresMountsFor=/data
+
+[Service]
+Type=simple
+User=ai-treader-llm
+Group=ai-treader-llm
+SupplementaryGroups=docker
+WorkingDirectory=/srv/ai-treader
+Environment=PYTHONPATH=/srv/ai-treader/python
+ExecStart=/usr/bin/python3 -m ai_treader_llm.monitoring.server --host 0.0.0.0 --port 8090 --root /srv/ai-treader --data-root /data
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+CapabilityBoundingSet=
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target
