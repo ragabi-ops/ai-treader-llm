@@ -1,6 +1,6 @@
 # Delivery status
 
-## Implemented in the skeleton
+## Implemented
 
 - Complete infrastructure-to-training plan and code/integration design.
 - GPU inference Compose definition with loopback binding and isolated network.
@@ -30,16 +30,21 @@
   CPU job image; regression tests; and CI.
 - Explicit configuration/module boundaries for later QLoRA, retrieval, export,
   evaluation expansion, and promotion.
+- Read-only operations dashboard with a same-origin status API, two-second polling,
+  host/GPU/Docker/llama.cpp/deployment telemetry, five-minute browser-side resource
+  history, state-change events, and strict allowlisted pipeline/training status files.
+  It never exposes prompts, responses, environment variables, arbitrary files, or
+  Docker logs.
 
-## Not yet implemented or validated on hardware
+## Not yet implemented or fully validated
 
-- Repository checkout on the target, model artifact, inference service, and boot
-  service.
-- GPU-container access, RTX 3080 runtime fit, generation throughput, tool-template
-  behavior, and QLoRA fit.
 - RAM module topology, sustained cooling/load behavior, PSU capacity, and permitted
   `/dev/sda` health. The Windows-owned NVMe devices are outside this deployment and
   must remain untouched.
+- Representative latency/throughput/load benchmarks, sustained inference behavior,
+  full tool-template suite capture, QLoRA fit, and training behavior.
+- Boot persistence and the LAN dashboard firewall rule. Both systemd unit files are
+  in the repository but still require the operator's interactive `sudo` installation.
 - Go client/orchestrator, platform migrations, and Postgres registry integration.
 - Real dataset collection, licensing, reviewed analysis targets, trading-calendar
   label construction, survivorship controls, and prospective financial evaluation.
@@ -49,44 +54,53 @@
   against values), actual tool execution, performance, and financial evaluation
   metrics.
 
-## Verified locally during scaffolding
+## Verified locally
 
-- `make check`: 88 regression tests and all nine fixture commands passed (2026-09-29).
+- `make check`: 96 regression tests and all nine fixture commands passed (2026-09-29).
 - Compose configuration and shell script syntax validation passed.
+- Dashboard JavaScript syntax, monitoring Python compilation, service payload tests,
+  Compose rendering with the pinned image, and `git diff --check` passed.
 - CPU job image built on the Mac's Linux ARM64 Docker engine; the evaluation job
   completed successfully through Compose as a non-root, read-only, offline container.
 - Input construction, Python compilation, and local documentation link checks passed.
 
 Both offline evaluators always return `promotion_eligible: false`. Tool-call fixture
-success checks proposed calls but does not execute a tool or prove model/template
-behavior. Hardware checklist items stay open until executed on the target machine.
-No GPU inference, model download, host provisioning, or live platform integration
-was performed.
+success checks proposed calls but does not execute a tool or prove financial quality.
+No live platform integration or model promotion was performed.
 
 ## Verified on the target host
 
-Read-only audit on 2026-09-29 after reboot:
+Verified on 2026-09-29 and 2026-09-30:
 
 - The dedicated Mac SSH alias and key reach the host over wired LAN; DNS and NTP
-  work. SSH hardening and the LAN firewall are not yet complete.
+  work. UFW is active; the dashboard's subnet-scoped 8090 rule still requires the
+  operator's interactive `sudo` installation step.
 - Ubuntu 26.04.1 boots kernel `7.0.0-34-generic` on a Ryzen 9 5900X with 32 GiB RAM.
 - The NVIDIA kernel module and userspace both report `580.178.04`; `nvidia-smi`
-  identifies an RTX 3080 with 10,240 MiB VRAM. This proves host driver operation,
-  not CUDA-container, llama.cpp, throughput, or training readiness.
+  identifies an RTX 3080 with 10,240 MiB VRAM. The pinned CUDA container sees the
+  GPU, and llama.cpp offloads the deployed model to it.
 - The operator-approved interim layout uses only `/dev/sda`: `/dev/sda3` for `/`
   and `/dev/sda1` for `/data`. Both NVMe devices belong to Windows and are excluded.
   `/data` now mounts persistently by UUID and its artifact directories are owned by
   `ai-treader-llm`.
 - Docker Engine 29.8.1, Compose 5.5.1, and NVIDIA Container Toolkit 1.20.1 are
-  installed; Docker and containerd are enabled and active, and the NVIDIA runtime
-  is configured. GPU-container smoke output still needs independent capture.
+  installed; Docker and containerd are enabled and active, the NVIDIA runtime is
+  configured, and the GPU-container smoke passed.
 - The operator explicitly accepted root-equivalent Docker-group membership for the
-  dedicated `ai-treader-llm` account. The group exists but membership was not yet
-  active at the time of this status update.
+  dedicated `ai-treader-llm` account. Membership is active in fresh SSH sessions.
 - The GitHub host key was pinned to GitHub's published Ed25519 key, the dedicated
   repository key authenticates successfully, and SSH file modes are restricted.
-  Model artifacts, inference endpoints, and the systemd inference unit are not
-  present yet.
+- The checkout is at `9d41f1c`. Qwen3-8B Q4_K_M is pinned to Hugging Face revision
+  `7c41481f57cb95916b40956ab2f0b139b296d974` and verified SHA-256
+  `d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785`.
+- Digest-pinned llama.cpp inference is healthy on host loopback port 8080. A first
+  completion, strict-schema response, and forced tool-call parsing passed. The tiny
+  warm smoke observed roughly 101 generated tokens/second, but that is not a
+  representative benchmark or a production performance claim.
+- The operations dashboard served a live localhost preview and correctly reported
+  the GPU, VRAM, inference, model/runtime provenance, host, and `/data` storage. It
+  correctly reports degraded while no platform pipeline producer exists. Persistent
+  systemd installation and LAN exposure remain the operator's final privileged step.
 
 ## Deployment decision
 

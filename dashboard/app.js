@@ -109,8 +109,8 @@ function renderMetrics(data) {
   $("inference-state").textContent = safe(inference.health);
   $("active-requests").textContent = safe(inference.active_requests, "0");
   $("inference-latency").textContent = `${safe(inference.latency_ms)} ms health`;
-  const contextSize = inference.model?.context_size || inference.slots?.[0]?.context_size;
-  $("slot-context").textContent = contextSize ? `${Number(contextSize).toLocaleString()} context` : "— context";
+  const generationRate = inference.metrics?.["llamacpp:predicted_tokens_seconds"];
+  $("inference-rate").textContent = Number.isFinite(generationRate) ? `${generationRate.toFixed(1)} tok/s gen` : "— tok/s gen";
 
   const host = data.host || {};
   $("cpu-util").textContent = safe(host.cpu_percent);
@@ -164,7 +164,7 @@ function renderPipeline(data) {
   const active = (data.inference?.slots || []).find((slot) => slot.processing);
   if (active) {
     $("runtime-work-label").textContent = pipeline.connected ? "Attributed generation" : "Unattributed inference request";
-    $("runtime-work-detail").textContent = `Slot ${safe(active.id)} · task ${safe(active.task_id)} · ${safe(active.prompt_tokens_processed, "0")}/${safe(active.prompt_tokens, "—")} prompt tokens processed`;
+    $("runtime-work-detail").textContent = `Slot ${safe(active.id)} · task ${safe(active.task_id)} · ${safe(active.prompt_tokens_processed, "0")}/${safe(active.prompt_tokens, "—")} prompt tokens · ${safe(active.decoded_tokens, "0")} decoded`;
   } else {
     $("runtime-work-label").textContent = "Idle";
     $("runtime-work-detail").textContent = "No generation is running.";

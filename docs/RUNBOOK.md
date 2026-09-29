@@ -34,7 +34,7 @@ grep -F ' /data ' /etc/fstab
 sudo install -d -o ai-treader-llm -g ai-treader-llm /srv/ai-treader
 sudo install -d -o ai-treader-llm -g ai-treader-llm \
   /data/models /data/datasets /data/checkpoints /data/adapters \
-  /data/cache /data/evaluations /data/training
+  /data/cache /data/evaluations /data/training /data/status
 git clone git@github.com:ragabi-ops/ai-treader-llm.git /srv/ai-treader
 cd /srv/ai-treader
 cp .env.example .env
@@ -101,18 +101,37 @@ needs an explicit tunnel/network integration; its own localhost is not the Mac's
 
 ## Start after reboot
 
-The supplied systemd unit starts Compose only after `/data` is mounted:
+The inference unit starts Compose only after `/data` is mounted. The dashboard runs
+as a restricted native process, reads the Docker socket through the already accepted
+`docker` group membership, and listens on TCP 8090. Install both units:
 
 ```bash
-sudo cp scripts/bootstrap/ai-treader-llm.service /etc/systemd/system/
+sudo install -m 0644 scripts/bootstrap/ai-treader-llm.service /etc/systemd/system/
+sudo install -m 0644 scripts/bootstrap/ai-treader-dashboard.service /etc/systemd/system/
 sudo systemctl daemon-reload
-sudo systemctl enable --now ai-treader-llm
+sudo systemctl enable --now ai-treader-llm ai-treader-dashboard
+systemctl --no-pager --full status ai-treader-llm ai-treader-dashboard
+curl --fail http://127.0.0.1:8090/health
 ```
 
 Compose uses `on-failure`, which handles process crashes but does not independently
 start the existing container when Docker restarts. This leaves boot ordering to
 systemd. After manually restarting Docker, restart `ai-treader-llm` as well. Recheck
 GPU access after daemon reloads; NVIDIA documents a cgroup-related GPU-access issue.
+
+Permit the dashboard only from the trusted internal subnet; never expose llama.cpp
+port 8080 to the LAN:
+
+```bash
+sudo ufw allow from 192.168.50.0/24 to any port 8090 proto tcp comment 'LLM dashboard'
+sudo ufw status numbered
+```
+
+From a Mac on that subnet, open `http://192.168.50.182:8090/`. The UI refreshes every
+two seconds. It intentionally shows pipeline and training telemetry as unavailable
+until a real producer atomically writes the allowlisted files in `/data/status`; see
+[OBSERVABILITY.md](OBSERVABILITY.md). Anyone on the allowed subnet can read operational
+metadata, so add authentication before using a broader or untrusted network.
 
 ## CPU job container (optional)
 

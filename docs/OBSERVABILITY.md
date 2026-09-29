@@ -18,6 +18,8 @@ Docker logs.
 
 An inference slot can prove that generation is active, but cannot explain the
 business task. Work attribution comes only from an allowlisted pipeline document.
+The inference card reports llama.cpp's current generation-rate metric when available;
+zero while idle is expected and is not a benchmark result.
 
 ## Pipeline status producer
 

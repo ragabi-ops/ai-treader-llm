@@ -12,6 +12,7 @@ Qwen3-8B Q4_K_M. No Hermes, Kubernetes, or foundation-model training.
 - [Complete implementation plan](docs/IMPLEMENTATION_PLAN.md) — hardware through integration and upgrades.
 - [Code design](docs/CODE_DESIGN.md) — ownership, APIs, data flow, persistence, and invariants.
 - [Development/server runbook](docs/RUNBOOK.md) — exact setup and first endpoint commands.
+- [Operations dashboard](docs/OBSERVABILITY.md) — live sources and the sanitized pipeline/training status contract.
 - [Delivery status](docs/STATUS.md) — implemented versus pending work.
 
 ## Local development on the Mac
@@ -40,6 +41,7 @@ contracts/       Versioned JSON Schemas; shared integration boundaries
 configs/         Inference, proposed QLoRA, and evaluation settings
 python/          CPU validators, input builder, evaluator, HTTP smoke client
 scripts/         Model/runtime bootstrap and deployment helpers
+dashboard/       Read-only near-real-time host, inference, and pipeline UI
 manifests/       Artifact provenance conventions
 prompts/         Prompt ownership and versioning
 examples/        Synthetic analysis, sample, context, and prediction fixtures
