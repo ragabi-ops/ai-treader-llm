@@ -18,7 +18,8 @@ actual tool execution, or deployed template/parser compatibility.
 
 ## Server: after hardware, Ubuntu, SSH, and GPU setup
 
-Follow phases 0–3 of [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) first. On the
+For a new host, follow phases 0–3 of [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md)
+and the unfinished HOST/HARD rows in [the backlog](../tasks/BACKLOG.csv). On the
 current interim dual-boot host, `/dev/sda` is the only disk permitted for Linux and
 AI-Treader. Do not mount, format, repartition, repair, or store anything on
 `/dev/nvme0n1` or `/dev/nvme1n1`; both belong to Windows. The scripts here do not

@@ -1,6 +1,10 @@
 # AI-Treader local LLM implementation plan
 
-Accepted architecture, 2026-09-26. This document preserves the complete planning scope. See [STATUS.md](STATUS.md) for what has actually been implemented and [CODE_DESIGN.md](CODE_DESIGN.md) for module boundaries. Hardware compatibility references were checked during planning; installation still requires validation on the target machine.
+Accepted architecture reference, 2026-09-26. This document describes implementation
+shape, not current task state or order. See [root STATUS](../STATUS.md) and
+[the backlog](../tasks/BACKLOG.csv) for delivery state, and [CODE_DESIGN.md](CODE_DESIGN.md)
+for module boundaries. Hardware compatibility references were checked during planning;
+every deployment still requires validation on its target machine.
 
 ## 1. Recommended Final Architecture
 
@@ -450,11 +454,9 @@ ai-treader-llm/
 ├── .env.example
 ├── contracts/             Analysis, dataset, provenance, tools
 ├── configs/               Inference, training, evaluation
-├── prompts/
 ├── python/                Dataset, retrieval, training, evaluation
 ├── docker/
 ├── scripts/               Bootstrap, smoke, export, promotion
-├── manifests/
 └── docs/
 ```
 
@@ -488,24 +490,3 @@ It is unsuitable for full-precision 8B inference entirely in VRAM; full fine-tun
 5. Remote inference: endpoint/authentication changes followed by provider contract tests.
 
 Durable boundaries: HTTP API, typed tools, analysis schema, immutable dataset manifests, portable adapters, deployment registry. Hardware changes do not require a platform rewrite.
-
-## 14. Implementation Checklist
-
-- [ ] Back up Windows and record disk identities.
-- [ ] Verify GPU VRAM, board revision/BIOS, RAM, SSD health, PSU, cooling, Ethernet.
-- [ ] Upgrade to 64 GB if ready; run stability tests.
-- [ ] Download and checksum Ubuntu Server 24.04.5 amd64.
-- [ ] Verify the interim `/dev/sda`-only ext4 layout and UUID-mounted `/data`; leave both Windows NVMe disks untouched.
-- [ ] Set hostname and DHCP reservation.
-- [ ] Verify Mac SSH keys, then disable password/root SSH.
-- [ ] Configure firewall and SSH tunnel.
-- [ ] Update Ubuntu and install utilities.
-- [ ] Install R580, reboot, verify `nvidia-smi`.
-- [ ] Install Docker, Compose, NVIDIA Container Toolkit.
-- [ ] Pass GPU-container smoke test.
-- [ ] Create `/data` directories and clone into `/srv/ai-treader`.
-- [ ] Download Qwen3-8B Q4_K_M and start inference.
-- [ ] Verify health, generation, GPU offload locally and from Mac.
-- [ ] Record model hash/revision and pin runtime digest.
-- [ ] Connect Go client; test a read-only tool and schema-valid analysis.
-- [ ] Establish evaluation baseline before RAG or training.

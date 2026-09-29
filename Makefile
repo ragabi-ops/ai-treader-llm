@@ -16,4 +16,7 @@ fixtures:
 	uv run --frozen ai-treader-llm validate-outcomes examples/v2/samples.jsonl examples/v2/outcomes.jsonl
 	uv run --frozen ai-treader-llm validate-manifest examples/v2/dataset-manifest.json --evaluation-boundary 2025-06-01T00:00:00Z
 
-check: test fixtures
+check:
+	python3 scripts/backlog.py
+	$(MAKE) test
+	$(MAKE) fixtures
