@@ -1,0 +1,54 @@
+{
+  "schema_version": "2",
+  "dataset_id": "synthetic-fixture-v2",
+  "created_at": "2026-09-29T00:00:00Z",
+  "samples": {
+    "path": "samples.jsonl",
+    "sha256": "33b0e068f5a5542bab6e75c763293f75852dcd2940c4886f72d7d57687736415",
+    "count": 2
+  },
+  "outcomes": {
+    "path": "outcomes.jsonl",
+    "sha256": "0d5aa855625c72209a2ba8267c8afa711c348174b2e7f40d079080b30dbffb78",
+    "count": 2
+  },
+  "splits": {
+    "train": {
+      "sample_count": 1,
+      "as_of_start": "2025-01-03T21:00:00Z",
+      "as_of_end": "2025-01-03T21:00:00Z"
+    },
+    "validation": {
+      "sample_count": 0,
+      "as_of_start": null,
+      "as_of_end": null
+    },
+    "test": {
+      "sample_count": 1,
+      "as_of_start": "2025-03-07T21:00:00Z",
+      "as_of_end": "2025-03-07T21:00:00Z"
+    }
+  },
+  "analysis_horizons": [
+    "1m"
+  ],
+  "split_policy": {
+    "chronological": true,
+    "outcome_window_purged": true,
+    "calendar": "xnys-2021-2027-v1",
+    "embargo_sessions": 21,
+    "embargoed_starts": {
+      "validation": null,
+      "test": "2025-03-05T21:00:00Z"
+    }
+  },
+  "licensing": {
+    "status": "synthetic_only",
+    "notes": "Generated repository fixture; not financial training data."
+  },
+  "review": {
+    "status": "synthetic_only",
+    "reviewer": null,
+    "reviewed_at": null
+  }
+}

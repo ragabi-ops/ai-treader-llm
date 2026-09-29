@@ -27,6 +27,10 @@ uv run --frozen ai-treader-llm validate-outcomes \
 uv run --frozen ai-treader-llm validate-manifest examples/dataset-manifest.json
 uv run --frozen ai-treader-llm evaluate-tools \
   examples/tool-call-fixtures.jsonl examples/tool-call-predictions.jsonl
+# contract v2 (shared with the platform)
+uv run --frozen ai-treader-llm validate-analysis examples/v2/analysis.json --context examples/v2/context.json
+uv run --frozen ai-treader-llm validate-manifest examples/v2/dataset-manifest.json \
+  --evaluation-boundary 2025-06-01T00:00:00Z
 ```
 
 The CPU checks need no NVIDIA GPU or Docker daemon. Example data is synthetic.

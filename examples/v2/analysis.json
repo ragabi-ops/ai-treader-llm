@@ -1,0 +1,82 @@
+{
+  "schema_version": "2",
+  "listing_id": 101,
+  "symbol": "EXAMPLE",
+  "timestamp": "2025-01-03T21:05:00Z",
+  "as_of_timestamp": "2025-01-03T21:00:00Z",
+  "horizon": "1m",
+  "thesis": {
+    "text": "Revenue grew in the latest filing while price held.",
+    "evidence_ids": [
+      "filing-1",
+      "px-1"
+    ],
+    "metric_refs": [
+      "filing-1.revenue"
+    ]
+  },
+  "bull_case": [
+    {
+      "text": "Quarterly revenue rose year over year.",
+      "evidence_ids": [
+        "filing-1"
+      ],
+      "metric_refs": [
+        "filing-1.revenue"
+      ]
+    }
+  ],
+  "bear_case": [
+    {
+      "text": "Coverage is thin: one news item.",
+      "evidence_ids": [
+        "news-1"
+      ],
+      "metric_refs": []
+    }
+  ],
+  "catalysts": [],
+  "risks": [
+    {
+      "text": "The scheduled call may reset expectations.",
+      "evidence_ids": [
+        "news-1"
+      ],
+      "metric_refs": []
+    }
+  ],
+  "fundamentals": {
+    "text": "Revenue increased versus the prior year.",
+    "evidence_ids": [
+      "filing-1"
+    ],
+    "metric_refs": [
+      "filing-1.revenue"
+    ]
+  },
+  "technicals": {
+    "text": "The last close is the only price supplied.",
+    "evidence_ids": [
+      "px-1"
+    ],
+    "metric_refs": [
+      "px-1.close"
+    ]
+  },
+  "sentiment": {
+    "text": "News flow is neutral.",
+    "evidence_ids": [
+      "news-1"
+    ],
+    "metric_refs": []
+  },
+  "market_context": null,
+  "confidence": "medium",
+  "unavailable": [
+    {
+      "kind": "earnings",
+      "reason": "not_collected"
+    }
+  ],
+  "suggested_signal_state": "neutral"
+}

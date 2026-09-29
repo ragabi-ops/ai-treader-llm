@@ -7,7 +7,8 @@ from datetime import timedelta
 from pathlib import Path
 from urllib.error import URLError
 
-from ai_treader_llm.contracts import ContractError, Contracts
+from ai_treader_llm import contracts_v2
+from ai_treader_llm.contracts import ContractError, Contracts, timestamp
 from ai_treader_llm.datasets.manifests import validate_manifest
 from ai_treader_llm.datasets.outcomes import validate_outcomes
 from ai_treader_llm.datasets.samples import build_messages, read_jsonl, validate_dataset
@@ -32,6 +33,12 @@ def main() -> int:
     outcomes.add_argument("--embargo-days", type=int, default=0)
     manifest = commands.add_parser("validate-manifest")
     manifest.add_argument("manifest", type=Path)
+    manifest.add_argument(
+        "--evaluation-boundary",
+        help="UTC embargoed boundary: every cutoff and label interval must end before it",
+    )
+    context_hash = commands.add_parser("context-hash")
+    context_hash.add_argument("context", type=Path)
     evaluation = commands.add_parser("evaluate")
     evaluation.add_argument("samples", type=Path)
     evaluation.add_argument("predictions", type=Path)
@@ -48,11 +55,23 @@ def main() -> int:
             return 0
         contracts = Contracts(args.contracts)
         if args.command == "validate-analysis":
-            contracts.analysis(json.loads(args.analysis.read_text()), json.loads(args.context.read_text()))
+            analysis, context = json.loads(args.analysis.read_text()), json.loads(args.context.read_text())
+            if context.get("schema_version") == "2":
+                contracts_v2.validate_analysis(analysis, context, contracts)
+            else:
+                contracts.analysis(analysis, context)
             print('{"valid":true}')
             return 0
+        if args.command == "context-hash":
+            print(contracts_v2.context_hash(json.loads(args.context.read_text())))
+            return 0
         if args.command == "validate-manifest":
-            summary = validate_manifest(args.manifest, contracts)
+            boundary = args.evaluation_boundary
+            summary = validate_manifest(
+                args.manifest,
+                contracts,
+                evaluation_boundary=timestamp(boundary) if boundary else None,
+            )
             print(json.dumps({"valid": True, **summary}))
             return 0
         if args.command == "evaluate-tools":

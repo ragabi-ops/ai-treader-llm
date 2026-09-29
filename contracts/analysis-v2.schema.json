@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AnalysisV2",
+  "description": "Model output under contract v2. Every claim cites at least one source; an abstention has no thesis. Structural grounding only: a valid analysis is not a verified one.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": "2"},
+    "listing_id": {"$ref": "common-v2.schema.json#/$defs/listing_id"},
+    "symbol": {"$ref": "common-v2.schema.json#/$defs/identifier"},
+    "timestamp": {"$ref": "common-v2.schema.json#/$defs/timestamp"},
+    "as_of_timestamp": {"$ref": "common-v2.schema.json#/$defs/timestamp"},
+    "horizon": {"$ref": "common-v2.schema.json#/$defs/horizon_label"},
+    "thesis": {"anyOf": [{"$ref": "#/$defs/claim"}, {"type": "null"}]},
+    "bull_case": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
+    "bear_case": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
+    "catalysts": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
+    "risks": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
+    "fundamentals": {"anyOf": [{"$ref": "#/$defs/claim"}, {"type": "null"}]},
+    "technicals": {"anyOf": [{"$ref": "#/$defs/claim"}, {"type": "null"}]},
+    "sentiment": {"anyOf": [{"$ref": "#/$defs/claim"}, {"type": "null"}]},
+    "market_context": {"anyOf": [{"$ref": "#/$defs/claim"}, {"type": "null"}]},
+    "confidence": {"enum": ["low", "medium", "high"]},
+    "unavailable": {"$ref": "common-v2.schema.json#/$defs/unavailable"},
+    "suggested_signal_state": {"enum": ["bullish", "neutral", "bearish", "insufficient_evidence"]}
+  },
+  "required": [
+    "schema_version", "listing_id", "symbol", "timestamp", "as_of_timestamp", "horizon",
+    "thesis", "bull_case", "bear_case", "catalysts", "risks",
+    "fundamentals", "technicals", "sentiment", "market_context",
+    "confidence", "unavailable", "suggested_signal_state"
+  ],
+  "$defs": {
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "text": {"type": "string", "minLength": 1},
+        "evidence_ids": {
+          "type": "array",
+          "items": {"$ref": "common-v2.schema.json#/$defs/identifier"},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "metric_refs": {"$ref": "common-v2.schema.json#/$defs/identifiers"}
+      },
+      "required": ["text", "evidence_ids", "metric_refs"]
+    }
+  }
+}

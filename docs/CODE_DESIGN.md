@@ -28,6 +28,8 @@ There is no standalone gateway, queue, vector database, or model registry servic
 | Module | Public boundary | Responsibility |
 |---|---|---|
 | `contracts.py` | `Contracts.validate`, `Contracts.analysis`, `Contracts.tool_arguments` | JSON Schema, trusted request identity, evidence/metric references, strict tool arguments |
+| `contracts_v2.py` | `validate_context`, `validate_analysis`, `context_hash` | Contract v2: trusted envelope, canonical hash, shared-code grounding checks |
+| `contract_fixtures.py` | `build` / `python -m ai_treader_llm.contract_fixtures` | Generates the shared v2 fixtures and v2 examples; tests fail on drift |
 | `datasets/samples.py` | `validate_sample`, `validate_dataset` | Source availability, ingestion cutoff, content hashes, IDs, chronological split order |
 | `datasets/samples.py` | `build_messages` | Fixed prompt plus validated sources; never serializes target/outcome fields |
 | `datasets/duplicates.py` | `validate_cross_split_duplicates` | Deterministic cross-split exact/near-duplicate sample-input checks |
@@ -168,9 +170,45 @@ without changing completed artifacts. Use UTC timestamptz and explicit monetary 
 Reserved packages deliberately have no fake successful training/RAG implementation.
 No library or container here loads GPU training dependencies on the Mac.
 
+## Contract v2 (L03a, shared with the platform)
+
+v2 is authored here and vendored by the platform (`scripts/llm-contract-sync.sh`
+there, `--check` compares). Both repositories validate the same fixtures in
+`contracts/fixtures/v2`; each invalid case breaks one rule and names the code both
+validators must return. The check order is part of the contract.
+
+- **Envelope** (`analysis-context-v2`): platform-owned `listing_id`, symbol, UTC
+  cutoff, `replay_mode`, one `horizon` (label `1m`/`3m`, policy
+  `xnys-calendar-months-v1`, calendar version, start/end session and end close),
+  typed source metadata (content travels separately, bound by its SHA-256), typed
+  `unavailable` inputs, and `context_sha256`.
+- **Canonical hash**: SHA-256 of `json.dumps(sort_keys=True, separators=(",", ":"),
+  ensure_ascii=False)` UTF-8 bytes of the envelope without `context_sha256`.
+  Integers only; the Go encoder reproduces these escapes byte for byte
+  (`context-hash-vectors.json` includes the hard cases).
+- **Horizons**: the end session is the first XNYS session on or after the decision
+  session plus N calendar months, the platform journal's rule. `1m` is never 30
+  days. This repository checks order only; the platform checks the sessions
+  against its calendar (`horizon_sessions_mismatch`, platform-only).
+- **Grounding (structural)**: every claim cites at least one supplied source; a
+  cited metric's source is among the claim's citations; each section cites a kind
+  that can support it; an abstention has `thesis: null` and
+  `insufficient_evidence`; `unavailable` acknowledges exactly the missing inputs.
+  Numeric claims are not checked against values and prose is not verified.
+- **Outcomes** (`outcome-record-v2`): one record per sample horizon; each measure is
+  `available` with a finite value or `unavailable` with a typed reason
+  (`pending`, `missing_bars`, ...). Never a zero for an unmeasured label.
+- **Datasets**: v2 samples carry their horizon, so label ends are known without
+  outcomes and splits are always purged. Session embargoes are stated by the
+  platform as `embargoed_starts` timestamps. `validate-manifest
+  --evaluation-boundary` refuses any sample whose cutoff or label end is not before
+  the platform's embargoed evaluation boundary (a v1 dataset needs outcomes for it).
+
+v1 schemas, examples and validators are unchanged and still read.
+
 ## Versioning and validation
 
-Schema version `1` is explicit. Breaking contract changes require a new version and
+Schema versions `1` and `2` are explicit. Breaking contract changes require a new version and
 consumer migration. Pin datasets by manifest/content hashes, models by repository
 commit and artifact hash, and images by digest. Record prompt and template hashes.
 

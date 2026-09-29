@@ -1,0 +1,223 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DatasetManifestV2",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "count"
+      ]
+    },
+    "nullable_timestamp": {
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "split": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sample_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "as_of_start": {
+          "$ref": "#/$defs/nullable_timestamp"
+        },
+        "as_of_end": {
+          "$ref": "#/$defs/nullable_timestamp"
+        }
+      },
+      "required": [
+        "sample_count",
+        "as_of_start",
+        "as_of_end"
+      ]
+    }
+  },
+  "properties": {
+    "schema_version": {
+      "const": "2"
+    },
+    "dataset_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "samples": {
+      "$ref": "#/$defs/artifact"
+    },
+    "outcomes": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/artifact"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "splits": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "train": {
+          "$ref": "#/$defs/split"
+        },
+        "validation": {
+          "$ref": "#/$defs/split"
+        },
+        "test": {
+          "$ref": "#/$defs/split"
+        }
+      },
+      "required": [
+        "train",
+        "validation",
+        "test"
+      ]
+    },
+    "analysis_horizons": {
+      "type": "array",
+      "items": {
+        "$ref": "common-v2.schema.json#/$defs/horizon_label"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "split_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "chronological": {
+          "const": true
+        },
+        "outcome_window_purged": {
+          "type": "boolean"
+        },
+        "calendar": {
+          "$ref": "common-v2.schema.json#/$defs/identifier"
+        },
+        "embargo_sessions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "embargoed_starts": {
+          "description": "The earliest cutoff each later split may use: the platform's session count after the previous split's latest label end.",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "validation": {
+              "$ref": "#/$defs/nullable_timestamp"
+            },
+            "test": {
+              "$ref": "#/$defs/nullable_timestamp"
+            }
+          },
+          "required": [
+            "validation",
+            "test"
+          ]
+        }
+      },
+      "required": [
+        "chronological",
+        "outcome_window_purged",
+        "calendar",
+        "embargo_sessions",
+        "embargoed_starts"
+      ]
+    },
+    "licensing": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "pending",
+            "reviewed",
+            "synthetic_only"
+          ]
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "status",
+        "notes"
+      ]
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "pending",
+            "reviewed",
+            "synthetic_only"
+          ]
+        },
+        "reviewer": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reviewed_at": {
+          "$ref": "#/$defs/nullable_timestamp"
+        }
+      },
+      "required": [
+        "status",
+        "reviewer",
+        "reviewed_at"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "dataset_id",
+    "created_at",
+    "samples",
+    "outcomes",
+    "splits",
+    "analysis_horizons",
+    "split_policy",
+    "licensing",
+    "review"
+  ],
+  "description": "Manifest for v2 samples and outcomes. Embargoes are stated as platform-computed timestamps, because session arithmetic belongs to the platform's calendar."
+}

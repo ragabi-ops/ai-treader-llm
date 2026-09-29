@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ContractV2Definitions",
+  "description": "Shared definitions for contract v2. Not an artifact on its own.",
+  "$defs": {
+    "timestamp": {
+      "description": "UTC, seconds required, at most microseconds: one grammar both validators parse identically.",
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]{1,6})?Z$"
+    },
+    "session_date": {"type": "string", "format": "date", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "identifier": {"type": "string", "minLength": 1},
+    "identifiers": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/identifier"},
+      "uniqueItems": true
+    },
+    "listing_id": {"type": "integer", "minimum": 1},
+    "replay_mode": {"enum": ["public_information", "platform_replay"]},
+    "source_kind": {
+      "enum": [
+        "price",
+        "fundamentals",
+        "news",
+        "filing",
+        "earnings",
+        "technicals",
+        "market_context",
+        "previous_analysis",
+        "research"
+      ]
+    },
+    "horizon_label": {"enum": ["1m", "3m"]},
+    "horizon": {
+      "description": "One horizon policy: the end session is the first XNYS session on or after the decision session plus the label's calendar months. 1m is never 30 days and 3m is never 90 days.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "label": {"$ref": "#/$defs/horizon_label"},
+        "policy": {"const": "xnys-calendar-months-v1"},
+        "calendar": {"$ref": "#/$defs/identifier"},
+        "start_session": {"$ref": "#/$defs/session_date"},
+        "end_session": {"$ref": "#/$defs/session_date"},
+        "end_close": {"$ref": "#/$defs/timestamp"}
+      },
+      "required": ["label", "policy", "calendar", "start_session", "end_session", "end_close"]
+    },
+    "input_unavailable_reason": {
+      "enum": [
+        "not_collected",
+        "not_available_at_cutoff",
+        "not_ingested_at_cutoff",
+        "provider_error",
+        "license_restricted",
+        "stale",
+        "not_applicable"
+      ]
+    },
+    "unavailable": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "kind": {"$ref": "#/$defs/source_kind"},
+          "reason": {"$ref": "#/$defs/input_unavailable_reason"}
+        },
+        "required": ["kind", "reason"]
+      },
+      "uniqueItems": true
+    }
+  }
+}

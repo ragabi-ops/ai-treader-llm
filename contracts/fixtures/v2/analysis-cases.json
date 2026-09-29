@@ -1,0 +1,4142 @@
+{
+  "fixture_version": "1",
+  "cases": [
+    {
+      "name": "valid-full",
+      "description": "Every claim cites a known source; sections cite a kind that can support them.",
+      "expect": "valid",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "41aefb7765ef929a3e525ce48cbb63d3ea19a6658e87721139b89882c1f4c893",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ]
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "suggested_signal_state": "neutral"
+      }
+    },
+    {
+      "name": "valid-abstention",
+      "description": "No thesis and insufficient_evidence: the honest answer to thin evidence.",
+      "expect": "valid",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "41aefb7765ef929a3e525ce48cbb63d3ea19a6658e87721139b89882c1f4c893",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ]
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": null,
+        "bull_case": [],
+        "bear_case": [],
+        "catalysts": [],
+        "risks": [],
+        "fundamentals": null,
+        "technicals": null,
+        "sentiment": null,
+        "market_context": null,
+        "confidence": "low",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "suggested_signal_state": "insufficient_evidence"
+      }
+    },
+    {
+      "name": "valid-public-information-late-ingestion",
+      "description": "Public-information replay may collect a source after the cutoff; it was public before it.",
+      "expect": "valid",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "f80694e03d1164c0817d12762c7681990502d21c6197051ce2e1bd52ceb9828b",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "public_information",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2026-09-26T12:00:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ]
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "suggested_signal_state": "neutral"
+      }
+    },
+    {
+      "name": "invalid-context-unknown-field",
+      "description": "Envelopes reject unknown fields.",
+      "expect": "schema",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "85da8194a40f887b666ecd85b0af241f82750dba75f0465d632d7038dbc5d221",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "returns": "0.25"
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "suggested_signal_state": "neutral"
+      }
+    },
+    {
+      "name": "invalid-analysis-unknown-field",
+      "description": "Outputs reject unknown fields.",
+      "expect": "schema",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "41aefb7765ef929a3e525ce48cbb63d3ea19a6658e87721139b89882c1f4c893",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ]
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "suggested_signal_state": "neutral",
+        "price_target": "120"
+      }
+    },
+    {
+      "name": "invalid-uncited-claim",
+      "description": "A claim with no source is not grounded.",
+      "expect": "schema",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "41aefb7765ef929a3e525ce48cbb63d3ea19a6658e87721139b89882c1f4c893",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ]
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "suggested_signal_state": "neutral"
+      }
+    },
+    {
+      "name": "invalid-missing-data-strings",
+      "description": "v2 replaces free-text missing_data with typed unavailable.",
+      "expect": "schema",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "41aefb7765ef929a3e525ce48cbb63d3ea19a6658e87721139b89882c1f4c893",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ]
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          "earnings"
+        ],
+        "suggested_signal_state": "neutral"
+      }
+    },
+    {
+      "name": "invalid-timestamp-grammar",
+      "description": "Seconds are required: one grammar for both validators.",
+      "expect": "schema",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "21f601bb342bdedc029bfa1e0578e7f429b747baf4347c0bb7f1c9d80a6b4f93",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ]
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "suggested_signal_state": "neutral"
+      }
+    },
+    {
+      "name": "invalid-session-date",
+      "description": "A date that matches the pattern but does not exist.",
+      "expect": "schema",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "2fbf68bf1b51cab027915346f568b54f9cda1a2e94b7c67aeb86039cf6d493ca",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-02-30",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ]
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "suggested_signal_state": "neutral"
+      }
+    },
+    {
+      "name": "invalid-fractional-listing",
+      "description": "Listing IDs are integers; the envelope carries no fractions.",
+      "expect": "schema",
+      "context": {
+        "schema_version": "2",
+        "listing_id": 101.5,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "context_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "suggested_signal_state": "neutral"
+      }
+    },
+    {
+      "name": "invalid-context-hash",
+      "description": "The envelope hash must cover exactly the envelope.",
+      "expect": "context_hash_mismatch",
+      "context": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "context_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "suggested_signal_state": "neutral"
+      }
+    },
+    {
+      "name": "invalid-duplicate-evidence",
+      "description": "Evidence IDs are unique.",
+      "expect": "duplicate_evidence",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "2e57377cb3f39e27894d6de1f7d8008b5fba9167603c095f21846c4c443a22f3",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ]
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "suggested_signal_state": "neutral"
+      }
+    },
+    {
+      "name": "invalid-duplicate-metric",
+      "description": "Metric IDs are unique across sources.",
+      "expect": "duplicate_metric",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "0c658a9c3215f3f9d809d97d8bf25b4f23db61cae7974787cf4d74c8caf06741",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ]
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "suggested_signal_state": "neutral"
+      }
+    },
+    {
+      "name": "invalid-future-source",
+      "description": "A source available after the cutoff cannot enter.",
+      "expect": "future_source",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "4c3a713956c33a2389856aced033737a88d183b2bcc4c3ea5cc2bda6c56a0d68",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-03T21:00:01Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ]
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "suggested_signal_state": "neutral"
+      }
+    },
+    {
+      "name": "invalid-ingestion-precedes-availability",
+      "description": "Nothing is collected before it exists.",
+      "expect": "ingestion_precedes_availability",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "f369e8cd18403c8f4392adb6f9c024587e07462e26744ea81032a577e8507f03",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T13:59:59Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ]
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "suggested_signal_state": "neutral"
+      }
+    },
+    {
+      "name": "invalid-source-not-ingested",
+      "description": "Platform replay only sees what the platform held at the cutoff.",
+      "expect": "source_not_ingested",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "b1d4bc0898ada521a53ec4963a6fea0b40799603e581a0517932d7db2c15561e",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-04T00:00:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ]
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "suggested_signal_state": "neutral"
+      }
+    },
+    {
+      "name": "invalid-duplicate-unavailable-kind",
+      "description": "One reason per unavailable kind.",
+      "expect": "duplicate_unavailable_kind",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "bf5e6c7cc4d4bf1298bf68ec0e87f83cd19b13606c6a7e3736f3c30a17fe2504",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          },
+          {
+            "kind": "earnings",
+            "reason": "stale"
+          }
+        ]
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "suggested_signal_state": "neutral"
+      }
+    },
+    {
+      "name": "invalid-unavailable-kind-has-sources",
+      "description": "A kind cannot be both supplied and unavailable.",
+      "expect": "unavailable_kind_has_sources",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "28344c13ba43cf623bd8c7b48d73b7f24d7baa8499150e05e9dcfb5ca5347326",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "news",
+            "reason": "stale"
+          }
+        ]
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "suggested_signal_state": "neutral"
+      }
+    },
+    {
+      "name": "invalid-horizon-order",
+      "description": "The horizon ends after it starts.",
+      "expect": "horizon_order",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "958eb095e3d1cb93ce68aa1db3afa8eeb676ddad8fcb4fdf12f11a06bebf7810",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-01-02",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ]
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "suggested_signal_state": "neutral"
+      }
+    },
+    {
+      "name": "invalid-listing-mismatch",
+      "description": "The output names the listing it was asked about.",
+      "expect": "trusted_field_mismatch",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "41aefb7765ef929a3e525ce48cbb63d3ea19a6658e87721139b89882c1f4c893",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ]
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 102,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "suggested_signal_state": "neutral"
+      }
+    },
+    {
+      "name": "invalid-horizon-mismatch",
+      "description": "3m is not the 1m horizon requested.",
+      "expect": "trusted_field_mismatch",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "41aefb7765ef929a3e525ce48cbb63d3ea19a6658e87721139b89882c1f4c893",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ]
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "3m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "suggested_signal_state": "neutral"
+      }
+    },
+    {
+      "name": "invalid-generation-precedes-cutoff",
+      "description": "An analysis cannot predate its evidence cutoff.",
+      "expect": "generation_precedes_cutoff",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "41aefb7765ef929a3e525ce48cbb63d3ea19a6658e87721139b89882c1f4c893",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ]
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T20:59:59Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "suggested_signal_state": "neutral"
+      }
+    },
+    {
+      "name": "invalid-unknown-evidence",
+      "description": "A fabricated citation.",
+      "expect": "unknown_evidence",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "41aefb7765ef929a3e525ce48cbb63d3ea19a6658e87721139b89882c1f4c893",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ]
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-9"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "suggested_signal_state": "neutral"
+      }
+    },
+    {
+      "name": "invalid-unknown-metric",
+      "description": "A fabricated metric.",
+      "expect": "unknown_metric",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "41aefb7765ef929a3e525ce48cbb63d3ea19a6658e87721139b89882c1f4c893",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ]
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.margin"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "suggested_signal_state": "neutral"
+      }
+    },
+    {
+      "name": "invalid-metric-source-not-cited",
+      "description": "A metric's source must be among the claim's citations.",
+      "expect": "metric_source_not_cited",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "41aefb7765ef929a3e525ce48cbb63d3ea19a6658e87721139b89882c1f4c893",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ]
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "px-1.close"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "suggested_signal_state": "neutral"
+      }
+    },
+    {
+      "name": "invalid-section-kind",
+      "description": "Technicals supported only by news.",
+      "expect": "section_kind_mismatch",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "41aefb7765ef929a3e525ce48cbb63d3ea19a6658e87721139b89882c1f4c893",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ]
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "Momentum is strong.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "suggested_signal_state": "neutral"
+      }
+    },
+    {
+      "name": "invalid-signal-without-thesis",
+      "description": "A directional or neutral signal needs a thesis.",
+      "expect": "abstention_state_mismatch",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "41aefb7765ef929a3e525ce48cbb63d3ea19a6658e87721139b89882c1f4c893",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ]
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": null,
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ],
+        "suggested_signal_state": "neutral"
+      }
+    },
+    {
+      "name": "invalid-unavailable-not-declared",
+      "description": "The output must acknowledge what it was not given.",
+      "expect": "unavailable_not_declared",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "41aefb7765ef929a3e525ce48cbb63d3ea19a6658e87721139b89882c1f4c893",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ]
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [],
+        "suggested_signal_state": "neutral"
+      }
+    },
+    {
+      "name": "invalid-unavailable-contradicts-context",
+      "description": "News was supplied; it cannot be unavailable.",
+      "expect": "unavailable_contradicts_context",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "41aefb7765ef929a3e525ce48cbb63d3ea19a6658e87721139b89882c1f4c893",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ]
+      },
+      "analysis": {
+        "schema_version": "2",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "timestamp": "2025-01-03T21:05:00Z",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": "1m",
+        "thesis": {
+          "text": "Revenue grew in the latest filing while price held.",
+          "evidence_ids": [
+            "filing-1",
+            "px-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "bull_case": [
+          {
+            "text": "Quarterly revenue rose year over year.",
+            "evidence_ids": [
+              "filing-1"
+            ],
+            "metric_refs": [
+              "filing-1.revenue"
+            ]
+          }
+        ],
+        "bear_case": [
+          {
+            "text": "Coverage is thin: one news item.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "catalysts": [],
+        "risks": [
+          {
+            "text": "The scheduled call may reset expectations.",
+            "evidence_ids": [
+              "news-1"
+            ],
+            "metric_refs": []
+          }
+        ],
+        "fundamentals": {
+          "text": "Revenue increased versus the prior year.",
+          "evidence_ids": [
+            "filing-1"
+          ],
+          "metric_refs": [
+            "filing-1.revenue"
+          ]
+        },
+        "technicals": {
+          "text": "The last close is the only price supplied.",
+          "evidence_ids": [
+            "px-1"
+          ],
+          "metric_refs": [
+            "px-1.close"
+          ]
+        },
+        "sentiment": {
+          "text": "News flow is neutral.",
+          "evidence_ids": [
+            "news-1"
+          ],
+          "metric_refs": []
+        },
+        "market_context": null,
+        "confidence": "medium",
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          },
+          {
+            "kind": "news",
+            "reason": "stale"
+          }
+        ],
+        "suggested_signal_state": "neutral"
+      }
+    }
+  ]
+}

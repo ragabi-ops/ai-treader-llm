@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OutcomeRecordV2",
+  "description": "The label for one sample's horizon. Every measure is either available with a finite value or unavailable with a typed reason; an unmeasured label is never a zero.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": "2"},
+    "sample_id": {"$ref": "common-v2.schema.json#/$defs/identifier"},
+    "horizon": {"$ref": "common-v2.schema.json#/$defs/horizon"},
+    "return": {"$ref": "#/$defs/measure"},
+    "max_drawdown": {"$ref": "#/$defs/measure"},
+    "volatility": {"$ref": "#/$defs/measure"}
+  },
+  "required": ["schema_version", "sample_id", "horizon", "return", "max_drawdown", "volatility"],
+  "$defs": {
+    "measure": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {"const": "available"},
+            "value": {"type": "number"},
+            "reason": {"type": "null"}
+          },
+          "required": ["status", "value", "reason"]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {"const": "unavailable"},
+            "value": {"type": "null"},
+            "reason": {
+              "enum": [
+                "pending",
+                "missing_bars",
+                "unsupported_corporate_action",
+                "delisted_without_terminal_price",
+                "not_applicable"
+              ]
+            }
+          },
+          "required": ["status", "value", "reason"]
+        }
+      ]
+    }
+  }
+}

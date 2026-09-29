@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AnalysisSampleV2",
+  "description": "A dataset sample: the v2 envelope fields plus source content and the reviewed target. Outcome labels live in separate outcome records, never here.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": "2"},
+    "sample_id": {"$ref": "common-v2.schema.json#/$defs/identifier"},
+    "listing_id": {"$ref": "common-v2.schema.json#/$defs/listing_id"},
+    "symbol": {"$ref": "common-v2.schema.json#/$defs/identifier"},
+    "as_of_timestamp": {"$ref": "common-v2.schema.json#/$defs/timestamp"},
+    "replay_mode": {"$ref": "common-v2.schema.json#/$defs/replay_mode"},
+    "horizon": {"$ref": "common-v2.schema.json#/$defs/horizon"},
+    "split": {"enum": ["train", "validation", "test"]},
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "evidence_id": {"$ref": "common-v2.schema.json#/$defs/identifier"},
+          "kind": {"$ref": "common-v2.schema.json#/$defs/source_kind"},
+          "event_at": {"$ref": "common-v2.schema.json#/$defs/timestamp"},
+          "available_at": {"$ref": "common-v2.schema.json#/$defs/timestamp"},
+          "ingested_at": {"$ref": "common-v2.schema.json#/$defs/timestamp"},
+          "revision": {"$ref": "common-v2.schema.json#/$defs/identifier"},
+          "content_sha256": {"$ref": "common-v2.schema.json#/$defs/sha256"},
+          "metric_ids": {"$ref": "common-v2.schema.json#/$defs/identifiers"},
+          "content": {"type": "string", "minLength": 1}
+        },
+        "required": ["evidence_id", "kind", "event_at", "available_at", "ingested_at", "revision", "content_sha256", "metric_ids", "content"]
+      }
+    },
+    "unavailable": {"$ref": "common-v2.schema.json#/$defs/unavailable"},
+    "task": {"enum": ["financial_analysis"]},
+    "expected_analysis": {"$ref": "analysis-v2.schema.json"}
+  },
+  "required": ["schema_version", "sample_id", "listing_id", "symbol", "as_of_timestamp", "replay_mode", "horizon", "split", "sources", "unavailable", "task", "expected_analysis"]
+}

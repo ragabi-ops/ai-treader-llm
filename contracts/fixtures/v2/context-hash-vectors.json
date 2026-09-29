@@ -1,0 +1,127 @@
+{
+  "fixture_version": "1",
+  "vectors": [
+    {
+      "name": "base",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "41aefb7765ef929a3e525ce48cbb63d3ea19a6658e87721139b89882c1f4c893",
+        "listing_id": 101,
+        "symbol": "EXAMPLE",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "original",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ]
+      }
+    },
+    {
+      "name": "escapes",
+      "context": {
+        "schema_version": "2",
+        "context_sha256": "306072c384f6f657317f50724963128cb1963dd4d5af12cc84a8e22e72c91074",
+        "listing_id": 101,
+        "symbol": "EXAMPLE.é",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "replay_mode": "platform_replay",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-v1",
+          "calendar": "xnys-2021-2027-v1",
+          "start_session": "2025-01-03",
+          "end_session": "2025-02-03",
+          "end_close": "2025-02-03T21:00:00Z"
+        },
+        "sources": [
+          {
+            "evidence_id": "px-1",
+            "kind": "price",
+            "event_at": "2025-01-03T21:00:00Z",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "revision": "tiingo-eod-1",
+            "content_sha256": "739ac61bfeb5fc8d95a0c538f24310c38162a87792ec33de5d0f1f9b7a7a7cce",
+            "metric_ids": [
+              "px-1.close"
+            ]
+          },
+          {
+            "evidence_id": "filing-1",
+            "kind": "filing",
+            "event_at": "2024-11-01T12:00:00Z",
+            "available_at": "2024-11-01T12:05:00Z",
+            "ingested_at": "2024-11-01T12:10:00Z",
+            "revision": "0000000000-24-000001",
+            "content_sha256": "c64662cc8f840a3d61b75ac6008adfe5bf8b39a62890cb76c79e72a25f6f983c",
+            "metric_ids": [
+              "filing-1.revenue"
+            ]
+          },
+          {
+            "evidence_id": "news-1",
+            "kind": "news",
+            "event_at": "2025-01-02T13:00:00Z",
+            "available_at": "2025-01-02T14:00:00Z",
+            "ingested_at": "2025-01-02T14:01:00Z",
+            "revision": "quote \" backslash \\ newline \n tab \t ctl \u0001 del  ls   clef 𝄞 <&>",
+            "content_sha256": "66f2bb7a90f35a76b57c731d1f76ff3df4ad66a837595a67d74fecb6c6ff72ee",
+            "metric_ids": []
+          }
+        ],
+        "unavailable": [
+          {
+            "kind": "earnings",
+            "reason": "not_collected"
+          }
+        ]
+      }
+    }
+  ]
+}

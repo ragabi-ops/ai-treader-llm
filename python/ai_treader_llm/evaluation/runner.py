@@ -1,5 +1,5 @@
 from ai_treader_llm.contracts import ContractError, Contracts
-from ai_treader_llm.datasets.samples import context_for, validate_dataset
+from ai_treader_llm.datasets.samples import check_prediction, validate_dataset
 
 
 def evaluate(samples: list[dict], predictions: list[dict], contracts: Contracts) -> dict:
@@ -19,7 +19,7 @@ def evaluate(samples: list[dict], predictions: list[dict], contracts: Contracts)
             failures.append({"sample_id": identity, "error": "missing prediction"})
             continue
         try:
-            contracts.analysis(predicted[identity], context_for(sample))
+            check_prediction(predicted[identity], sample, contracts)
         except ContractError as error:
             failures.append({"sample_id": identity, "error": str(error)})
     count = len(expected)
