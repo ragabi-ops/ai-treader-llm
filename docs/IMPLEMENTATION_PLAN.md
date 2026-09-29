@@ -4,7 +4,7 @@ Accepted architecture, 2026-09-26. This document preserves the complete planning
 
 ## 1. Recommended Final Architecture
 
-**First, prepare and verify the Windows machine, then install Ubuntu Server.** Upgrade to 64 GB RAM if practical; keep the existing GPU and disks.
+**First, prepare and verify the Windows machine, then install Ubuntu Server.** Upgrade to 64 GB RAM if practical; keep the existing GPU and disks. On the current interim dual-boot host, Linux may use only `/dev/sda`; both NVMe devices are reserved for Windows and must not be mounted, formatted, repartitioned, or used for AI-Treader data. A future dedicated host may adopt a different disk layout only through a separate operator decision.
 
 | Component | Decision |
 |---|---|
@@ -45,7 +45,7 @@ Perform these checks before erasing Windows, in order:
    Confirm the ASUS board model physically or using GPU-Z. Plan around 10 GB unless verified otherwise.
 3. Record motherboard revision and BIOS version. Use the matching Gigabyte revision's support page. Update BIOS only for a relevant stability/security fix or memory-support requirement.
 4. Inspect RAM module count, capacity, speed, occupied slots, and compatible kits. Prefer a matched 2 × 32 GB DDR4 kit if replacing existing memory. Avoid mixing kits unnecessarily.
-5. Check both NVMe drives: SMART health, critical warnings, media errors, temperature, remaining life, and firmware.
+5. Record the two NVMe identities as Windows-owned dual-boot devices and leave them untouched. Do not mount them or run repair, formatting, partitioning, filesystem, model-storage, or training-storage operations against them. Their Windows-side health and backup remain an operator responsibility outside this deployment.
 6. Inspect cooling and power: dust, fans, GPU temperatures under sustained load, throttling, PSU model/capacity, and GPU power connectors. Replace the PSU only if inadequate for the exact ASUS card or demonstrably unstable.
 7. Verify wired Ethernet. Use the existing interface; no networking upgrade is required.
 8. Install the RAM upgrade and run a memory test, then repeat a sustained CPU/GPU stability test.
@@ -63,12 +63,18 @@ Ubuntu 26.04 LTS is also supported by Docker and NVIDIA Container Toolkit. Choos
 - Over another Linux distribution: fewer deviations from upstream AI installation instructions.
 - Server over Desktop: SSH provides everything needed; a graphical desktop adds no useful capability here.
 
-Use UEFI installation and a normal sudo account named `aitreader`. Install OpenSSH during setup. Keep a monitor attached until networking and the NVIDIA driver work.
+Use UEFI installation and a normal sudo account named `ai-treader-llm`. Install OpenSSH during setup. Keep a monitor attached until networking and the NVIDIA driver work.
 
-| Disk | Filesystem/layout | Contents |
+The current interim dual-boot layout is intentionally limited to the external
+`/dev/sda` disk. Device names are identification evidence only; persistent mounts
+must use filesystem UUIDs. The NVMe disks are not Linux capacity.
+
+| Current partition | Filesystem/layout | Contents |
 |---|---|---|
-| NVMe 1 | EFI partition + remaining space as ext4 `/` | OS, Docker, `/srv/ai-treader`, service state |
-| NVMe 2 | One ext4 partition mounted by UUID at `/data` | Models, datasets, adapters, training artifacts |
+| `/dev/sda2` | EFI system partition mounted at `/boot/efi` | Linux boot files |
+| `/dev/sda3` | ext4 `/` | OS, Docker, `/srv/ai-treader`, service state |
+| `/dev/sda1` | ext4 `/data`, mounted by UUID | Models, datasets, adapters, training artifacts |
+| `/dev/nvme0n1`, `/dev/nvme1n1` | Windows-owned; out of scope | Never mount, format, repartition, or use from this deployment |
 
 ```text
 /srv/ai-treader/          Git checkout, Compose configuration
@@ -81,15 +87,23 @@ Use UEFI installation and a normal sudo account named `aitreader`. Install OpenS
 /data/training/          Training logs and exports
 ```
 
-Use plain ext4. LVM is optional but unnecessary; skip ZFS and RAID. RAID would reduce usable capacity without replacing backups. Keep approximately 15–20% disk space free. Enable periodic TRIM. Back up irreplaceable datasets, adapters, metadata, and database backups off this machine; downloadable model caches need not be backed up. Make service startup require `/data` to be mounted, preventing accidental writes onto the root disk.
+Use the existing plain ext4 filesystems on `/dev/sda`; skip LVM, ZFS, and RAID.
+Keep approximately 15–20% disk space free. Enable periodic TRIM when supported by
+the external SSD. Back up irreplaceable datasets, adapters, metadata, and database
+backups off this machine; downloadable model caches need not be backed up. Make
+service startup require the `/dev/sda1` filesystem to be mounted at `/data` by UUID,
+preventing accidental writes into the root filesystem's empty mount-point directory.
+Because `/` and `/data` share one physical disk, this split provides isolation from
+path mistakes but not disk-failure redundancy or independent I/O capacity. Revisit
+the storage plan when the dedicated system is available.
 
 ## 4. Phase 2 — Remote Access
 
-1. Set hostname `ai-treader-ai`.
+1. Set hostname `ai-treader-llm`.
 2. Create a router DHCP reservation for its Ethernet MAC address.
 3. Generate a dedicated, passphrase-protected SSH key on the Mac:
    ```bash
-   ssh-keygen -t ed25519 -f ~/.ssh/ai_treader_ai
+   ssh-keygen -t ed25519 -f ~/.ssh/ai_treader_llm
    ```
 4. Add the public key to the server's `~/.ssh/authorized_keys`.
 5. Verify key login in a second terminal before changing SSH authentication.
@@ -97,10 +111,10 @@ Use plain ext4. LVM is optional but unnecessary; skip ZFS and RAID. RAID would r
 Mac `~/.ssh/config` (replace the example IP):
 
 ```sshconfig
-Host ai-treader-ai
-    HostName 192.168.1.50
-    User aitreader
-    IdentityFile ~/.ssh/ai_treader_ai
+Host ai-treader-llm
+    HostName 192.168.50.182
+    User ai-treader-llm
+    IdentityFile ~/.ssh/ai_treader_llm
     IdentitiesOnly yes
     ServerAliveInterval 30
     LocalForward 18080 127.0.0.1:8080
@@ -118,7 +132,7 @@ KbdInteractiveAuthentication no
 
 Validate with `sudo sshd -t`, reload SSH, and verify effective settings with `sudo sshd -T`. Keep the existing session open until a new login succeeds. Allow SSH from the actual LAN subnet before enabling UFW; deny other incoming traffic. No router port forwarding. mDNS is optional and unnecessary with the SSH alias.
 
-Daily workflow: `ssh ai-treader-ai`. Use terminal + Git; VS Code Remote SSH is optional. The Mac reaches inference at `http://127.0.0.1:18080/v1` through the tunnel.
+Daily workflow: `ssh ai-treader-llm`. Use terminal + Git; VS Code Remote SSH is optional. The Mac reaches inference at `http://127.0.0.1:18080/v1` through the tunnel.
 
 ## 5. Phase 3 — NVIDIA + Docker
 
@@ -158,7 +172,7 @@ Configure Docker's official Ubuntu apt repository, then install:
 sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 
-Use the official repository setup instructions; do not mix these packages with Ubuntu's `docker.io`. Use `sudo docker` initially. [Docker installation](https://docs.docker.com/engine/install/ubuntu/)
+Use the official repository setup instructions; do not mix these packages with Ubuntu's `docker.io`. Docker-group membership is root-equivalent. For this dedicated operator-controlled host, the operator explicitly accepted adding `ai-treader-llm` to that group on 2026-09-29 so deployment automation can use the daemon after a fresh login. Do not add other users. [Docker installation](https://docs.docker.com/engine/install/ubuntu/)
 
 ### 4. NVIDIA Container Toolkit
 
@@ -459,7 +473,7 @@ Durable boundaries: HTTP API, typed tools, analysis schema, immutable dataset ma
 - [ ] Verify GPU VRAM, board revision/BIOS, RAM, SSD health, PSU, cooling, Ethernet.
 - [ ] Upgrade to 64 GB if ready; run stability tests.
 - [ ] Download and checksum Ubuntu Server 24.04.5 amd64.
-- [ ] Install headless Ubuntu and two-disk ext4 layout.
+- [ ] Verify the interim `/dev/sda`-only ext4 layout and UUID-mounted `/data`; leave both Windows NVMe disks untouched.
 - [ ] Set hostname and DHCP reservation.
 - [ ] Verify Mac SSH keys, then disable password/root SSH.
 - [ ] Configure firewall and SSH tunnel.

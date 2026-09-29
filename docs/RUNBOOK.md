@@ -18,16 +18,21 @@ actual tool execution, or deployed template/parser compatibility.
 
 ## Server: after hardware, Ubuntu, SSH, and GPU setup
 
-Follow phases 0–3 of [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) first. Do not
-run disk-formatting commands against unverified devices. The scripts here do not
+Follow phases 0–3 of [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) first. On the
+current interim dual-boot host, `/dev/sda` is the only disk permitted for Linux and
+AI-Treader. Do not mount, format, repartition, repair, or store anything on
+`/dev/nvme0n1` or `/dev/nvme1n1`; both belong to Windows. The scripts here do not
 install the OS, change SSH, or provision the host automatically.
 
-From the normal `aitreader` sudo account, verify `/data` is actually mounted, then:
+From the normal `ai-treader-llm` sudo account, verify that `/data` is the approved
+`/dev/sda1` ext4 filesystem, mounted persistently by UUID, then:
 
 ```bash
 mountpoint /data
-sudo install -d -o aitreader -g aitreader /srv/ai-treader
-sudo install -d -o aitreader -g aitreader \
+findmnt -no SOURCE,FSTYPE,TARGET / /data
+grep -F ' /data ' /etc/fstab
+sudo install -d -o ai-treader-llm -g ai-treader-llm /srv/ai-treader
+sudo install -d -o ai-treader-llm -g ai-treader-llm \
   /data/models /data/datasets /data/checkpoints /data/adapters \
   /data/cache /data/evaluations /data/training
 git clone git@github.com:ragabi-ops/ai-treader-llm.git /srv/ai-treader
@@ -41,6 +46,19 @@ sudo docker compose --env-file .env --env-file configs/runtime.lock.env up -d in
 sudo docker compose --env-file .env --env-file configs/runtime.lock.env logs --tail=100 inference
 curl --fail http://127.0.0.1:8080/health
 ```
+
+The operator accepted root-equivalent Docker access for the dedicated
+`ai-treader-llm` account on 2026-09-29. Add only that account, then disconnect and
+open a fresh SSH session before using Docker without `sudo`:
+
+```bash
+sudo usermod -aG docker ai-treader-llm
+id
+docker version
+```
+
+The fresh session's `id` output must contain `docker`. Do not grant this group to
+other users.
 
 The checkout directory must be empty for `git clone`. Use your existing Git access
 or a repository-scoped read-only key on the server. No agent forwarding is required.
@@ -67,7 +85,7 @@ tests before wiring an analysis into the platform.
 
 ## Mac: connect through SSH
 
-Use the SSH config from the implementation plan. Leave `ssh ai-treader-ai` connected,
+Use the SSH config from the implementation plan. Leave `ssh ai-treader-llm` connected,
 then in another Mac terminal at the repository root:
 
 ```bash

@@ -33,8 +33,13 @@
 
 ## Not yet implemented or validated on hardware
 
-- Ubuntu installation and physical server checks.
-- RTX 3080 runtime fit, generation throughput, tool-template behavior, and QLoRA fit.
+- Repository checkout on the target, model artifact, inference service, and boot
+  service.
+- GPU-container access, RTX 3080 runtime fit, generation throughput, tool-template
+  behavior, and QLoRA fit.
+- RAM module topology, sustained cooling/load behavior, PSU capacity, and permitted
+  `/dev/sda` health. The Windows-owned NVMe devices are outside this deployment and
+  must remain untouched.
 - Go client/orchestrator, platform migrations, and Postgres registry integration.
 - Real dataset collection, licensing, reviewed analysis targets, trading-calendar
   label construction, survivorship controls, and prospective financial evaluation.
@@ -57,3 +62,28 @@ success checks proposed calls but does not execute a tool or prove model/templat
 behavior. Hardware checklist items stay open until executed on the target machine.
 No GPU inference, model download, host provisioning, or live platform integration
 was performed.
+
+## Verified on the target host
+
+Read-only audit on 2026-09-29 after reboot:
+
+- The dedicated Mac SSH alias and key reach the host over wired LAN; DNS and NTP
+  work. SSH hardening and the LAN firewall are not yet complete.
+- Ubuntu 26.04.1 boots kernel `7.0.0-34-generic` on a Ryzen 9 5900X with 32 GiB RAM.
+- The NVIDIA kernel module and userspace both report `580.178.04`; `nvidia-smi`
+  identifies an RTX 3080 with 10,240 MiB VRAM. This proves host driver operation,
+  not CUDA-container, llama.cpp, throughput, or training readiness.
+- The operator-approved interim layout uses only `/dev/sda`: `/dev/sda3` for `/`
+  and `/dev/sda1` for `/data`. Both NVMe devices belong to Windows and are excluded.
+  `/data` now mounts persistently by UUID and its artifact directories are owned by
+  `ai-treader-llm`.
+- Docker Engine 29.8.1, Compose 5.5.1, and NVIDIA Container Toolkit 1.20.1 are
+  installed; Docker and containerd are enabled and active, and the NVIDIA runtime
+  is configured. GPU-container smoke output still needs independent capture.
+- The operator explicitly accepted root-equivalent Docker-group membership for the
+  dedicated `ai-treader-llm` account. The group exists but membership was not yet
+  active at the time of this status update.
+- The GitHub host key was pinned to GitHub's published Ed25519 key, the dedicated
+  repository key authenticates successfully, and SSH file modes are restricted.
+  Model artifacts, inference endpoints, and the systemd inference unit are not
+  present yet.
