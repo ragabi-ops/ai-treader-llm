@@ -181,6 +181,23 @@ without changing completed artifacts. Use UTC timestamptz and explicit monetary 
 Reserved packages deliberately have no fake successful training/RAG implementation.
 No library or container here loads GPU training dependencies on the Mac.
 
+## Artifact and prompt ownership
+
+Downloaded models receive an immutable manifest beside the artifact. A deployment
+records the base repository/revision, tokenizer/template revision, GGUF and adapter
+hashes, quantization, runtime digest, context/decoding settings, prompt/schema hashes,
+dataset/training/evaluation hashes, code commit, seed, creation time and lifecycle state.
+Do not invent revisions or provenance for synthetic examples.
+
+Dataset manifests keep artifact paths relative and contained; validate them with
+`uv run --frozen ai-treader-llm validate-manifest <manifest>`. Git and files hold
+reproducibility metadata, while the platform registry owns active deployment state.
+
+The runnable dataset builder's initial system prompt lives in
+`python/ai_treader_llm/datasets/samples.py`. Production prompts belong in the Go
+platform and each run records their content hashes. Retrieved strings are data, never
+instructions; calculations and authorization remain platform-owned.
+
 ## Contract v2 (L03a, shared with the platform)
 
 v2 is authored here and vendored by the platform (`scripts/llm-contract-sync.sh`
