@@ -29,8 +29,8 @@ services:
       - --parallel
       - "1"
       - --jinja
-      - --chat-template-kwargs
-      - '{"enable_thinking":false}'
+      - --reasoning
+      - "off"
     deploy:
       resources:
         reservations:
@@ -63,5 +63,4 @@ services:
     cap_drop: [ALL]
 
 networks:
-  llm:
-    internal: true
+  llm: {}

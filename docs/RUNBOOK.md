@@ -68,8 +68,11 @@ in `.env` is overridden by the second env file. Do not copy a made-up digest.
 The downloader resolves the model's full repository SHA and verifies the official
 LFS SHA-256 before publishing the file. It refuses to replace a different existing
 model. For upgrades, use a new versioned directory and update `MODEL_DIR`. Keep the
-adjacent `.manifest.json` with the artifact. Downloads need Internet access; serving
-does not, and the inference container uses an isolated internal Docker network.
+adjacent `.manifest.json` with the artifact. The inference container uses a dedicated
+bridge because Docker internal networks cannot publish the host loopback endpoint.
+Only `127.0.0.1:8080` is published; the model mount is read-only, no credentials or
+writable application data are mounted, all capabilities are dropped, and
+`no-new-privileges` remains enabled.
 
 First completion:
 

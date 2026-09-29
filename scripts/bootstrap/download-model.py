@@ -56,10 +56,16 @@ def main():
         finally:
             if os.path.exists(temporary):
                 os.unlink(temporary)
+    # mkstemp intentionally creates mode 0600. The inference container runs with
+    # its image user and mounts this directory read-only, so publish verified model
+    # bytes as world-readable without granting write access to anyone but the owner.
+    target.chmod(0o644)
     receipt = {"repository": REPO, "revision": revision, "filename": FILENAME,
                "sha256": expected, "bytes": target.stat().st_size,
                "verified_at": datetime.now(timezone.utc).isoformat()}
-    target.with_suffix(".manifest.json").write_text(json.dumps(receipt, indent=2) + "\n")
+    manifest = target.with_suffix(".manifest.json")
+    manifest.write_text(json.dumps(receipt, indent=2) + "\n")
+    manifest.chmod(0o644)
     print(json.dumps(receipt, indent=2))
 
 

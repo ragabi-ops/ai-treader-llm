@@ -233,8 +233,8 @@ services:
       - --parallel
       - "1"
       - --jinja
-      - --chat-template-kwargs
-      - '{"enable_thinking":false}'
+      - --reasoning
+      - "off"
     deploy:
       resources:
         reservations:
@@ -321,7 +321,13 @@ Every registry record has creation time and lifecycle state. A single active dep
 
 ### Security and observability
 
-Bind inference to loopback and use SSH tunnels. Docker-published ports can bypass UFW. Across machines, use a private encrypted network and authenticated endpoint. [Docker firewall behavior](https://docs.docker.com/engine/install/ubuntu/)
+Bind inference to loopback and use SSH tunnels. The dedicated Compose bridge is not
+marked `internal`: Docker internal networks intentionally have no connection to host
+interfaces and therefore cannot publish the required host loopback endpoint. Keep
+the explicit `127.0.0.1` binding, mount no credentials or writable application data,
+and retain dropped capabilities plus `no-new-privileges`. Docker-published ports can
+bypass UFW. Across machines, use a private encrypted network and authenticated
+endpoint. [Docker firewall behavior](https://docs.docker.com/engine/install/ubuntu/)
 
 Use restricted secret files, read-only model mounts, and no Docker socket in containers. Retrieved documents are untrusted input. Start with rotated JSON logs, `nvidia-smi`, `nvtop`, `htop`, and disk monitoring. Record loaded deployment, GPU temperature/utilization/VRAM, CPU/RAM, disk usage, request latency, tokens/second, failures, and training progress. Keep sensitive raw payloads out of routine logs.
 
