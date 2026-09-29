@@ -43,8 +43,6 @@
   must remain untouched.
 - Representative latency/throughput/load benchmarks, sustained inference behavior,
   full tool-template suite capture, QLoRA fit, and training behavior.
-- Boot persistence and the LAN dashboard firewall rule. Both systemd unit files are
-  in the repository but still require the operator's interactive `sudo` installation.
 - Go client/orchestrator, platform migrations, and Postgres registry integration.
 - Real dataset collection, licensing, reviewed analysis targets, trading-calendar
   label construction, survivorship controls, and prospective financial evaluation.
@@ -73,8 +71,9 @@ No live platform integration or model promotion was performed.
 Verified on 2026-09-29 and 2026-09-30:
 
 - The dedicated Mac SSH alias and key reach the host over wired LAN; DNS and NTP
-  work. UFW is active; the dashboard's subnet-scoped 8090 rule still requires the
-  operator's interactive `sudo` installation step.
+  work. UFW is active and the operator installed the subnet-scoped TCP 8090 dashboard
+  rule. The dashboard is reachable from the Mac over the LAN while inference remains
+  bound only to server loopback.
 - Ubuntu 26.04.1 boots kernel `7.0.0-34-generic` on a Ryzen 9 5900X with 32 GiB RAM.
 - The NVIDIA kernel module and userspace both report `580.178.04`; `nvidia-smi`
   identifies an RTX 3080 with 10,240 MiB VRAM. The pinned CUDA container sees the
@@ -97,10 +96,14 @@ Verified on 2026-09-29 and 2026-09-30:
   completion, strict-schema response, and forced tool-call parsing passed. The tiny
   warm smoke observed roughly 101 generated tokens/second, but that is not a
   representative benchmark or a production performance claim.
-- The operations dashboard served a live localhost preview and correctly reported
-  the GPU, VRAM, inference, model/runtime provenance, host, and `/data` storage. It
-  correctly reports degraded while no platform pipeline producer exists. Persistent
-  systemd installation and LAN exposure remain the operator's final privileged step.
+- The inference and dashboard systemd units are enabled and active. SSH socket
+  activation and UFW are also enabled and active. The live dashboard reports the
+  GPU, VRAM, inference, model/runtime provenance, host, and `/data` storage, and
+  correctly reports degraded while no platform pipeline producer exists.
+- A per-user Mac `launchd` agent maintains localhost forwards for private inference
+  on port 18080 and the dashboard on port 18090. A controlled termination test on
+  2026-09-30 restored both healthy endpoints automatically in two seconds. The direct
+  LAN dashboard remains available at `http://192.168.50.182:8090/`.
 
 ## Deployment decision
 
