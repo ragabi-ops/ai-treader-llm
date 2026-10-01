@@ -247,7 +247,8 @@ Licensing and review status are explicit metadata; schema validity does not prov
 that a claimed review occurred.
 
 `uv.lock` is authoritative for CPU dependencies. `requirements.lock.txt` is a
-hash-locked export used by the CPU Docker image and CI. Regenerate together:
+hash-locked export used by the CPU Docker image. Checks run locally with `make check`;
+there is no hosted CI. Regenerate together:
 
 ```bash
 uv lock
