@@ -12,8 +12,9 @@ execution-order and cross-repository dependency authority. Run
   target-host endpoint validation and the read-only dashboard are delivered.
 - The target host runs Qwen3-8B Q4_K_M through digest-pinned llama.cpp on an RTX 3080.
   Strict-schema output, forced tool-call parsing, GPU offload and tunnel recovery passed.
-- Platform L03a/shared contract integration is done. Platform L03b persistence and
-  orchestration remain not started, but are no longer blocked on the LLM endpoint.
+- Platform L03a/shared contract integration and platform L03b (XPLAT02: Go client,
+  persisted run/attempt provenance, one same-evidence repair) are done; a live run
+  against this endpoint returned a strict-schema reply that passed the v2 validator.
 - Training, RAG, export and promotion are not implemented. Offline structural checks
   do not establish semantic grounding, model quality, trading performance or authority.
 
