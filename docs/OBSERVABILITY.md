@@ -66,6 +66,20 @@ same size and safety rules. Accepted status values are `idle`, `queued`, `runnin
 short operator-safe `message`. The dashboard must show unavailable until a real
 producer exists.
 
+## Benchmark status producer
+
+`benchmark-endpoint` may atomically replace `/data/status/benchmark.json` while a
+versioned synthetic workload is running. The dashboard exposes only schema version,
+update time, run/workload IDs, status, stage, progress, failure count, and a short
+operator-safe message. Prompts, responses, request bodies, error bodies, and secrets
+are never accepted by the collector. Stages are `warmup`, `latency`, `context`,
+`concurrency`, `sustained`, `recovery`, and `complete`; statuses are `running`,
+`succeeded`, `failed`, and `cancelled`. A running record older than 15 seconds is stale.
+
+Generated benchmark reports belong under the ignored `artifacts/` directory or the
+host's `/data/evaluations`; only the synthetic workload definition is versioned in Git.
+The report measures endpoint behavior, not semantic quality or trading performance.
+
 ## Network boundary
 
 The dashboard listens on TCP 8090 and is the only service exposed to the LAN. UFW
