@@ -8,6 +8,7 @@ from pathlib import Path
 from urllib.error import URLError
 
 from ai_treader_llm import contracts_v2
+from ai_treader_llm.benchmark import measure_recovery, run_benchmark, write_report
 from ai_treader_llm.contracts import ContractError, Contracts, timestamp
 from ai_treader_llm.datasets.manifests import validate_manifest
 from ai_treader_llm.datasets.outcomes import validate_outcomes
@@ -48,11 +49,58 @@ def main() -> int:
     health = commands.add_parser("smoke")
     health.add_argument("--base-url", default="http://127.0.0.1:18080")
     health.add_argument("--model", default="ai-treader-analyst")
+    benchmark = commands.add_parser("benchmark-endpoint")
+    benchmark.add_argument("workload", type=Path)
+    benchmark.add_argument("--base-url", default="http://127.0.0.1:18080")
+    benchmark.add_argument("--telemetry-url", default="http://127.0.0.1:18090/api/v1/status")
+    benchmark.add_argument("--timeout", type=float, default=120)
+    benchmark.add_argument("--status-file", type=Path)
+    benchmark.add_argument("--output", type=Path, required=True)
+    recovery = commands.add_parser("benchmark-recovery")
+    recovery.add_argument("--base-url", default="http://127.0.0.1:18080")
+    recovery.add_argument("--ssh-host", default="ai-treader-llm")
+    recovery.add_argument("--container", default="ai-treader-llm-inference-1")
+    recovery.add_argument("--model", default="ai-treader-analyst")
+    recovery.add_argument("--timeout", type=float, default=120)
+    recovery.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     try:
         if args.command == "smoke":
             print(json.dumps(smoke(args.base_url, args.model), indent=2))
             return 0
+        if args.command == "benchmark-endpoint":
+            report = run_benchmark(
+                args.workload,
+                args.base_url,
+                args.telemetry_url or None,
+                args.timeout,
+                args.status_file,
+            )
+            write_report(report, args.output)
+            print(json.dumps({
+                "status": report["status"],
+                "run_id": report["run_id"],
+                "workload_id": report["workload_id"],
+                "output": str(args.output),
+                "duration_seconds": report["duration_seconds"],
+            }, indent=2))
+            return 0 if report["status"] == "succeeded" else 1
+        if args.command == "benchmark-recovery":
+            report = measure_recovery(
+                args.base_url,
+                args.ssh_host,
+                args.container,
+                args.model,
+                args.timeout,
+            )
+            write_report(report, args.output)
+            print(json.dumps({
+                "status": "succeeded" if report["completion"]["ok"] else "failed",
+                "ready_after_ms": report["ready_after_ms"],
+                "first_completion_after_restart_ms": report["first_completion_after_restart_ms"],
+                "output": str(args.output),
+            }, indent=2))
+            return 0 if report["completion"]["ok"] else 1
         contracts = Contracts(args.contracts)
         if args.command == "validate-analysis":
             analysis, context = json.loads(args.analysis.read_text()), json.loads(args.context.read_text())

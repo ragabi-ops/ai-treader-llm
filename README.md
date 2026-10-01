@@ -37,6 +37,18 @@ uv run --frozen ai-treader-llm validate-manifest examples/v2/dataset-manifest.js
 
 The CPU checks need no NVIDIA GPU or Docker daemon. Example data is synthetic.
 
+Run the versioned endpoint benchmark through the private SSH tunnel; generated reports
+stay in the ignored `artifacts/` directory:
+
+```bash
+uv run --frozen ai-treader-llm benchmark-endpoint \
+  configs/benchmarks/endpoint-v1.json \
+  --output artifacts/benchmarks/endpoint-v1.json
+# disruptive: restarts only the named inference container, then verifies recovery
+uv run --frozen ai-treader-llm benchmark-recovery \
+  --output artifacts/benchmarks/recovery-v1.json
+```
+
 ```text
 contracts/       Versioned JSON Schemas; shared integration boundaries
 configs/         Inference, proposed QLoRA, and evaluation settings

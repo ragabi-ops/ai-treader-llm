@@ -47,7 +47,8 @@ VRAM, startup/recovery, and reproducible rollback.
 | `evaluation/runner.py` | `evaluate` | Counts every expected sample; missing/invalid responses are failures |
 | `evaluation/tools.py` | `evaluate_tool_calls` | Scores allowlists, required/unnecessary calls, strict arguments, and trusted symbol/time boundaries |
 | `inference/client.py` | `smoke` | Health and first completion; not a production orchestration client |
-| `monitoring/collector.py` | `StatusCollector.snapshot` | Read-only host, GPU, Docker, llama.cpp, deployment, and allowlisted pipeline/training telemetry |
+| `benchmark.py` | `benchmark-endpoint` | Versioned synthetic latency, throughput, context, concurrency, and sustained-load measurement; never stores prompt or response content |
+| `monitoring/collector.py` | `StatusCollector.snapshot` | Read-only host, GPU, Docker, llama.cpp, deployment, and allowlisted pipeline/training/benchmark telemetry |
 | `monitoring/server.py` | `python -m ai_treader_llm.monitoring.server` | Fixed-route dashboard and same-origin status API; no mutation, file, log, prompt, or response endpoints |
 | `cli.py` | CLI entry point | Local jobs, JSON output, stable success/failure exit codes |
 

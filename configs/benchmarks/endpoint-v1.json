@@ -1,0 +1,72 @@
+{
+  "schema_version": "1",
+  "workload_id": "qwen3-8b-q4-k-m-rtx3080-endpoint-v1",
+  "model": "ai-treader-analyst",
+  "seed": 20261001,
+  "warmup_requests": 2,
+  "phases": {
+    "latency": {
+      "iterations": 12,
+      "request": {
+        "temperature": 0,
+        "max_tokens": 384,
+        "chat_template_kwargs": {"enable_thinking": false},
+        "messages": [
+          {"role": "system", "content": "You are a deterministic endpoint benchmark. Return only the requested synthetic JSON. Do not think aloud."},
+          {"role": "user", "content": "Create a synthetic risk review with a concise summary, exactly three supporting observations, exactly three risks, and a final status of insufficient_evidence."}
+        ],
+        "response_format": {
+          "type": "json_schema",
+          "json_schema": {
+            "name": "synthetic_risk_review",
+            "strict": true,
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "summary": {"type": "string"},
+                "observations": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "string"}},
+                "risks": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "string"}},
+                "status": {"type": "string", "enum": ["insufficient_evidence"]}
+              },
+              "required": ["summary", "observations", "risks", "status"]
+            }
+          }
+        }
+      }
+    },
+    "context": {
+      "input_word_counts": [512, 1024, 2048, 3072, 3800, 4300],
+      "request": {
+        "temperature": 0,
+        "max_tokens": 16,
+        "chat_template_kwargs": {"enable_thinking": false}
+      }
+    },
+    "concurrency": {
+      "levels": [1, 2, 4],
+      "requests_per_level": 8,
+      "request": {
+        "temperature": 0,
+        "max_tokens": 96,
+        "chat_template_kwargs": {"enable_thinking": false},
+        "messages": [
+          {"role": "system", "content": "You are a deterministic endpoint benchmark. Do not think aloud."},
+          {"role": "user", "content": "Return one short paragraph explaining that this is synthetic load and makes no financial claim."}
+        ]
+      }
+    },
+    "sustained": {
+      "duration_seconds": 600,
+      "request": {
+        "temperature": 0,
+        "max_tokens": 160,
+        "chat_template_kwargs": {"enable_thinking": false},
+        "messages": [
+          {"role": "system", "content": "You are a deterministic endpoint benchmark. Return only synthetic operational prose. Do not think aloud."},
+          {"role": "user", "content": "Write four short numbered observations about endpoint reliability testing. State that no financial quality or trading performance is measured."}
+        ]
+      }
+    }
+  }
+}

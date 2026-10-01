@@ -192,6 +192,28 @@
               </dl>
             </div>
           </article>
+
+          <article class="panel benchmark-panel">
+            <div class="panel-heading">
+              <div><p class="eyebrow">Performance</p><h2>Endpoint benchmark</h2></div>
+              <span id="benchmark-badge" class="badge badge-muted">Unavailable</span>
+            </div>
+            <div id="benchmark-empty" class="empty-state compact">
+              <p class="empty-title">No benchmark is running</p>
+              <p>BENCH01 publishes workload identity and progress here without prompts or responses.</p>
+            </div>
+            <div id="benchmark-content" hidden>
+              <div class="training-progress"><i id="benchmark-meter"></i></div>
+              <dl class="data-list">
+                <div><dt>Run</dt><dd id="benchmark-run" class="mono">—</dd></div>
+                <div><dt>Workload</dt><dd id="benchmark-workload" class="mono">—</dd></div>
+                <div><dt>Stage</dt><dd id="benchmark-stage">—</dd></div>
+                <div><dt>Progress</dt><dd id="benchmark-progress">—</dd></div>
+                <div><dt>Failures</dt><dd id="benchmark-failures">—</dd></div>
+                <div><dt>Updated</dt><dd id="benchmark-age">—</dd></div>
+              </dl>
+            </div>
+          </article>
         </section>
 
         <section class="panel events-panel">

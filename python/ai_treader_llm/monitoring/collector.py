@@ -45,6 +45,8 @@ TRAINING_STAGES = {
     "evaluating",
     "complete",
 }
+BENCHMARK_STATUSES = {"running", "succeeded", "failed", "cancelled"}
+BENCHMARK_STAGES = {"warmup", "latency", "context", "concurrency", "sustained", "recovery", "complete"}
 MAX_STATUS_BYTES = 64 * 1024
 
 
@@ -265,6 +267,34 @@ def sanitize_training(value: dict[str, Any] | None, error: str | None, now: date
         result[key] = number
     result["loss"] = finite_number(value.get("loss"))
     return result
+
+
+def sanitize_benchmark(value: dict[str, Any] | None, error: str | None, now: datetime) -> dict[str, Any]:
+    if value is None:
+        return {"connected": False, "status": "unavailable", "stage": "unavailable", "reason": error}
+    if value.get("schema_version") != "1":
+        return {"connected": False, "status": "unavailable", "stage": "unavailable", "reason": "unsupported_schema"}
+    status, stage = value.get("status"), value.get("stage")
+    updated = parse_rfc3339(value.get("updated_at"))
+    if status not in BENCHMARK_STATUSES or stage not in BENCHMARK_STAGES or updated is None:
+        return {"connected": False, "status": "unavailable", "stage": "unavailable", "reason": "invalid_status_document"}
+    failures = value.get("failures")
+    if not isinstance(failures, int) or isinstance(failures, bool) or failures < 0:
+        failures = None
+    age = max(0.0, (now - updated).total_seconds())
+    return {
+        "connected": True,
+        "status": status,
+        "stage": stage,
+        "updated_at": iso_z(updated),
+        "age_seconds": round(age, 1),
+        "stale": status == "running" and age > 15,
+        "run_id": bounded_text(value.get("run_id"), 100),
+        "workload_id": bounded_text(value.get("workload_id"), 120),
+        "progress": _safe_progress(value.get("progress")),
+        "failures": failures,
+        "message": bounded_text(value.get("message"), 200),
+    }
 
 
 class Collector:
@@ -544,6 +574,7 @@ class Collector:
             "container": snapshot["container"].get("health") or snapshot["container"].get("status"),
             "pipeline": (snapshot["pipeline"].get("status"), snapshot["pipeline"].get("stage")),
             "training": (snapshot["training"].get("status"), snapshot["training"].get("stage")),
+            "benchmark": (snapshot["benchmark"].get("status"), snapshot["benchmark"].get("stage")),
         }
         if not self._event_state:
             self._event(now, "info", "monitor", "Dashboard telemetry collector started")
@@ -553,6 +584,7 @@ class Collector:
             "container": lambda value: ("success" if value == "healthy" else "warning", "runtime", f"Container state: {value}"),
             "pipeline": lambda value: ("info", "pipeline", f"Pipeline: {value[0]} / {value[1]}"),
             "training": lambda value: ("info", "training", f"Training: {value[0]} / {value[1]}"),
+            "benchmark": lambda value: ("info", "benchmark", f"Benchmark: {value[0]} / {value[1]}"),
         }
         for key, value in states.items():
             if key in self._event_state and self._event_state[key] != value:
@@ -578,6 +610,9 @@ class Collector:
         if snapshot["training"].get("connected") and snapshot["training"].get("stale"):
             status = "degraded" if status == "healthy" else status
             reasons.append("Training telemetry is stale")
+        if snapshot["benchmark"].get("connected") and snapshot["benchmark"].get("stale"):
+            status = "degraded" if status == "healthy" else status
+            reasons.append("Benchmark telemetry is stale")
         data_disk = next((item for item in snapshot["storage"] if item.get("path") == str(self.data_root)), None)
         if data_disk and isinstance(data_disk.get("percent"), (int, float)) and data_disk["percent"] >= 90:
             status = "degraded" if status == "healthy" else status
@@ -588,6 +623,7 @@ class Collector:
         now = datetime.now(timezone.utc)
         pipeline_raw, pipeline_error = _read_status(self.data_root / "status" / "pipeline.json")
         training_raw, training_error = _read_status(self.data_root / "status" / "training.json")
+        benchmark_raw, benchmark_error = _read_status(self.data_root / "status" / "benchmark.json")
         snapshot = {
             "schema_version": "1",
             "observed_at": iso_z(now),
@@ -599,6 +635,7 @@ class Collector:
             "inference": self._inference(),
             "pipeline": sanitize_pipeline(pipeline_raw, pipeline_error, now),
             "training": sanitize_training(training_raw, training_error, now),
+            "benchmark": sanitize_benchmark(benchmark_raw, benchmark_error, now),
             "deployment": self._slow(monotonic),
         }
         snapshot["summary"] = self._summary(snapshot)

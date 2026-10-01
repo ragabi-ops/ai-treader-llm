@@ -1,15 +1,16 @@
 # STATUS
 
-Updated 2026-09-30. [tasks/BACKLOG.csv](tasks/BACKLOG.csv) is the task-state,
+Updated 2026-10-01. [tasks/BACKLOG.csv](tasks/BACKLOG.csv) is the task-state,
 execution-order and cross-repository dependency authority. Run
 `python3 scripts/backlog.py` before selecting work.
 
-**Next task: BENCH01 — run representative endpoint performance and reliability benchmarks.**
+**Next task: HARD01 — finish permitted target-host hardware qualification.**
 
 ## Current state
 
 - Contract v1/v2, CPU validation/evaluation tooling, private pinned inference,
-  target-host endpoint validation and the read-only dashboard are delivered.
+  target-host endpoint validation, representative endpoint benchmarks and the
+  read-only dashboard are delivered.
 - The target host runs Qwen3-8B Q4_K_M through digest-pinned llama.cpp on an RTX 3080.
   Strict-schema output, forced tool-call parsing, GPU offload and tunnel recovery passed.
 - Platform L03a/shared contract integration and platform L03b (XPLAT02: Go client,
@@ -20,13 +21,13 @@ execution-order and cross-repository dependency authority. Run
 
 ## Next work
 
-BENCH01 is the next eligible local task. Platform L03b can proceed independently; later
-real-data, RAG, training, export and promotion rows show their platform dependencies in
-the CSV.
+HARD01 is the next eligible local task, followed by TOOLS01 and DATA01. Platform
+L03b is complete; later RAG, training, export and promotion rows show their
+dependencies in the CSV.
 
 ## Known limits
 
-The host still lacks complete RAM/cooling/PSU/permitted-disk qualification. The tiny warm
-smoke near 101 generated tokens/second is not representative. Real reviewed datasets,
-survivorship/licensing controls, model/template captures and prospective evaluation are
-also outstanding.
+The benchmark measured endpoint behavior, not semantic truth or trading quality.
+The host still lacks complete RAM topology, cooling, PSU and permitted-disk
+qualification. Real reviewed datasets, survivorship/licensing controls,
+model/template captures and prospective evaluation are also outstanding.

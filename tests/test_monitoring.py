@@ -12,6 +12,7 @@ from ai_treader_llm.monitoring.collector import (
     parse_proc_stat,
     parse_prometheus,
     sanitize_pipeline,
+    sanitize_benchmark,
     sanitize_training,
 )
 
@@ -105,6 +106,29 @@ class MonitoringStatusTests(unittest.TestCase):
         result = sanitize_training(value, None, self.now)
         self.assertTrue(result["connected"])
         self.assertIsNone(result["loss"])
+
+    def test_benchmark_is_allowlisted_and_hides_payloads(self):
+        result = sanitize_benchmark(
+            {
+                "schema_version": "1",
+                "updated_at": "2026-09-29T20:00:05Z",
+                "run_id": "bench-1",
+                "workload_id": "endpoint-v1",
+                "status": "running",
+                "stage": "sustained",
+                "progress": {"completed": 30, "total": 600},
+                "failures": 0,
+                "message": "Running sustained load",
+                "prompt": "must not escape",
+                "response": "must not escape",
+            },
+            None,
+            self.now,
+        )
+        self.assertTrue(result["connected"])
+        self.assertEqual(result["progress"]["percent"], 5)
+        self.assertNotIn("prompt", json.dumps(result))
+        self.assertNotIn("response", json.dumps(result))
 
 
 if __name__ == "__main__":

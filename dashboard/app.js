@@ -163,7 +163,8 @@ function renderPipeline(data) {
 
   const active = (data.inference?.slots || []).find((slot) => slot.processing);
   if (active) {
-    $("runtime-work-label").textContent = pipeline.connected ? "Attributed generation" : "Unattributed inference request";
+    const benchmark = data.benchmark || {};
+    $("runtime-work-label").textContent = pipeline.connected ? "Attributed generation" : benchmark.connected && benchmark.status === "running" ? "Benchmark generation" : "Unattributed inference request";
     $("runtime-work-detail").textContent = `Slot ${safe(active.id)} · task ${safe(active.task_id)} · ${safe(active.prompt_tokens_processed, "0")}/${safe(active.prompt_tokens, "—")} prompt tokens · ${safe(active.decoded_tokens, "0")} decoded`;
   } else {
     $("runtime-work-label").textContent = "Idle";
@@ -279,6 +280,26 @@ function renderTraining(data) {
   $("training-eta").textContent = duration(training.eta_seconds);
 }
 
+function renderBenchmark(data) {
+  const benchmark = data.benchmark || {};
+  if (!benchmark.connected) {
+    $("benchmark-empty").hidden = false;
+    $("benchmark-content").hidden = true;
+    setBadge($("benchmark-badge"), "Unavailable", "muted");
+    return;
+  }
+  $("benchmark-empty").hidden = true;
+  $("benchmark-content").hidden = false;
+  setBadge($("benchmark-badge"), titleCase(benchmark.status), benchmark.stale ? "warning" : statusKind(benchmark.status));
+  $("benchmark-meter").style.width = `${clamp(benchmark.progress?.percent)}%`;
+  $("benchmark-run").textContent = safe(benchmark.run_id);
+  $("benchmark-workload").textContent = safe(benchmark.workload_id);
+  $("benchmark-stage").textContent = titleCase(benchmark.stage);
+  $("benchmark-progress").textContent = benchmark.progress ? `${benchmark.progress.completed}/${benchmark.progress.total} · ${benchmark.progress.percent}%` : "—";
+  $("benchmark-failures").textContent = safe(benchmark.failures, "0");
+  $("benchmark-age").textContent = benchmark.stale ? `${duration(benchmark.age_seconds)} · stale` : duration(benchmark.age_seconds);
+}
+
 function renderEvents(data) {
   const list = $("events");
   list.replaceChildren();
@@ -309,6 +330,7 @@ function render(data) {
   renderCharts(data);
   renderDeployment(data);
   renderTraining(data);
+  renderBenchmark(data);
   renderEvents(data);
 }
 
