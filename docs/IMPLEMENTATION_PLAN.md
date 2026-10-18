@@ -1,12 +1,20 @@
 # AI-Treader local LLM implementation plan
 
-Accepted architecture reference, 2026-09-26. This document describes implementation
+Accepted architecture reference, 2026-09-26; supervised research extension approved
+2026-10-06; hosted-agent priority revision approved 2026-10-07. This document describes implementation
 shape, not current task state or order. See [root STATUS](../STATUS.md) and
 [the backlog](../tasks/BACKLOG.csv) for delivery state, and [CODE_DESIGN.md](CODE_DESIGN.md)
 for module boundaries. Hardware compatibility references were checked during planning;
 every deployment still requires validation on its target machine.
 
 ## 1. Recommended Final Architecture
+
+Current direction (2026-10-07): the platform's existing Codex/Claude review bridge
+is the preferred boundary for evaluated hosted research and analysis. This repository
+prioritizes numeric contracts, CPU linear/LightGBM and Chronos-2 experiments. Qwen is
+retained for L03 and optional comparison; the local-runtime installation sections
+below describe that supported path, not a requirement to train a competing general
+LLM. No DGX or larger GPU purchase is required by the approved plan.
 
 **First, prepare and verify the Windows machine, then install Ubuntu Server.** Upgrade to 64 GB RAM if practical; keep the existing GPU and disks. On the current interim dual-boot host, Linux may use only `/dev/sda`; both NVMe devices are reserved for Windows and must not be mounted, formatted, repartitioned, or used for AI-Treader data. A future dedicated host may adopt a different disk layout only through a separate operator decision.
 
@@ -16,7 +24,7 @@ every deployment still requires validation on its target machine.
 | Deployment | Docker Engine + Compose |
 | Inference | llama.cpp, CUDA container |
 | Initial model | Qwen3-8B, GGUF Q4_K_M |
-| Initial capacity | One request at a time; 4,096-token total context |
+| Initial capacity | One request at a time; 4,096-token benchmark baseline; 8,192/2,048 context/output candidate needs CTX01 qualification and separate L03 revision approval |
 | Backend | Existing Go backend with a small LLM client/orchestrator |
 | Training | On-demand Python container: Unsloth, PyTorch, Transformers, PEFT, TRL, bitsandbytes |
 | Persistence | Existing Postgres + versioned artifacts on disk |
@@ -249,7 +257,7 @@ services:
       - --n-gpu-layers
       - "99"
       - --ctx-size
-      - "4096"
+      - "8192"
       - --parallel
       - "1"
       - --jinja
@@ -384,7 +392,9 @@ Mandatory leakage controls:
 - Preserve original filings and unrevised fundamentals; later restatements cannot replace historical inputs.
 - Apply timestamp rules to retrieval, prior analyses, and every tool.
 - Generate expected analyses from contemporaneous evidence only. Future outcomes must not influence SFT answers.
-- Keep outcome files outside training container mounts.
+- Keep outcome files outside LLM/SFT training container mounts and all prediction inputs.
+  The separate numeric supervised trainer may read training labels under its split policy;
+  evaluation labels stay in the evaluation job.
 - Use chronological train/validation/test splits, purging or embargo for overlapping outcome windows.
 - Preserve historical universes, delisted securities, and point-in-time corporate-action handling.
 
@@ -490,3 +500,69 @@ It is unsuitable for full-precision 8B inference entirely in VRAM; full fine-tun
 5. Remote inference: endpoint/authentication changes followed by provider contract tests.
 
 Durable boundaries: HTTP API, typed tools, analysis schema, immutable dataset manifests, portable adapters, deployment registry. Hardware changes do not require a platform rewrite.
+
+## 14. Approved supervised research extension (2026-10-06)
+
+The operator approved local personal research using the existing Go platform and
+a numeric prediction track. The 2026-10-07 revision prefers evaluated hosted
+Codex/Claude analysis; Qwen is retained for separate L03 and optional comparison. This is implementation scope, not
+an implemented model, an approved experiment protocol or performance evidence.
+The CSV owns order and state; this section defines the architecture.
+
+| Work | This repository | Platform boundary |
+|---|---|---|
+| Numeric contracts | ALPHA01 authors strict alpha-forecast-v1, numeric dataset schemas and Python fixtures | ALPHA01 consumes shared fixtures and validates Go |
+| Dataset | DATA01 reviews analysis manifests; ALPHA02 validates numeric exports | ALPHA02 generates PIT features and separate matured labels |
+| CPU baseline | ALPHA02 trains regularized linear and LightGBM models and emits batch predictions | ALPHA03 freezes protocol; ALPHA04 imports; ALPHA05 evaluates |
+| Pretrained challenger | ALPHA03 benchmarks pinned Chronos-2 without fine-tuning | ALPHA06 compares under separately frozen parameters |
+| Text attributes | TEXT01 evaluates provider-neutral captures and exports numeric fixtures | AGENT04 owns hosted capture; ALPHA07 measures numeric-only versus numeric-plus-text |
+| Forward evidence | Immutable artifacts and reproducible jobs | ALPHA09 records matured observation; operator decides promotion |
+
+Begin with daily numeric features, a one-calendar-month target and weekly decisions;
+a three-month experiment is separate. A target horizon does not silently force an
+exit: the platform protocol must define executable entry, exit and extension rules.
+Retain product support for 1–6 month holdings. The 13-listing L03 replay and broader
+survivorship-biased pilot/sizing set prove plumbing, not research-universe coverage.
+
+Go exports a hashed snapshot; an isolated one-shot Python job fits or predicts;
+Go validates and persists results, including missing/failed predictions. Go owns
+financial feature/label definitions, portfolio calculations, policy and execution.
+No new daemon, database, broker path or experiment-tracking service is needed.
+Numeric CPU dependencies are isolated from the existing LLM runtime. GPU libraries
+stay off the Mac/CPU environment. GPU challengers require HARD01 qualification,
+resource measurements and exclusive scheduling; do not assume concurrent Qwen and
+forecast-model residency or buy hardware from paper estimates.
+
+Model promotion follows held-out and matured forward evidence, including costs,
+delays, drawdown, turnover, exposure and failures. CatBoost may be considered if
+categorical features justify a bounded comparison. Custom PatchTST/TFT training,
+RL and intraday work remain deferred. Platform ALPHA08 is a go/no-go decision on
+combining models, not authorization to implement or activate an untested blend.
+RAG and QLoRA are preserved but sequenced after the CPU baseline.
+
+The existing L03 arms, frozen revision 4 and protected evaluation windows remain
+unchanged. Revision 5 still needs its own approval. New numeric work does not wait
+for L03e's long observation, but must not tune on L03-protected outcomes. Local,
+personal use is accepted scope; retain license/source metadata and explicit unknowns,
+without declaring all provider permissions verified or creating a blanket blocker.
+
+Candidate reference: [Chronos-2 official model card](https://huggingface.co/amazon/chronos-2).
+Pin a specific revision and runtime at implementation time; general forecasting
+benchmarks are not evidence of trading performance.
+
+## 15. Hosted-agent ownership revision (2026-10-07)
+
+Platform AGENT01 owns canonical versioned call instructions and new task schemas;
+AGENT02 provider qualification/listing analysis; AGENT03 bounded declarative
+strategies/backtests; AGENT04 text capture; AGENT05 concise per-listing research
+records; AGENT06 qualification/protocol and AGENT07 matured paper evaluation.
+The existing reviewer contract and roles are reused without an unversioned change.
+See [platform PLAN](../../ai-treader-platform/tasks/PLAN.md) for exact call and memory
+requirements. LLM TEXT01 consumes AGENT04 captures via XPLAT09; it does not own
+hosted credentials, provider calls or application database writes.
+
+CPU ALPHA01/DATA01/ALPHA02 precede unfinished hardware/local-LLM enhancements in the
+queue. HARD01 is still required before GPU experiments. Qwen tool qualification,
+RAG, QLoRA and export remain retained lower-priority work, not prerequisites for
+hosted research or CPU fitting. No provider or model is silently substituted during
+an experiment. L03's frozen parameters and external-provider exclusion remain intact.

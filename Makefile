@@ -1,4 +1,4 @@
-.PHONY: setup test check fixtures
+.PHONY: setup test check fixtures shell
 setup:
 	uv sync --frozen --python 3.12
 
@@ -16,7 +16,11 @@ fixtures:
 	uv run --frozen ai-treader-llm validate-outcomes examples/v2/samples.jsonl examples/v2/outcomes.jsonl
 	uv run --frozen ai-treader-llm validate-manifest examples/v2/dataset-manifest.json --evaluation-boundary 2025-06-01T00:00:00Z
 
+shell:
+	bash -n scripts/bootstrap/*.sh scripts/qualification/*.sh scripts/smoke/*.sh
+
 check:
 	python3 scripts/backlog.py
+	$(MAKE) shell
 	$(MAKE) test
 	$(MAKE) fixtures
