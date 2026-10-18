@@ -202,21 +202,27 @@ This image contains synthetic fixtures and CPU tooling only. Real jobs must moun
 explicit input directories read-only; never mount the entire `/data` tree into a
 trainer. Run jobs locally with `uv` on the Mac to avoid the GPU Compose dependency.
 
-For a real source bundle, validate its tracked review receipt first. Omitting
-`--source-root` checks the receipt structure; supplying the read-only bundle also
-checks the capture manifest plus compressed and decoded hashes:
+For a real source bundle, validate its tracked review receipt first. Omitting the
+optional roots checks the receipt and linked target plan structurally. Supplying
+the read-only roots also checks the capture manifest, compressed/decoded bytes and
+the platform identity/calendar source files:
 
 ```bash
 uv run --frozen ai-treader-llm validate-source-review \
   examples/data-review-v1/sec-edgar-r11.json \
-  --source-root ../ai-treader-platform/backend/internal/secfacts/testdata/r11
+  --source-root ../ai-treader-platform/backend/internal/secfacts/testdata/r11 \
+  --platform-root ../ai-treader-platform
 ```
 
 This receipt approves the recorded SEC source for local personal research and
-records its survivorship-biased pilot scope. It does not approve analysis targets
-or performance claims. Keep target readiness pending until platform listing IDs,
-calendar horizons, chronological splits, purge/embargo, and the held-out boundary
-are all pinned; keep outcome labels in their separate artifact.
+records its survivorship-biased pilot scope. Its linked target plan pins the current
+development-database listing IDs, the platform calendar files, nine one-month 2024
+targets, date-grouped train/validation/test splits, 21-session embargo evidence and
+the held-out boundary. It deliberately carries `public_information` reconstruction
+rather than claiming historical platform ingestion. It contains neither reviewed
+expected analyses nor outcome labels and is not eligible for training or performance
+claims. Re-export listing IDs after a platform database rebuild; keep any later
+outcomes in their separate artifact.
 
 ## Stop, upgrade, and recover
 

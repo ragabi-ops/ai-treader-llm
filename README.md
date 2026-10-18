@@ -33,8 +33,10 @@ uv run --frozen ai-treader-llm evaluate-tools \
 uv run --frozen ai-treader-llm validate-analysis examples/v2/analysis.json --context examples/v2/context.json
 uv run --frozen ai-treader-llm validate-manifest examples/v2/dataset-manifest.json \
   --evaluation-boundary 2025-06-01T00:00:00Z
-# real SEC source review; add --source-root to verify the captured bytes
+# real SEC review; optional roots verify source bytes and platform identity/calendar files
 uv run --frozen ai-treader-llm validate-source-review examples/data-review-v1/sec-edgar-r11.json
+uv run --frozen ai-treader-llm validate-data-targets \
+  examples/data-review-v1/sec-edgar-r11-analysis-targets.json
 # numeric v1 (shared fixtures for platform ALPHA01)
 uv run --frozen ai-treader-llm validate-numeric-input examples/numeric-v1/input-manifest.json
 uv run --frozen ai-treader-llm validate-numeric-dataset examples/numeric-v1/dataset-manifest.json
@@ -43,9 +45,9 @@ uv run --frozen ai-treader-llm validate-alpha examples/numeric-v1/forecast.json 
   --input examples/numeric-v1/input-manifest.json
 ```
 
-The CPU checks need no NVIDIA GPU or Docker daemon. Analysis and numeric examples
-are synthetic. The SEC review contains provenance and hashes only; the source bytes
-remain in the platform repository and can be verified with `--source-root`.
+The CPU checks need no NVIDIA GPU or Docker daemon. Analysis-sample and numeric
+examples are synthetic. The SEC review and target plan contain provenance, IDs,
+dates and hashes only; source payloads remain in the platform repository.
 
 Run the versioned endpoint benchmark through the private SSH tunnel; generated reports
 stay in the ignored `artifacts/` directory:
@@ -101,9 +103,13 @@ explicit licensing/reviewer status. The included manifest is synthetic-only.
 Real-source review receipts keep provider data out of Git while pinning its capture
 revision, manifest, compressed and decoded hashes, access-policy review, and universe
 limitations. `validate-source-review --source-root DIR` verifies the receipt against
-the external bundle. A reviewed source is not a reviewed dataset: target readiness
-stays pending until platform listing IDs, XNYS horizons, chronological splits,
-purge/embargo, and the held-out boundary are pinned. Outcome labels stay separate.
+the external bundle. The linked R11 target plan pins the current platform listing-ID
+snapshot, XNYS one-month horizons, three date-grouped chronological splits, exact
+21-session embargo evidence and the held-out test boundary. `--platform-root DIR`
+also verifies its identity/calendar source-file hashes. It is a reviewed curation
+plan, not a completed sample dataset: expected analyses and outcomes are absent,
+historical availability is reconstructed, the universe is survivorship-biased,
+and it is ineligible for training or performance claims. Outcome labels stay separate.
 
 Numeric v1 uses exact decimal strings and string-encoded positive int64 listing IDs.
 The input manifest pins a calendar, feature definitions, universe policy, source

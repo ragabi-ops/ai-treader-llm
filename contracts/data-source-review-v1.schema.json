@@ -102,12 +102,26 @@
         "purge_embargo_pinned": {"type": "boolean"},
         "held_out_boundary_pinned": {"type": "boolean"},
         "labels_separate": {"const": true},
+        "target_manifest": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "path": {"type": "string", "minLength": 1},
+                "sha256": {"$ref": "numeric-common-v1.schema.json#/$defs/sha256"}
+              },
+              "required": ["path", "sha256"]
+            },
+            {"type": "null"}
+          ]
+        },
         "notes": {"type": "string", "minLength": 1}
       },
       "required": [
         "status", "platform_listing_ids_pinned", "trading_calendar_pinned",
         "chronological_splits_pinned", "purge_embargo_pinned",
-        "held_out_boundary_pinned", "labels_separate", "notes"
+        "held_out_boundary_pinned", "labels_separate", "target_manifest", "notes"
       ]
     }
   },

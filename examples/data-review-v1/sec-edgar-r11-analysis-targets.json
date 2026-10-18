@@ -1,0 +1,344 @@
+{
+  "schema_version": "data-analysis-targets-v1",
+  "target_set_id": "sec-edgar-r11-analysis-targets-2024-v1",
+  "created_at": "2026-10-18T23:09:17Z",
+  "source_review_id": "sec-edgar-r11-2026-09-26",
+  "purpose": "Pin a small real-source analysis curation plan with explicit temporal and evaluation controls; this is not a completed sample dataset or performance experiment.",
+  "platform": {
+    "repository": "ai-treader-platform",
+    "revision": "550bc3be235d50a3eba654f9e4bcc429c1f66caf",
+    "identity_snapshot": {
+      "database": "ai-treader-db",
+      "captured_at": "2026-10-18T23:09:17Z",
+      "mapping_sha256": "a6bc813263706dfe5891fee27146c2bf5670f4a46cfbf44232c1fc40fe649833",
+      "schema_migration": {
+        "version": "003_research_evidence",
+        "checksum": "fd39e01aed79307b06e99c8f36fe67c2518358734b1c13e88ad0cb59b29ce2c3"
+      },
+      "source_fixture": {
+        "path": "backend/internal/identity/testdata/pilot_identity.json",
+        "sha256": "af898c8ed9ea480a904844abb71f32aacb0e781499e26630dd4ff2cbdda5a792"
+      },
+      "notes": "A read-only database query resolved the reviewed CIK/security-label pairs to current development-database listing IDs 1, 9 and 12. Listing IDs are snapshot-local and must be re-exported rather than assumed after a database rebuild."
+    },
+    "calendar": {
+      "exchange": "XNYS",
+      "version": "xnys-2021-2027-v1",
+      "horizon_policy": "xnys-calendar-months-v1",
+      "source_files": [
+        {
+          "path": "backend/internal/calendar/calendar.go",
+          "sha256": "e5b952b707842092d0fef99a240359c023d1daaf7d0f1cc7e8887027fd6bc77e"
+        },
+        {
+          "path": "backend/internal/calendar/xnys.go",
+          "sha256": "5845a530bce9417862e793009d86c185713e4698748b8fbdc3a62bbbc3aa3aa0"
+        }
+      ],
+      "notes": "The platform calendar supplies XNYS sessions, UTC closes and the first-session-on-or-after calendar-month horizon rule. Its own source notes mark 2021-2025 early-close times unverified; no target cutoff or horizon end here uses an early close."
+    }
+  },
+  "availability": {
+    "mode": "historical_reconstruction",
+    "observed_ingestion_at_cutoff": false,
+    "replay_mode": "public_information",
+    "rule": "Only SEC records whose acceptance-derived platform availability is at or before the target cutoff may be selected; later amendments and revisions remain excluded.",
+    "notes": "The R11 bytes were captured in 2026, after every 2024 cutoff. Acceptance time can reconstruct public availability, but platform ingestion at the historical cutoff was not observed, so these targets must never be labelled platform_replay."
+  },
+  "universe": {
+    "selection_policy": "Use every issuer in the recorded R11 SEC fixture as a fixed curation subset; selection was by convenience and decoder coverage, not point-in-time universe membership.",
+    "survivorship_status": "survivorship_biased",
+    "delisted_entities_included": false,
+    "eligible_for_performance_claims": false,
+    "listings": [
+      {
+        "listing_id": 1,
+        "cik": "0000320193",
+        "symbol": "AAPL",
+        "exchange": "NASDAQ",
+        "security_label": "Common stock",
+        "artifact_paths": [
+          "submissions-CIK0000320193.json.gz",
+          "CIK0000320193-submissions-001.json.gz",
+          "companyfacts-CIK0000320193.json.gz"
+        ]
+      },
+      {
+        "listing_id": 9,
+        "cik": "0000040545",
+        "symbol": "GE",
+        "exchange": "NYSE",
+        "security_label": "Common stock",
+        "artifact_paths": [
+          "submissions-CIK0000040545.json.gz",
+          "CIK0000040545-submissions-001.json.gz",
+          "CIK0000040545-submissions-002.json.gz",
+          "companyfacts-CIK0000040545.json.gz"
+        ]
+      },
+      {
+        "listing_id": 12,
+        "cik": "0000909832",
+        "symbol": "COST",
+        "exchange": "NASDAQ",
+        "security_label": "Common stock",
+        "artifact_paths": [
+          "submissions-CIK0000909832.json.gz",
+          "CIK0000909832-submissions-001.json.gz",
+          "companyfacts-CIK0000909832.json.gz"
+        ]
+      }
+    ],
+    "notes": "This three-listing target plan proves curation controls only. It omits delisted securities and historical membership evidence and cannot support universe, model-quality or trading-performance claims."
+  },
+  "split_policy": {
+    "chronological": true,
+    "grouped_by_cutoff": true,
+    "label_window_purged": true,
+    "embargo_sessions": 21,
+    "embargoed_starts": {
+      "validation": "2024-04-30T20:00:00Z",
+      "test": "2024-07-05T20:00:00Z"
+    },
+    "embargo_evidence": [
+      {
+        "after_split": "train",
+        "latest_label_end": "2024-04-01T20:00:00Z",
+        "sessions_after_label_end": [
+          "2024-04-02",
+          "2024-04-03",
+          "2024-04-04",
+          "2024-04-05",
+          "2024-04-08",
+          "2024-04-09",
+          "2024-04-10",
+          "2024-04-11",
+          "2024-04-12",
+          "2024-04-15",
+          "2024-04-16",
+          "2024-04-17",
+          "2024-04-18",
+          "2024-04-19",
+          "2024-04-22",
+          "2024-04-23",
+          "2024-04-24",
+          "2024-04-25",
+          "2024-04-26",
+          "2024-04-29",
+          "2024-04-30"
+        ],
+        "embargoed_start": "2024-04-30T20:00:00Z"
+      },
+      {
+        "after_split": "validation",
+        "latest_label_end": "2024-06-03T20:00:00Z",
+        "sessions_after_label_end": [
+          "2024-06-04",
+          "2024-06-05",
+          "2024-06-06",
+          "2024-06-07",
+          "2024-06-10",
+          "2024-06-11",
+          "2024-06-12",
+          "2024-06-13",
+          "2024-06-14",
+          "2024-06-17",
+          "2024-06-18",
+          "2024-06-20",
+          "2024-06-21",
+          "2024-06-24",
+          "2024-06-25",
+          "2024-06-26",
+          "2024-06-27",
+          "2024-06-28",
+          "2024-07-01",
+          "2024-07-02",
+          "2024-07-03"
+        ],
+        "embargoed_start": "2024-07-05T20:00:00Z"
+      }
+    ],
+    "held_out_split": "test",
+    "held_out_boundary": "2024-07-05T20:00:00Z",
+    "held_out_access": "evaluation_only_no_selection_feedback",
+    "notes": "All listings at a cutoff stay in one split. Each later split begins only after every earlier one-month label window and at least 21 subsequent XNYS sessions; July 5 adds one conservative session beyond the 21st session on July 3."
+  },
+  "analysis_target_policy": {
+    "task": "financial_analysis",
+    "sample_schema": "analysis-sample-v2.schema.json",
+    "expected_analyses_included": false,
+    "expected_analysis_review_required": true,
+    "notes": "These rows pin what may be curated. They do not provide model answers; any expected analysis must be written from cutoff-bounded evidence, reviewed separately and stored only in a completed sample artifact."
+  },
+  "labels": {
+    "separate_artifact": true,
+    "included": false,
+    "schema": "outcome-record-v2.schema.json",
+    "status": "not_built",
+    "access": "evaluation_only",
+    "notes": "No return, drawdown, volatility or other future outcome is present in this target plan or permitted in analysis inputs. A later label artifact must be matured and access-separated."
+  },
+  "targets": [
+    {
+      "target_id": "r11-2024-02-29-aapl-1m",
+      "listing_id": 1,
+      "cik": "0000320193",
+      "symbol": "AAPL",
+      "split": "train",
+      "as_of_timestamp": "2024-02-29T21:00:00Z",
+      "replay_mode": "public_information",
+      "horizon": {
+        "label": "1m",
+        "policy": "xnys-calendar-months-v1",
+        "calendar": "xnys-2021-2027-v1",
+        "start_session": "2024-02-29",
+        "end_session": "2024-04-01",
+        "end_close": "2024-04-01T20:00:00Z"
+      }
+    },
+    {
+      "target_id": "r11-2024-02-29-ge-1m",
+      "listing_id": 9,
+      "cik": "0000040545",
+      "symbol": "GE",
+      "split": "train",
+      "as_of_timestamp": "2024-02-29T21:00:00Z",
+      "replay_mode": "public_information",
+      "horizon": {
+        "label": "1m",
+        "policy": "xnys-calendar-months-v1",
+        "calendar": "xnys-2021-2027-v1",
+        "start_session": "2024-02-29",
+        "end_session": "2024-04-01",
+        "end_close": "2024-04-01T20:00:00Z"
+      }
+    },
+    {
+      "target_id": "r11-2024-02-29-cost-1m",
+      "listing_id": 12,
+      "cik": "0000909832",
+      "symbol": "COST",
+      "split": "train",
+      "as_of_timestamp": "2024-02-29T21:00:00Z",
+      "replay_mode": "public_information",
+      "horizon": {
+        "label": "1m",
+        "policy": "xnys-calendar-months-v1",
+        "calendar": "xnys-2021-2027-v1",
+        "start_session": "2024-02-29",
+        "end_session": "2024-04-01",
+        "end_close": "2024-04-01T20:00:00Z"
+      }
+    },
+    {
+      "target_id": "r11-2024-05-03-aapl-1m",
+      "listing_id": 1,
+      "cik": "0000320193",
+      "symbol": "AAPL",
+      "split": "validation",
+      "as_of_timestamp": "2024-05-03T20:00:00Z",
+      "replay_mode": "public_information",
+      "horizon": {
+        "label": "1m",
+        "policy": "xnys-calendar-months-v1",
+        "calendar": "xnys-2021-2027-v1",
+        "start_session": "2024-05-03",
+        "end_session": "2024-06-03",
+        "end_close": "2024-06-03T20:00:00Z"
+      }
+    },
+    {
+      "target_id": "r11-2024-05-03-ge-1m",
+      "listing_id": 9,
+      "cik": "0000040545",
+      "symbol": "GE",
+      "split": "validation",
+      "as_of_timestamp": "2024-05-03T20:00:00Z",
+      "replay_mode": "public_information",
+      "horizon": {
+        "label": "1m",
+        "policy": "xnys-calendar-months-v1",
+        "calendar": "xnys-2021-2027-v1",
+        "start_session": "2024-05-03",
+        "end_session": "2024-06-03",
+        "end_close": "2024-06-03T20:00:00Z"
+      }
+    },
+    {
+      "target_id": "r11-2024-05-03-cost-1m",
+      "listing_id": 12,
+      "cik": "0000909832",
+      "symbol": "COST",
+      "split": "validation",
+      "as_of_timestamp": "2024-05-03T20:00:00Z",
+      "replay_mode": "public_information",
+      "horizon": {
+        "label": "1m",
+        "policy": "xnys-calendar-months-v1",
+        "calendar": "xnys-2021-2027-v1",
+        "start_session": "2024-05-03",
+        "end_session": "2024-06-03",
+        "end_close": "2024-06-03T20:00:00Z"
+      }
+    },
+    {
+      "target_id": "r11-2024-07-05-aapl-1m",
+      "listing_id": 1,
+      "cik": "0000320193",
+      "symbol": "AAPL",
+      "split": "test",
+      "as_of_timestamp": "2024-07-05T20:00:00Z",
+      "replay_mode": "public_information",
+      "horizon": {
+        "label": "1m",
+        "policy": "xnys-calendar-months-v1",
+        "calendar": "xnys-2021-2027-v1",
+        "start_session": "2024-07-05",
+        "end_session": "2024-08-05",
+        "end_close": "2024-08-05T20:00:00Z"
+      }
+    },
+    {
+      "target_id": "r11-2024-07-05-ge-1m",
+      "listing_id": 9,
+      "cik": "0000040545",
+      "symbol": "GE",
+      "split": "test",
+      "as_of_timestamp": "2024-07-05T20:00:00Z",
+      "replay_mode": "public_information",
+      "horizon": {
+        "label": "1m",
+        "policy": "xnys-calendar-months-v1",
+        "calendar": "xnys-2021-2027-v1",
+        "start_session": "2024-07-05",
+        "end_session": "2024-08-05",
+        "end_close": "2024-08-05T20:00:00Z"
+      }
+    },
+    {
+      "target_id": "r11-2024-07-05-cost-1m",
+      "listing_id": 12,
+      "cik": "0000909832",
+      "symbol": "COST",
+      "split": "test",
+      "as_of_timestamp": "2024-07-05T20:00:00Z",
+      "replay_mode": "public_information",
+      "horizon": {
+        "label": "1m",
+        "policy": "xnys-calendar-months-v1",
+        "calendar": "xnys-2021-2027-v1",
+        "start_session": "2024-07-05",
+        "end_session": "2024-08-05",
+        "end_close": "2024-08-05T20:00:00Z"
+      }
+    }
+  ],
+  "review": {
+    "status": "reviewed",
+    "reviewer": "codex-data-review",
+    "reviewed_at": "2026-10-18T23:09:17Z",
+    "eligible_for_training": false,
+    "eligible_for_performance_claims": false,
+    "notes": "Identity, source coverage, calendar horizons, split order, purge, embargo and held-out access are reviewed. The plan is not training-ready because source selection and expected analyses have not been curated into a sample artifact; labels remain absent."
+  }
+}
