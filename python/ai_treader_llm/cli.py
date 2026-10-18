@@ -7,7 +7,7 @@ from datetime import timedelta
 from pathlib import Path
 from urllib.error import URLError
 
-from ai_treader_llm import contracts_v2
+from ai_treader_llm import contracts_v2, numeric
 from ai_treader_llm.benchmark import measure_recovery, run_benchmark, write_report
 from ai_treader_llm.contracts import ContractError, Contracts, timestamp
 from ai_treader_llm.datasets.manifests import validate_manifest
@@ -22,6 +22,16 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="AI-Treader offline LLM tooling")
     parser.add_argument("--contracts", type=Path, default=Path("contracts"))
     commands = parser.add_subparsers(dest="command", required=True)
+    numeric_input = commands.add_parser("validate-numeric-input")
+    numeric_input.add_argument("manifest", type=Path)
+    numeric_dataset = commands.add_parser("validate-numeric-dataset")
+    numeric_dataset.add_argument("manifest", type=Path)
+    forecast = commands.add_parser("validate-alpha")
+    forecast.add_argument("forecast", type=Path)
+    forecast.add_argument("--request", type=Path, required=True)
+    forecast.add_argument("--input", type=Path, required=True)
+    numeric_hash = commands.add_parser("numeric-hash")
+    numeric_hash.add_argument("artifact", type=Path)
     analysis = commands.add_parser("validate-analysis")
     analysis.add_argument("analysis", type=Path)
     analysis.add_argument("--context", type=Path, required=True)
@@ -102,6 +112,24 @@ def main() -> int:
             }, indent=2))
             return 0 if report["completion"]["ok"] else 1
         contracts = Contracts(args.contracts)
+        if args.command == "numeric-hash":
+            print(numeric.artifact_hash(numeric.read_json(args.artifact)))
+            return 0
+        if args.command == "validate-numeric-input":
+            inputs, _, rows = numeric.load_input(args.manifest, contracts)
+            print(json.dumps({"valid": True, "dataset_id": inputs["dataset_id"], "features": len(rows)}))
+            return 0
+        if args.command == "validate-numeric-dataset":
+            print(json.dumps({"valid": True, **numeric.load_dataset(args.manifest, contracts)}))
+            return 0
+        if args.command == "validate-alpha":
+            inputs, calendar, rows = numeric.load_input(args.input, contracts)
+            value, request = numeric.read_json(args.forecast), numeric.read_json(args.request)
+            numeric.validate_forecast(value, request, inputs, calendar, rows, contracts)
+            available = sum(row["score"]["status"] == "available" for row in value["results"])
+            print(json.dumps({"valid": True, "results": len(value["results"]), "available": available,
+                              "unavailable": len(value["results"]) - available}))
+            return 0
         if args.command == "validate-analysis":
             analysis, context = json.loads(args.analysis.read_text()), json.loads(args.context.read_text())
             if context.get("schema_version") == "2":

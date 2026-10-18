@@ -7,9 +7,9 @@ evidence into recommendations, measures those recommendations in paper trading,
 and can eventually operate within separately approved live limits.
 
 **Today:** the platform foundation, hosted strategy-review bridge and local Qwen endpoint work. Hosted Codex/Claude agents are the preferred research direction; listing analysis, strategy proposals and concise research memory still require implementation. The L03 replay
-engine is built, but its evaluation is unfinished. Numeric prediction and the new
-research track are approved plans, not implemented capabilities. No broker is
-connected and no live trading is authorized.
+engine is built, but its evaluation is unfinished. Numeric v1 contracts are
+delivered in Python; feature export, Go conformance and prediction models remain
+planned. No broker is connected and no live trading is authorized.
 
 This document is a visual explanation, not another backlog. Current task state and
 order remain in the [LLM backlog](tasks/BACKLOG.csv) and
@@ -31,7 +31,7 @@ and the **operator approves experiments and authority**.
 | Linear model / LightGBM | Learn numeric relationships and produce relative-return scores | Planned isolated CPU batch jobs owned by LLM repository | Not started |
 | Chronos-2 | Challenge the numeric baseline with pretrained time-series forecasts | Planned local batch job; CPU/GPU placement measured before use | Not started |
 | Reviewed text attributes | Extract cited guidance, liquidity and event attributes; evaluate accuracy and numeric usefulness | Platform hosted captures; LLM repository offline evaluation | Not started |
-| Contract validators | Reject malformed, out-of-scope or mismatched results | Python in LLM repository; Go in platform | Analysis v2 delivered; numeric contract planned |
+| Contract validators | Reject malformed, out-of-scope or mismatched results | Python in LLM repository; Go in platform | Analysis v2 and Python numeric v1 delivered; numeric Go conformance planned |
 | Paper engine and journal | Simulate orders, enforce risk, record fills/costs/holdings and mature outcomes | Go and PostgreSQL | Delivered; comparative evaluation unfinished |
 | Host dashboard | Report sanitized hardware and endpoint health | Restricted native service on Ubuntu | Delivered; future-job telemetry remains unavailable |
 | Broker adapter | Reconcile accounts and eventually submit authorized orders | Future Go integration | Not started; separate security and approval gates |
@@ -191,7 +191,7 @@ calibration checks. A combined model is considered only after incremental eviden
 | Local LLM | Endpoint, Go client, strict analysis and attempt persistence delivered | LLM HARD01, CTX01 and TOOLS01 qualification |
 | Reviewed datasets | Integrity tooling exists; real reviewed dataset not complete | LLM DATA01; platform ALPHA02 numeric export |
 | Existing L03 experiment | Replay/evaluator built; Stage 1 unfinished | Platform L03d revision-5 approval and run; L03e forward observation |
-| Numeric contracts and models | Plan approved; no implementation | LLM ALPHA01–ALPHA02; platform ALPHA01–ALPHA05 |
+| Numeric contracts and models | Python contract and fixtures delivered; no model | LLM ALPHA02; platform ALPHA01–ALPHA05 |
 | Chronos-2 and text attributes | Planned | LLM ALPHA03 / TEXT01; platform ALPHA06 / ALPHA07 |
 | Combined challenger | Conditional decision only | Platform ALPHA08; implement only through subsequent bounded tasks |
 | Numeric forward evidence | Not started | Platform ALPHA09; actual elapsed time and matured outcomes required |
@@ -301,8 +301,9 @@ old data. Outcome maturity and protected evaluation partitions remain enforced.
 
 See the [platform implementation plan](../ai-treader-platform/tasks/PLAN.md#hosted-agents-call-instructions-and-research-records-approved-2026-10-07)
 for the canonical planned envelopes and record fields. No new database or vector
-service is required by this design. Next local tasks: **LLM ALPHA01** (shared numeric
-contract) and **platform AGENT01** (versioned agent instructions/contracts).
+service is required by this design. Next local task: **LLM DATA01** (reviewed data
+manifests and analysis targets). Platform agent and numeric tasks retain their own
+order and dependencies.
 
 ## 8. What we want to accomplish
 

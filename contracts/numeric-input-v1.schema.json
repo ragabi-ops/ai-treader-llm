@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "numeric-input-v1"
+    },
+    "input_manifest_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "dataset_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]{1,6})?Z$"
+    },
+    "availability_policy": {
+      "enum": [
+        "observed",
+        "reconstructed"
+      ]
+    },
+    "corporate_action_basis": {
+      "enum": [
+        "raw",
+        "split_adjusted",
+        "total_return_adjusted"
+      ]
+    },
+    "action_policy_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "universe": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "snapshot_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "membership_policy_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "survivorship": {
+          "enum": [
+            "historical_membership",
+            "survivorship_biased_pilot",
+            "unknown"
+          ]
+        }
+      },
+      "required": [
+        "snapshot_sha256",
+        "membership_policy_sha256",
+        "survivorship"
+      ]
+    },
+    "calendar": {
+      "$ref": "numeric-common-v1.schema.json#/$defs/artifact"
+    },
+    "feature_schema": {
+      "$ref": "numeric-common-v1.schema.json#/$defs/feature_schema"
+    },
+    "features": {
+      "$ref": "numeric-common-v1.schema.json#/$defs/artifact"
+    },
+    "expected_rows": {
+      "type": "array",
+      "items": {
+        "$ref": "numeric-common-v1.schema.json#/$defs/scope"
+      },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "schema_version",
+    "input_manifest_sha256",
+    "dataset_id",
+    "created_at",
+    "availability_policy",
+    "corporate_action_basis",
+    "action_policy_sha256",
+    "universe",
+    "calendar",
+    "feature_schema",
+    "features",
+    "expected_rows"
+  ]
+}

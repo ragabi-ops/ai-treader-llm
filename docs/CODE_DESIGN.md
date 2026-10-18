@@ -265,11 +265,12 @@ The CPU image base is pinned to a resolved multi-platform Python image digest.
 Update it deliberately alongside dependency validation. GPU runtime selection is locked by
 the bootstrap script; actual CUDA compatibility is accepted only after server tests.
 
-## Planned numeric forecasting boundary (approved 2026-10-06)
+## Numeric forecasting boundary (ALPHA01 delivered 2026-10-19)
 
-ALPHA01/ALPHA02 introduce a separate numeric contract/package; nothing in this
-section is runnable yet. Existing analysis-v2 messages and Qwen serving remain
-unchanged. Do not reuse the prose-analysis schema for a numeric score.
+ALPHA01 introduces a separate numeric contract package and runnable Python
+validators. Model fitting and platform import remain ALPHA02/platform work.
+Existing analysis-v2 messages and Qwen serving are unchanged. Numeric scores do
+not reuse the prose-analysis schema.
 
 The alpha-forecast-v1 family must bind immutable listing ID, UTC cutoff, exact
 calendar-based horizon, feature schema/version, input manifest hash, model artifact,
@@ -288,6 +289,23 @@ folds. Group each decision date across listings in the same chronological split;
 purge actual overlapping label windows and record the session embargo. Only
 matured permitted labels may enter training. Held-out labels are evaluation-only.
 LLM prompts, SFT targets and prediction job mounts never receive outcome labels.
+
+The public artifact family is:
+
+| Artifact | Purpose |
+|---|---|
+| `numeric-calendar-v1` | Hash-pinned XNYS session/open/close schedule used to verify next-open entry and calendar-month horizon close |
+| `numeric-input-v1` + `numeric-feature-row-v1` | Feature-only prediction input, expected row coverage, universe/action/availability policy and source provenance |
+| `alpha-request-v1` | Trusted batch/attempt, deadline, model provenance and score semantics |
+| `alpha-forecast-v1` | Complete available or typed-unavailable results bound to the trusted request |
+| `numeric-dataset-v1` + `numeric-label-v1` | Separate supervised labels, target definition, split assignment, purge and embargo evidence |
+
+Numeric values are canonical decimal strings. Listing IDs are canonical positive
+signed-int64 strings so cross-language JSON cannot round them. Self-hashed JSON
+uses sorted UTF-8 keys, compact separators, exact scalar bytes, no floats, no BOM
+and no trailing newline; referenced artifacts hash their raw bytes. The shared
+fixture suite declares ordered error codes and includes values beyond JavaScript's
+safe-integer range, DST, microsecond cutoffs, tampering and coverage failures.
 
 Batch attempts are platform-created and idempotent. Jobs receive immutable bounded
 inputs and emit artifacts; they have no database write or trading credentials.

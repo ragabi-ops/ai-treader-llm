@@ -33,6 +33,12 @@ uv run --frozen ai-treader-llm evaluate-tools \
 uv run --frozen ai-treader-llm validate-analysis examples/v2/analysis.json --context examples/v2/context.json
 uv run --frozen ai-treader-llm validate-manifest examples/v2/dataset-manifest.json \
   --evaluation-boundary 2025-06-01T00:00:00Z
+# numeric v1 (shared fixtures for platform ALPHA01)
+uv run --frozen ai-treader-llm validate-numeric-input examples/numeric-v1/input-manifest.json
+uv run --frozen ai-treader-llm validate-numeric-dataset examples/numeric-v1/dataset-manifest.json
+uv run --frozen ai-treader-llm validate-alpha examples/numeric-v1/forecast.json \
+  --request examples/numeric-v1/request.json \
+  --input examples/numeric-v1/input-manifest.json
 ```
 
 The CPU checks need no NVIDIA GPU or Docker daemon. Example data is synthetic.
@@ -63,8 +69,9 @@ docs/            Implementation/design references and operating runbooks
 tasks/           Authoritative CSV backlog
 ```
 
-Training, RAG, export, promotion, and Go integration are designed but not yet
-implemented. The offline evaluators measure structural/reference validity and
+Numeric v1 schemas and Python validation are implemented; Go conformance, feature
+export, model fitting, training, RAG, export, and promotion remain unimplemented.
+The offline evaluators measure structural/reference validity and
 fixture-based tool-call correctness. They never certify financial quality or
 authorize promotion. Schemas and timestamp checks cannot detect misleading source
 metadata or future facts hidden in prose; source provenance and reviewed labels
@@ -86,3 +93,12 @@ Dataset manifests pin sample and optional outcome files by SHA-256 and row count
 Validation resolves only paths contained by the manifest directory, re-runs all
 dataset checks, verifies split boundaries and analysis horizons, and requires
 explicit licensing/reviewer status. The included manifest is synthetic-only.
+
+Numeric v1 uses exact decimal strings and string-encoded positive int64 listing IDs.
+The input manifest pins a calendar, feature definitions, universe policy, source
+availability, corporate-action basis, and every expected output row. Prediction
+requests and forecasts bind the input, model/training/config/code/runtime hashes,
+score meaning, deadline, and complete result coverage. Labels live in a separate
+artifact and are checked for maturity, date-grouped chronological splits, purged
+label windows, and session embargoes. These checks establish contract consistency;
+they do not establish the truth of supplied provenance or forecast quality.

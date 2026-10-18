@@ -1,10 +1,10 @@
 # STATUS
 
-Updated 2026-10-07. [tasks/BACKLOG.csv](tasks/BACKLOG.csv) is the task-state,
+Updated 2026-10-19. [tasks/BACKLOG.csv](tasks/BACKLOG.csv) is the task-state,
 execution-order and cross-repository dependency authority. Run
 `python3 scripts/backlog.py` before selecting work.
 
-**Next task: ALPHA01 — define the shared numeric forecast contract.**
+**Next task: DATA01 — build reviewed real-data manifests and analysis targets (LLM project).**
 
 HARD01 remains in progress, with existing edits preserved. Hosted-agent planning
 AGENT00 is complete and extends the approved ALPHA00 scope; no runtime is switched.
@@ -24,15 +24,18 @@ See [architecture.md](architecture.md) for the cross-repository component and fl
   L03e not started (XPLAT04 in progress). Revision 5 requires separate approval.
 - The host 8192/2048 candidate and existing uncommitted configuration edits are
   distinct from the earlier BENCH01 deployment; CTX01 qualifies the new configuration.
-- Numeric models, batch forecasting and text-attribute extraction are approved
-  planning scope only. Training, RAG, export and promotion are not implemented.
+- Numeric v1 schemas, Python validators and synthetic shared fixtures are delivered.
+  Numeric models, batch forecasting and text-attribute extraction remain planned;
+  no numeric model or real reviewed dataset exists. Training, RAG, export and
+  promotion are not implemented.
   Offline structural checks
   do not establish semantic grounding, model quality, trading performance or authority.
 
 ## Next work
 
-After AGENT00 validation, ALPHA01 (numeric contracts), DATA01 and CPU ALPHA02
-come first. Hosted Codex/Claude calls, strategy research and concise per-listing
+DATA01 is the next eligible local task. CPU ALPHA02 follows only after DATA01 and
+the external platform numeric export/protocol gates close. Hosted Codex/Claude
+calls, strategy research and concise per-listing
 records belong to the platform's AGENT tasks. This repository owns numeric jobs
 and offline evaluation. TEXT01 evaluates provider-neutral captures from platform
 AGENT04. HARD01 remains a prerequisite for GPU experiments; CTX01/TOOLS01 and
@@ -55,3 +58,10 @@ AGENT00 is complete: LLM `make check` (102 tests plus contract fixtures), platfo
 DAG/mirror checks and Markdown relative-link/fence checks passed. Diagrams were not
 independently rendered. New hosted task types and research-summary storage remain
 planned; no provider call, database migration or target-host validation was performed.
+
+## Numeric contract validation (2026-10-19)
+
+ALPHA01 is complete in the LLM project: `make check` passed 110 tests, 12 fixture
+commands and shell syntax. Strict numeric schemas, Python validation, synthetic
+cross-language cases and canonical hash vectors are published. Platform Go
+conformance remains XLLM02/platform ALPHA01; real data and model work remain open.

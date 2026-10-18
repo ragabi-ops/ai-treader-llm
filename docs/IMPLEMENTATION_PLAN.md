@@ -511,7 +511,7 @@ The CSV owns order and state; this section defines the architecture.
 
 | Work | This repository | Platform boundary |
 |---|---|---|
-| Numeric contracts | ALPHA01 authors strict alpha-forecast-v1, numeric dataset schemas and Python fixtures | ALPHA01 consumes shared fixtures and validates Go |
+| Numeric contracts | ALPHA01 delivered strict alpha-forecast-v1, numeric dataset schemas and Python fixtures | ALPHA01 consumes shared fixtures and validates Go |
 | Dataset | DATA01 reviews analysis manifests; ALPHA02 validates numeric exports | ALPHA02 generates PIT features and separate matured labels |
 | CPU baseline | ALPHA02 trains regularized linear and LightGBM models and emits batch predictions | ALPHA03 freezes protocol; ALPHA04 imports; ALPHA05 evaluates |
 | Pretrained challenger | ALPHA03 benchmarks pinned Chronos-2 without fine-tuning | ALPHA06 compares under separately frozen parameters |
@@ -561,7 +561,7 @@ See [platform PLAN](../../ai-treader-platform/tasks/PLAN.md) for exact call and 
 requirements. LLM TEXT01 consumes AGENT04 captures via XPLAT09; it does not own
 hosted credentials, provider calls or application database writes.
 
-CPU ALPHA01/DATA01/ALPHA02 precede unfinished hardware/local-LLM enhancements in the
+DATA01 and CPU ALPHA02 precede unfinished hardware/local-LLM enhancements in the
 queue. HARD01 is still required before GPU experiments. Qwen tool qualification,
 RAG, QLoRA and export remain retained lower-priority work, not prerequisites for
 hosted research or CPU fitting. No provider or model is silently substituted during

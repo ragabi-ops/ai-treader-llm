@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "numeric-dataset-v1"
+    },
+    "dataset_manifest_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "dataset_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]{1,6})?Z$"
+    },
+    "input_manifest": {
+      "$ref": "numeric-common-v1.schema.json#/$defs/artifact"
+    },
+    "input_manifest_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "labels": {
+      "$ref": "numeric-common-v1.schema.json#/$defs/artifact"
+    },
+    "target": {
+      "$ref": "numeric-common-v1.schema.json#/$defs/target"
+    },
+    "assignments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "row_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+          },
+          "split": {
+            "enum": [
+              "train",
+              "validation",
+              "test"
+            ]
+          }
+        },
+        "required": [
+          "row_id",
+          "split"
+        ]
+      },
+      "minItems": 1
+    },
+    "split_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "date_grouped": {
+          "const": true
+        },
+        "label_window_purged": {
+          "const": true
+        },
+        "embargo_sessions": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "embargoed_starts": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "validation": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]{1,6})?Z$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "test": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]{1,6})?Z$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "validation",
+            "test"
+          ]
+        }
+      },
+      "required": [
+        "date_grouped",
+        "label_window_purged",
+        "embargo_sessions",
+        "embargoed_starts"
+      ]
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "pending",
+            "reviewed",
+            "synthetic_only"
+          ]
+        },
+        "reviewer": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reviewed_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]{1,6})?Z$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "status",
+        "reviewer",
+        "reviewed_at",
+        "notes"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "dataset_manifest_sha256",
+    "dataset_id",
+    "created_at",
+    "input_manifest",
+    "input_manifest_sha256",
+    "labels",
+    "target",
+    "assignments",
+    "split_policy",
+    "review"
+  ]
+}

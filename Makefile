@@ -15,6 +15,9 @@ fixtures:
 	uv run --frozen ai-treader-llm validate-analysis examples/v2/analysis.json --context examples/v2/context.json
 	uv run --frozen ai-treader-llm validate-outcomes examples/v2/samples.jsonl examples/v2/outcomes.jsonl
 	uv run --frozen ai-treader-llm validate-manifest examples/v2/dataset-manifest.json --evaluation-boundary 2025-06-01T00:00:00Z
+	uv run --frozen ai-treader-llm validate-numeric-input examples/numeric-v1/input-manifest.json
+	uv run --frozen ai-treader-llm validate-numeric-dataset examples/numeric-v1/dataset-manifest.json
+	uv run --frozen ai-treader-llm validate-alpha examples/numeric-v1/forecast.json --request examples/numeric-v1/request.json --input examples/numeric-v1/input-manifest.json
 
 shell:
 	bash -n scripts/bootstrap/*.sh scripts/qualification/*.sh scripts/smoke/*.sh

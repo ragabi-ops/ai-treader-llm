@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "numeric-label-v1"
+    },
+    "row_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "listing_id": {
+      "$ref": "numeric-common-v1.schema.json#/$defs/listing_id"
+    },
+    "as_of_timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]{1,6})?Z$"
+    },
+    "horizon": {
+      "$ref": "numeric-common-v1.schema.json#/$defs/horizon"
+    },
+    "target_definition_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "available_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]{1,6})?Z$"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "numeric-common-v1.schema.json#/$defs/source"
+      },
+      "minItems": 0
+    },
+    "label": {
+      "$ref": "numeric-common-v1.schema.json#/$defs/label_value"
+    }
+  },
+  "required": [
+    "schema_version",
+    "row_id",
+    "listing_id",
+    "as_of_timestamp",
+    "horizon",
+    "target_definition_sha256",
+    "available_at",
+    "sources",
+    "label"
+  ]
+}

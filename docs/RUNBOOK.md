@@ -214,10 +214,25 @@ required in the future trainer. Save the previous runtime lock, model receipt, a
 configuration before changing any version. Re-run GPU, endpoint, tool, and schema
 tests after upgrades; rollback restores the previous bundle and restarts inference.
 
-## Planned numeric jobs and configuration qualification
+## Numeric contract validation and planned jobs
 
-The approved ALPHA tasks are not installed commands. Until their acceptance closes,
-do not report training, Chronos-2 forecasting or text extraction as available.
+ALPHA01 installs offline numeric contract validators; it does not install a model
+or prediction job. Validate the committed synthetic bundle with:
+
+```bash
+uv run --frozen ai-treader-llm validate-numeric-input examples/numeric-v1/input-manifest.json
+uv run --frozen ai-treader-llm validate-numeric-dataset examples/numeric-v1/dataset-manifest.json
+uv run --frozen ai-treader-llm validate-alpha examples/numeric-v1/forecast.json \
+  --request examples/numeric-v1/request.json \
+  --input examples/numeric-v1/input-manifest.json
+```
+
+Regenerate the shared Python/Go conformance fixtures after a deliberate contract
+change with `uv run --frozen python -m ai_treader_llm.numeric_fixtures`, then run
+`make check`. Contract changes require a new version once platform adoption begins.
+
+Until their later acceptance closes, do not report training, Chronos-2 forecasting
+or text extraction as available.
 Future jobs use locked CPU dependencies for the linear/LightGBM baseline, immutable
 platform exports, separate fit/evaluation labels and feature-only prediction mounts.
 Keep models, datasets and generated reports out of Git. GPU runs require measured

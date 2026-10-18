@@ -1,0 +1,29 @@
+{
+  "fixture_version": "1",
+  "vectors": [
+    {
+      "name": "exact-id-and-decimal",
+      "value": {
+        "listing_id": "9007199254740993",
+        "value": "-0.012345678901234567",
+        "zero": "0",
+        "seed": 0
+      },
+      "canonical_utf8": "{\"listing_id\":\"9007199254740993\",\"seed\":0,\"value\":\"-0.012345678901234567\",\"zero\":\"0\"}",
+      "sha256": "0bb48006462f44c297f86aa59ee0443686774350ee6b20f462357c775c2b2f1a"
+    },
+    {
+      "name": "unicode-escapes",
+      "value": {
+        "z": "quote \" backslash \\ newline\n tab\t ctl\u0001 del separator  clef𝄞 <&>",
+        "a": [
+          true,
+          null,
+          "é"
+        ]
+      },
+      "canonical_utf8": "{\"a\":[true,null,\"é\"],\"z\":\"quote \\\" backslash \\\\ newline\\n tab\\t ctl\\u0001 del separator  clef𝄞 <&>\"}",
+      "sha256": "5b8307eb767fefe763f2049867f699dffb3c1a5da61a590b9da62a1cecfdeaf8"
+    }
+  ]
+}
