@@ -47,6 +47,8 @@ VRAM, startup/recovery, and reproducible rollback.
 | `datasets/duplicates.py` | `validate_cross_split_duplicates` | Deterministic cross-split exact/near-duplicate sample-input checks |
 | `datasets/outcomes.py` | `validate_outcomes` | Separate labels, exact sample coverage, finite values, split purge/embargo |
 | `datasets/manifests.py` | `validate_manifest` | Artifact hashes/counts, contained paths, split/policy/provenance consistency |
+| `datasets/reviews.py` | `validate_source_review` | Real-source receipts, external compressed/decoded bytes, linked target-plan hash and source coverage |
+| `datasets/targets.py` | `validate_data_targets` | Reviewed identities/horizons, cutoff-group splits, explicit session embargo, held-out boundary and absent labels |
 | `evaluation/runner.py` | `evaluate` | Counts every expected sample; missing/invalid responses are failures |
 | `evaluation/tools.py` | `evaluate_tool_calls` | Scores allowlists, required/unnecessary calls, strict arguments, and trusted symbol/time boundaries |
 | `inference/client.py` | `smoke` | Health and first completion; not a production orchestration client |
@@ -98,14 +100,17 @@ These checks cannot detect dishonest metadata or future facts embedded in prose.
 Source ingestion must establish provenance; reviewed labels must use only the
 contemporaneous evidence. Source hashes detect modification, not truthfulness.
 Chronological ordering and explicit label-window purge/embargo checks are
-implemented. Embargo is measured in calendar days; real label generation must use
-the platform's point-in-time trading calendar. Cross-split checks compare each
+implemented. Legacy v1 sample validation accepts a calendar-day embargo; v2
+manifests use platform-computed session timestamps. DATA01's reviewed target plan
+also records each of the 21 XNYS sessions after the preceding label end before the
+later split may begin. Cross-split checks compare each
 sample's complete source-content input, rejecting normalized exact matches and,
 for inputs with at least 20 tokens, multiset-token Jaccard similarity of 0.90 or
 greater. Individual historical sources may legitimately recur in later samples.
 This is a deterministic leakage heuristic, not proof that lower-scoring inputs are
-independent. Survivorship controls and licensing review remain pending. Outcome
-labels belong in a separately permissioned dataset, never the sample schema or an
+independent. The R11 SEC access review is recorded, while its three-listing
+convenience universe remains explicitly survivorship-biased and ineligible for
+performance claims. Outcome labels belong in a separately permissioned dataset, never the sample schema or an
 LLM/SFT trainer mount. A separate numeric supervised fit job may read its permitted
 training labels; prediction jobs never receive labels. Synthetic examples are not
 financial training data.

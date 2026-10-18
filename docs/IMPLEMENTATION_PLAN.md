@@ -512,7 +512,7 @@ The CSV owns order and state; this section defines the architecture.
 | Work | This repository | Platform boundary |
 |---|---|---|
 | Numeric contracts | ALPHA01 delivered strict alpha-forecast-v1, numeric dataset schemas and Python fixtures | ALPHA01 consumes shared fixtures and validates Go |
-| Dataset | DATA01 reviews analysis manifests; ALPHA02 validates numeric exports | ALPHA02 generates PIT features and separate matured labels |
+| Dataset | DATA01 delivered the reviewed R11 source receipt and controlled analysis-target plan; ALPHA02 validates numeric exports | ALPHA02 generates PIT features and separate matured labels |
 | CPU baseline | ALPHA02 trains regularized linear and LightGBM models and emits batch predictions | ALPHA03 freezes protocol; ALPHA04 imports; ALPHA05 evaluates |
 | Pretrained challenger | ALPHA03 benchmarks pinned Chronos-2 without fine-tuning | ALPHA06 compares under separately frozen parameters |
 | Text attributes | TEXT01 evaluates provider-neutral captures and exports numeric fixtures | AGENT04 owns hosted capture; ALPHA07 measures numeric-only versus numeric-plus-text |

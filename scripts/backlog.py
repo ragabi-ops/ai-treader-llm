@@ -47,10 +47,16 @@ def main():
                 raise ValueError(f"{ident}: unknown dependencies: {', '.join(unknown)}")
         if len(orders) != len(set(orders)):
             raise ValueError("execution_order values must be unique")
-        queue = sorted(
+        unfinished = sorted(
             (row for row in rows if row["repository"] == LOCAL and row["status"] != "done"),
             key=lambda row: int(row["execution_order"]),
         )
+        queue = [
+            row
+            for row in unfinished
+            if row["status"] != "blocked"
+            and all(by_id[dep]["status"] == "done" for dep in dependencies(row))
+        ]
         selected = queue[0] if queue else None
         expected = selected["id"] if selected else "none"
         status = (ROOT / "STATUS.md").read_text(encoding="utf-8")
@@ -59,12 +65,15 @@ def main():
             raise ValueError(f"STATUS.md must say '**Next task: {expected}'")
         print("PASS: backlog IDs, repositories, statuses, orders, dependencies and STATUS pointer")
         if selected:
-            pending = [dep for dep in dependencies(selected) if by_id[dep]["status"] != "done"]
             print(f"NEXT: {selected['id']} ({selected['status']}) — {selected['deliverable']}")
-            if pending or selected["status"] == "blocked":
-                print("BLOCKED: " + (", ".join(pending) if pending else selected["notes"]))
-                return 1
             print("ACCEPTANCE: " + selected["acceptance"])
+        elif unfinished:
+            waiting = []
+            for row in unfinished:
+                pending = [dep for dep in dependencies(row) if by_id[dep]["status"] != "done"]
+                waiting.append(f"{row['id']} ({', '.join(pending) if pending else row['status']})")
+            print("BLOCKED: no eligible local task; " + "; ".join(waiting))
+            return 1
         return 0
     except (OSError, ValueError, KeyError) as exc:
         print(f"FAIL: {exc}", file=sys.stderr)

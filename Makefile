@@ -16,6 +16,7 @@ fixtures:
 	uv run --frozen ai-treader-llm validate-outcomes examples/v2/samples.jsonl examples/v2/outcomes.jsonl
 	uv run --frozen ai-treader-llm validate-manifest examples/v2/dataset-manifest.json --evaluation-boundary 2025-06-01T00:00:00Z
 	uv run --frozen ai-treader-llm validate-source-review examples/data-review-v1/sec-edgar-r11.json
+	uv run --frozen ai-treader-llm validate-data-targets examples/data-review-v1/sec-edgar-r11-analysis-targets.json
 	uv run --frozen ai-treader-llm validate-numeric-input examples/numeric-v1/input-manifest.json
 	uv run --frozen ai-treader-llm validate-numeric-dataset examples/numeric-v1/dataset-manifest.json
 	uv run --frozen ai-treader-llm validate-alpha examples/numeric-v1/forecast.json --request examples/numeric-v1/request.json --input examples/numeric-v1/input-manifest.json

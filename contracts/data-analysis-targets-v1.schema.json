@@ -1,0 +1,256 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DataAnalysisTargetsV1",
+  "description": "A reviewed target plan for building real analysis samples. It contains no source payloads, expected analyses, or outcome labels.",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "numeric-common-v1.schema.json#/$defs/sha256"}
+      },
+      "required": ["path", "sha256"]
+    },
+    "listing": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "listing_id": {"$ref": "common-v2.schema.json#/$defs/listing_id"},
+        "cik": {"type": "string", "pattern": "^[0-9]{10}$"},
+        "symbol": {"$ref": "common-v2.schema.json#/$defs/identifier"},
+        "exchange": {"type": "string", "minLength": 1},
+        "security_label": {"type": "string", "minLength": 1},
+        "artifact_paths": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "listing_id", "cik", "symbol", "exchange", "security_label",
+        "artifact_paths"
+      ]
+    },
+    "embargo_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "after_split": {"enum": ["train", "validation"]},
+        "latest_label_end": {"$ref": "numeric-common-v1.schema.json#/$defs/timestamp"},
+        "sessions_after_label_end": {
+          "type": "array",
+          "items": {"$ref": "numeric-common-v1.schema.json#/$defs/date"},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "embargoed_start": {"$ref": "numeric-common-v1.schema.json#/$defs/timestamp"}
+      },
+      "required": [
+        "after_split", "latest_label_end", "sessions_after_label_end",
+        "embargoed_start"
+      ]
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "target_id": {"$ref": "numeric-common-v1.schema.json#/$defs/identifier"},
+        "listing_id": {"$ref": "common-v2.schema.json#/$defs/listing_id"},
+        "cik": {"type": "string", "pattern": "^[0-9]{10}$"},
+        "symbol": {"$ref": "common-v2.schema.json#/$defs/identifier"},
+        "split": {"enum": ["train", "validation", "test"]},
+        "as_of_timestamp": {"$ref": "numeric-common-v1.schema.json#/$defs/timestamp"},
+        "replay_mode": {"const": "public_information"},
+        "horizon": {"$ref": "common-v2.schema.json#/$defs/horizon"}
+      },
+      "required": [
+        "target_id", "listing_id", "cik", "symbol", "split",
+        "as_of_timestamp", "replay_mode", "horizon"
+      ]
+    }
+  },
+  "properties": {
+    "schema_version": {"const": "data-analysis-targets-v1"},
+    "target_set_id": {"$ref": "numeric-common-v1.schema.json#/$defs/identifier"},
+    "created_at": {"$ref": "numeric-common-v1.schema.json#/$defs/timestamp"},
+    "source_review_id": {"$ref": "numeric-common-v1.schema.json#/$defs/identifier"},
+    "purpose": {"type": "string", "minLength": 1},
+    "platform": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "repository": {"const": "ai-treader-platform"},
+        "revision": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+        "identity_snapshot": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "database": {"type": "string", "minLength": 1},
+            "captured_at": {"$ref": "numeric-common-v1.schema.json#/$defs/timestamp"},
+            "mapping_sha256": {"$ref": "numeric-common-v1.schema.json#/$defs/sha256"},
+            "schema_migration": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "version": {"type": "string", "minLength": 1},
+                "checksum": {"$ref": "numeric-common-v1.schema.json#/$defs/sha256"}
+              },
+              "required": ["version", "checksum"]
+            },
+            "source_fixture": {"$ref": "#/$defs/artifact"},
+            "notes": {"type": "string", "minLength": 1}
+          },
+          "required": [
+            "database", "captured_at", "mapping_sha256", "schema_migration",
+            "source_fixture", "notes"
+          ]
+        },
+        "calendar": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "exchange": {"const": "XNYS"},
+            "version": {"$ref": "numeric-common-v1.schema.json#/$defs/identifier"},
+            "horizon_policy": {"const": "xnys-calendar-months-v1"},
+            "source_files": {
+              "type": "array",
+              "items": {"$ref": "#/$defs/artifact"},
+              "minItems": 1
+            },
+            "notes": {"type": "string", "minLength": 1}
+          },
+          "required": [
+            "exchange", "version", "horizon_policy", "source_files", "notes"
+          ]
+        }
+      },
+      "required": ["repository", "revision", "identity_snapshot", "calendar"]
+    },
+    "availability": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": {"const": "historical_reconstruction"},
+        "observed_ingestion_at_cutoff": {"const": false},
+        "replay_mode": {"const": "public_information"},
+        "rule": {"type": "string", "minLength": 1},
+        "notes": {"type": "string", "minLength": 1}
+      },
+      "required": [
+        "mode", "observed_ingestion_at_cutoff", "replay_mode", "rule", "notes"
+      ]
+    },
+    "universe": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "selection_policy": {"type": "string", "minLength": 1},
+        "survivorship_status": {"const": "survivorship_biased"},
+        "delisted_entities_included": {"const": false},
+        "eligible_for_performance_claims": {"const": false},
+        "listings": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/listing"},
+          "minItems": 1
+        },
+        "notes": {"type": "string", "minLength": 1}
+      },
+      "required": [
+        "selection_policy", "survivorship_status", "delisted_entities_included",
+        "eligible_for_performance_claims", "listings", "notes"
+      ]
+    },
+    "split_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "chronological": {"const": true},
+        "grouped_by_cutoff": {"const": true},
+        "label_window_purged": {"const": true},
+        "embargo_sessions": {"type": "integer", "minimum": 1},
+        "embargoed_starts": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "validation": {"$ref": "numeric-common-v1.schema.json#/$defs/timestamp"},
+            "test": {"$ref": "numeric-common-v1.schema.json#/$defs/timestamp"}
+          },
+          "required": ["validation", "test"]
+        },
+        "embargo_evidence": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/embargo_evidence"},
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "held_out_split": {"const": "test"},
+        "held_out_boundary": {"$ref": "numeric-common-v1.schema.json#/$defs/timestamp"},
+        "held_out_access": {"const": "evaluation_only_no_selection_feedback"},
+        "notes": {"type": "string", "minLength": 1}
+      },
+      "required": [
+        "chronological", "grouped_by_cutoff", "label_window_purged",
+        "embargo_sessions", "embargoed_starts", "embargo_evidence",
+        "held_out_split", "held_out_boundary", "held_out_access", "notes"
+      ]
+    },
+    "analysis_target_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "task": {"const": "financial_analysis"},
+        "sample_schema": {"const": "analysis-sample-v2.schema.json"},
+        "expected_analyses_included": {"const": false},
+        "expected_analysis_review_required": {"const": true},
+        "notes": {"type": "string", "minLength": 1}
+      },
+      "required": [
+        "task", "sample_schema", "expected_analyses_included",
+        "expected_analysis_review_required", "notes"
+      ]
+    },
+    "labels": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "separate_artifact": {"const": true},
+        "included": {"const": false},
+        "schema": {"const": "outcome-record-v2.schema.json"},
+        "status": {"const": "not_built"},
+        "access": {"const": "evaluation_only"},
+        "notes": {"type": "string", "minLength": 1}
+      },
+      "required": ["separate_artifact", "included", "schema", "status", "access", "notes"]
+    },
+    "targets": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/target"},
+      "minItems": 1
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {"const": "reviewed"},
+        "reviewer": {"type": "string", "minLength": 1},
+        "reviewed_at": {"$ref": "numeric-common-v1.schema.json#/$defs/timestamp"},
+        "eligible_for_training": {"const": false},
+        "eligible_for_performance_claims": {"const": false},
+        "notes": {"type": "string", "minLength": 1}
+      },
+      "required": [
+        "status", "reviewer", "reviewed_at", "eligible_for_training",
+        "eligible_for_performance_claims", "notes"
+      ]
+    }
+  },
+  "required": [
+    "schema_version", "target_set_id", "created_at", "source_review_id",
+    "purpose", "platform", "availability", "universe", "split_policy",
+    "analysis_target_policy", "labels", "targets", "review"
+  ]
+}

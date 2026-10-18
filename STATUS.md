@@ -4,7 +4,7 @@ Updated 2026-10-19. [tasks/BACKLOG.csv](tasks/BACKLOG.csv) is the task-state,
 execution-order and cross-repository dependency authority. Run
 `python3 scripts/backlog.py` before selecting work.
 
-**Next task: DATA01 — build reviewed real-data manifests and analysis targets (LLM project; in progress).**
+**Next task: HARD01 — finish permitted target-host hardware qualification (LLM project; in progress).**
 
 HARD01 remains in progress, with existing edits preserved. Hosted-agent planning
 AGENT00 is complete and extends the approved ALPHA00 scope; no runtime is switched.
@@ -26,18 +26,21 @@ See [architecture.md](architecture.md) for the cross-repository component and fl
   distinct from the earlier BENCH01 deployment; CTX01 qualifies the new configuration.
 - Numeric v1 schemas, Python validators and synthetic shared fixtures are delivered.
   Numeric models, batch forecasting and text-attribute extraction remain planned;
-  no numeric model or real reviewed dataset exists. DATA01 has started with a
-  hash-verified SEC EDGAR R11 source receipt that records access terms and its
-  survivorship-biased pilot scope; analysis targets remain pending platform IDs,
-  calendar/split controls and a held-out boundary. Training, RAG, export and
-  promotion are not implemented.
+  no numeric model or completed real sample dataset exists. DATA01 is complete:
+  the hash-verified SEC EDGAR R11 receipt now links a reviewed nine-target plan
+  with pinned platform identity/calendar provenance, one-month horizons, three
+  chronological cutoff groups, 21-session embargo evidence and a protected test
+  boundary. The plan is explicitly survivorship-biased historical reconstruction;
+  expected analyses and outcomes are absent and labels remain separate. Training,
+  RAG, export and promotion are not implemented.
   Offline structural checks
   do not establish semantic grounding, model quality, trading performance or authority.
 
 ## Next work
 
-DATA01 is in progress. CPU ALPHA02 follows only after DATA01 and
-the external platform numeric export/protocol gates close. Hosted Codex/Claude
+HARD01 is the next eligible local task and remains in progress. CPU ALPHA02 is
+blocked until the external platform conformance, numeric export and protocol gates
+XPLAT05/XPLAT06/XPLAT07 close. Hosted Codex/Claude
 calls, strategy research and concise per-listing
 records belong to the platform's AGENT tasks. This repository owns numeric jobs
 and offline evaluation. TEXT01 evaluates provider-neutral captures from platform
@@ -51,8 +54,20 @@ only explicitly permitted evidence may cross that provider boundary.
 
 The benchmark measured endpoint behavior, not semantic truth or trading quality.
 The host still lacks complete RAM topology, cooling, PSU and permitted-disk
-qualification. Real reviewed datasets, survivorship/licensing controls,
-model/template captures and prospective evaluation are also outstanding.
+qualification. A completed reviewed sample dataset, point-in-time universe controls,
+model/template captures and prospective evaluation are also outstanding; DATA01's
+small R11 target plan is not training or performance evidence.
+
+## Reviewed data-target validation (2026-10-19)
+
+DATA01 is complete: `make check` passed 117 tests, 14 fixture commands and shell
+syntax; `git diff --check` passed. The linked source/target validation also verified
+all ten compressed and decoded SEC artifacts plus the pinned platform identity and
+calendar files. The target plan contains nine rows across AAPL, GE and COST, with
+three date-grouped splits and no labels. Platform listing IDs are snapshot-local
+and must be re-exported after a database rebuild; historical ingestion was not
+observed, so the plan uses public-information reconstruction and makes no model,
+semantic, universe or trading-performance claim.
 
 ## Hosted-agent planning validation (2026-10-07)
 

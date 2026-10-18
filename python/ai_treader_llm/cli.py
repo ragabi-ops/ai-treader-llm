@@ -14,6 +14,7 @@ from ai_treader_llm.datasets.manifests import validate_manifest
 from ai_treader_llm.datasets.outcomes import validate_outcomes
 from ai_treader_llm.datasets.reviews import validate_source_review
 from ai_treader_llm.datasets.samples import build_messages, read_jsonl, validate_dataset
+from ai_treader_llm.datasets.targets import validate_data_targets
 from ai_treader_llm.evaluation.runner import evaluate
 from ai_treader_llm.evaluation.tools import evaluate_tool_calls
 from ai_treader_llm.inference.client import smoke
@@ -55,6 +56,18 @@ def main() -> int:
         "--source-root",
         type=Path,
         help="optional source-bundle directory; verifies compressed and decoded bytes",
+    )
+    source_review.add_argument(
+        "--platform-root",
+        type=Path,
+        help="optional platform repository; verifies identity and calendar source files",
+    )
+    data_targets = commands.add_parser("validate-data-targets")
+    data_targets.add_argument("manifest", type=Path)
+    data_targets.add_argument(
+        "--platform-root",
+        type=Path,
+        help="optional platform repository; verifies identity and calendar source files",
     )
     context_hash = commands.add_parser("context-hash")
     context_hash.add_argument("context", type=Path)
@@ -163,6 +176,15 @@ def main() -> int:
                 args.review,
                 contracts,
                 source_root=args.source_root,
+                platform_root=args.platform_root,
+            )
+            print(json.dumps({"valid": True, **summary}))
+            return 0
+        if args.command == "validate-data-targets":
+            summary = validate_data_targets(
+                args.manifest,
+                contracts,
+                platform_root=args.platform_root,
             )
             print(json.dumps({"valid": True, **summary}))
             return 0

@@ -136,13 +136,17 @@
     }
   ],
   "target_readiness": {
-    "status": "pending",
-    "platform_listing_ids_pinned": false,
-    "trading_calendar_pinned": false,
-    "chronological_splits_pinned": false,
-    "purge_embargo_pinned": false,
-    "held_out_boundary_pinned": false,
+    "status": "ready",
+    "platform_listing_ids_pinned": true,
+    "trading_calendar_pinned": true,
+    "chronological_splits_pinned": true,
+    "purge_embargo_pinned": true,
+    "held_out_boundary_pinned": true,
     "labels_separate": true,
-    "notes": "Source licensing and bytes are reviewed. Analysis targets wait for a platform export that pins listing IDs, XNYS calendar horizons, chronological splits, purge/embargo and the held-out boundary; market labels remain a separate platform artifact."
+    "target_manifest": {
+      "path": "sec-edgar-r11-analysis-targets.json",
+      "sha256": "2ddca7a669c45dc3d2ec82fd6f3a0d6c4362c861118ded0c606304c1f798b7d2"
+    },
+    "notes": "The linked reviewed target manifest pins the current platform listing-ID snapshot, XNYS one-month horizons, chronological cutoff groups, 21-session purge/embargo evidence and the held-out test boundary. It contains no expected analyses or outcome labels and is not training- or performance-claim eligible."
   }
 }

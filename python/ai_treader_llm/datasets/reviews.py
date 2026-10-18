@@ -7,10 +7,15 @@ import json
 from pathlib import Path
 
 from ai_treader_llm.contracts import ContractError, Contracts, timestamp
+from ai_treader_llm.datasets.targets import validate_target_source_link
 
 
 def validate_source_review(
-    path: Path, contracts: Contracts, *, source_root: Path | None = None
+    path: Path,
+    contracts: Contracts,
+    *,
+    source_root: Path | None = None,
+    platform_root: Path | None = None,
 ) -> dict:
     try:
         review = json.loads(path.read_text(encoding="utf-8"))
@@ -41,9 +46,18 @@ def validate_source_review(
         "purge_embargo_pinned",
         "held_out_boundary_pinned",
     )
-    ready = all(readiness[field] for field in controls)
+    target_entry = readiness["target_manifest"]
+    ready = all(readiness[field] for field in controls) and target_entry is not None
     if (readiness["status"] == "ready") != ready:
         raise ContractError("target readiness disagrees with required controls")
+
+    target_summary = None
+    if target_entry is not None:
+        target_path = _contained(path.resolve().parent, target_entry["path"])
+        _check_file(target_path, target_entry["sha256"], None)
+        target_summary = validate_target_source_link(
+            target_path, review, contracts, platform_root=platform_root
+        )
 
     if source_root is not None:
         root = source_root.resolve()
@@ -78,7 +92,9 @@ def validate_source_review(
         "access_status": review["access"]["status"],
         "survivorship_status": review["universe"]["survivorship_status"],
         "target_status": readiness["status"],
+        "targets": 0 if target_summary is None else target_summary["targets"],
         "bytes_verified": source_root is not None,
+        "platform_files_verified": False if target_summary is None else target_summary["platform_files_verified"],
     }
 
 
