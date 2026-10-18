@@ -33,6 +33,8 @@ uv run --frozen ai-treader-llm evaluate-tools \
 uv run --frozen ai-treader-llm validate-analysis examples/v2/analysis.json --context examples/v2/context.json
 uv run --frozen ai-treader-llm validate-manifest examples/v2/dataset-manifest.json \
   --evaluation-boundary 2025-06-01T00:00:00Z
+# real SEC source review; add --source-root to verify the captured bytes
+uv run --frozen ai-treader-llm validate-source-review examples/data-review-v1/sec-edgar-r11.json
 # numeric v1 (shared fixtures for platform ALPHA01)
 uv run --frozen ai-treader-llm validate-numeric-input examples/numeric-v1/input-manifest.json
 uv run --frozen ai-treader-llm validate-numeric-dataset examples/numeric-v1/dataset-manifest.json
@@ -41,7 +43,9 @@ uv run --frozen ai-treader-llm validate-alpha examples/numeric-v1/forecast.json 
   --input examples/numeric-v1/input-manifest.json
 ```
 
-The CPU checks need no NVIDIA GPU or Docker daemon. Example data is synthetic.
+The CPU checks need no NVIDIA GPU or Docker daemon. Analysis and numeric examples
+are synthetic. The SEC review contains provenance and hashes only; the source bytes
+remain in the platform repository and can be verified with `--source-root`.
 
 Run the versioned endpoint benchmark through the private SSH tunnel; generated reports
 stay in the ignored `artifacts/` directory:
@@ -93,6 +97,13 @@ Dataset manifests pin sample and optional outcome files by SHA-256 and row count
 Validation resolves only paths contained by the manifest directory, re-runs all
 dataset checks, verifies split boundaries and analysis horizons, and requires
 explicit licensing/reviewer status. The included manifest is synthetic-only.
+
+Real-source review receipts keep provider data out of Git while pinning its capture
+revision, manifest, compressed and decoded hashes, access-policy review, and universe
+limitations. `validate-source-review --source-root DIR` verifies the receipt against
+the external bundle. A reviewed source is not a reviewed dataset: target readiness
+stays pending until platform listing IDs, XNYS horizons, chronological splits,
+purge/embargo, and the held-out boundary are pinned. Outcome labels stay separate.
 
 Numeric v1 uses exact decimal strings and string-encoded positive int64 listing IDs.
 The input manifest pins a calendar, feature definitions, universe policy, source

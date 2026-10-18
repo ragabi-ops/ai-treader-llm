@@ -202,6 +202,22 @@ This image contains synthetic fixtures and CPU tooling only. Real jobs must moun
 explicit input directories read-only; never mount the entire `/data` tree into a
 trainer. Run jobs locally with `uv` on the Mac to avoid the GPU Compose dependency.
 
+For a real source bundle, validate its tracked review receipt first. Omitting
+`--source-root` checks the receipt structure; supplying the read-only bundle also
+checks the capture manifest plus compressed and decoded hashes:
+
+```bash
+uv run --frozen ai-treader-llm validate-source-review \
+  examples/data-review-v1/sec-edgar-r11.json \
+  --source-root ../ai-treader-platform/backend/internal/secfacts/testdata/r11
+```
+
+This receipt approves the recorded SEC source for local personal research and
+records its survivorship-biased pilot scope. It does not approve analysis targets
+or performance claims. Keep target readiness pending until platform listing IDs,
+calendar horizons, chronological splits, purge/embargo, and the held-out boundary
+are all pinned; keep outcome labels in their separate artifact.
+
 ## Stop, upgrade, and recover
 
 ```bash

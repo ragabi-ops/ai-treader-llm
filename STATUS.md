@@ -4,7 +4,7 @@ Updated 2026-10-19. [tasks/BACKLOG.csv](tasks/BACKLOG.csv) is the task-state,
 execution-order and cross-repository dependency authority. Run
 `python3 scripts/backlog.py` before selecting work.
 
-**Next task: DATA01 — build reviewed real-data manifests and analysis targets (LLM project).**
+**Next task: DATA01 — build reviewed real-data manifests and analysis targets (LLM project; in progress).**
 
 HARD01 remains in progress, with existing edits preserved. Hosted-agent planning
 AGENT00 is complete and extends the approved ALPHA00 scope; no runtime is switched.
@@ -26,14 +26,17 @@ See [architecture.md](architecture.md) for the cross-repository component and fl
   distinct from the earlier BENCH01 deployment; CTX01 qualifies the new configuration.
 - Numeric v1 schemas, Python validators and synthetic shared fixtures are delivered.
   Numeric models, batch forecasting and text-attribute extraction remain planned;
-  no numeric model or real reviewed dataset exists. Training, RAG, export and
+  no numeric model or real reviewed dataset exists. DATA01 has started with a
+  hash-verified SEC EDGAR R11 source receipt that records access terms and its
+  survivorship-biased pilot scope; analysis targets remain pending platform IDs,
+  calendar/split controls and a held-out boundary. Training, RAG, export and
   promotion are not implemented.
   Offline structural checks
   do not establish semantic grounding, model quality, trading performance or authority.
 
 ## Next work
 
-DATA01 is the next eligible local task. CPU ALPHA02 follows only after DATA01 and
+DATA01 is in progress. CPU ALPHA02 follows only after DATA01 and
 the external platform numeric export/protocol gates close. Hosted Codex/Claude
 calls, strategy research and concise per-listing
 records belong to the platform's AGENT tasks. This repository owns numeric jobs

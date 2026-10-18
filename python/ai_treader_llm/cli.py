@@ -12,6 +12,7 @@ from ai_treader_llm.benchmark import measure_recovery, run_benchmark, write_repo
 from ai_treader_llm.contracts import ContractError, Contracts, timestamp
 from ai_treader_llm.datasets.manifests import validate_manifest
 from ai_treader_llm.datasets.outcomes import validate_outcomes
+from ai_treader_llm.datasets.reviews import validate_source_review
 from ai_treader_llm.datasets.samples import build_messages, read_jsonl, validate_dataset
 from ai_treader_llm.evaluation.runner import evaluate
 from ai_treader_llm.evaluation.tools import evaluate_tool_calls
@@ -47,6 +48,13 @@ def main() -> int:
     manifest.add_argument(
         "--evaluation-boundary",
         help="UTC embargoed boundary: every cutoff and label interval must end before it",
+    )
+    source_review = commands.add_parser("validate-source-review")
+    source_review.add_argument("review", type=Path)
+    source_review.add_argument(
+        "--source-root",
+        type=Path,
+        help="optional source-bundle directory; verifies compressed and decoded bytes",
     )
     context_hash = commands.add_parser("context-hash")
     context_hash.add_argument("context", type=Path)
@@ -147,6 +155,14 @@ def main() -> int:
                 args.manifest,
                 contracts,
                 evaluation_boundary=timestamp(boundary) if boundary else None,
+            )
+            print(json.dumps({"valid": True, **summary}))
+            return 0
+        if args.command == "validate-source-review":
+            summary = validate_source_review(
+                args.review,
+                contracts,
+                source_root=args.source_root,
             )
             print(json.dumps({"valid": True, **summary}))
             return 0

@@ -1,0 +1,148 @@
+{
+  "schema_version": "data-source-review-v1",
+  "review_id": "sec-edgar-r11-2026-09-26",
+  "created_at": "2026-10-19T12:00:00Z",
+  "source": {
+    "provider": "U.S. Securities and Exchange Commission",
+    "dataset": "EDGAR submissions and companyfacts APIs",
+    "capture_repository": "ai-treader-platform",
+    "capture_revision": "1eff33493e645d87544a5ea8ce64afe964374b93",
+    "capture_manifest_path": "manifest.json",
+    "capture_manifest_sha256": "9762762c4a9c1952a677f9f8a4f3e89edb5a4f5cd55e43e3982003390d071b3c",
+    "availability_basis": "SEC acceptance metadata is distinct from capture time; platform calendar logic determines the first eligible XNYS close."
+  },
+  "access": {
+    "status": "permitted",
+    "use_scope": "local_personal_research",
+    "redistribution": "permitted",
+    "policy_urls": [
+      "https://www.sec.gov/about/developer-resources",
+      "https://www.sec.gov/about/privacy-information",
+      "https://www.sec.gov/search-filings/edgar-application-programming-interfaces"
+    ],
+    "reviewed_at": "2026-10-19T12:00:00Z",
+    "reviewer": "codex-data-review",
+    "notes": "SEC.gov states that public website information may be copied or distributed without SEC permission and asks users to consider citing the SEC as source. SEC seals, logos and registered marks are excluded. Automated acquisition must follow SEC fair-access and declared-client rules."
+  },
+  "universe": {
+    "selection_policy": "R11 recorded-fixture subset selected from the platform pilot for decoder and availability coverage, not as a research universe.",
+    "selected_on": "2026-09-25",
+    "identifiers": ["CIK0000040545", "CIK0000320193", "CIK0000909832"],
+    "survivorship_status": "survivorship_biased",
+    "delisted_entities_included": false,
+    "eligible_for_performance_claims": false,
+    "notes": "AAPL, GE and COST are a fixed convenience subset of a deliberately case-based pilot. This bundle cannot support universe coverage or trading-performance claims."
+  },
+  "artifacts": [
+    {
+      "path": "submissions-CIK0000320193.json.gz",
+      "request": "sec:/submissions/CIK0000320193.json",
+      "retrieved_at": "2026-09-26T17:51:49.373917Z",
+      "compression": "gzip",
+      "compressed_sha256": "19ee70652e5e9bde4fa2c5a45d65ebe7daabae9a070dbc4478118fa1f32e809f",
+      "compressed_bytes": 27590,
+      "content_sha256": "dabb28a7c4af8fac408a72345ec959c1a08255a6c5c1af99c4f22b2beacfc77f",
+      "content_bytes": 163991
+    },
+    {
+      "path": "CIK0000320193-submissions-001.json.gz",
+      "request": "sec:/submissions/CIK0000320193-submissions-001.json",
+      "retrieved_at": "2026-09-26T17:51:49.836051Z",
+      "compression": "gzip",
+      "compressed_sha256": "f0bfcd9fc112fd9a44407d400581c9f7fb570b2514961c9a5cbc6fca5d7651fa",
+      "compressed_bytes": 34517,
+      "content_sha256": "e36f7d2044f11c9e996507a8f47d00d0fef121a4ccc805269ec985e0d3e589f5",
+      "content_bytes": 202620
+    },
+    {
+      "path": "companyfacts-CIK0000320193.json.gz",
+      "request": "sec:/api/xbrl/companyfacts/CIK0000320193.json",
+      "retrieved_at": "2026-09-26T17:51:50.328011Z",
+      "compression": "gzip",
+      "compressed_sha256": "1f1781284b6bd3b009dfd6c076923dc65a54052002a4d31470bae3526dea6a52",
+      "compressed_bytes": 268989,
+      "content_sha256": "73a86c6aedc31f77cac2ea4df5f80f0b3bd7e6eb58bb4e01444fbedf3afb9c43",
+      "content_bytes": 3789099
+    },
+    {
+      "path": "submissions-CIK0000040545.json.gz",
+      "request": "sec:/submissions/CIK0000040545.json",
+      "retrieved_at": "2026-09-26T17:51:50.606879Z",
+      "compression": "gzip",
+      "compressed_sha256": "e29639228c2cdfa28d430dce0dadc2d5929a334470b485d7895a09fd762c591a",
+      "compressed_bytes": 25646,
+      "content_sha256": "5a60b4e5278d408893d3609fa3be4609b633d900c12af6ece1bb24f5318c1b49",
+      "content_bytes": 166464
+    },
+    {
+      "path": "CIK0000040545-submissions-001.json.gz",
+      "request": "sec:/submissions/CIK0000040545-submissions-001.json",
+      "retrieved_at": "2026-09-26T17:51:51.318171Z",
+      "compression": "gzip",
+      "compressed_sha256": "f7a77f94dac02cc418171525392f7b67d9025affc84cde10b516588c634a7c20",
+      "compressed_bytes": 42525,
+      "content_sha256": "6e66788c0778278138e943c138c4e4eea1735aa62d61c97f91f37cefd3600fd6",
+      "content_bytes": 321446
+    },
+    {
+      "path": "CIK0000040545-submissions-002.json.gz",
+      "request": "sec:/submissions/CIK0000040545-submissions-002.json",
+      "retrieved_at": "2026-09-26T17:51:51.918063Z",
+      "compression": "gzip",
+      "compressed_sha256": "6854424cdc13005677a0fecf8ed9bc67d147cd495c1bf3b41bfc1b6d59ac2a14",
+      "compressed_bytes": 35633,
+      "content_sha256": "c2a4688585acc8b279281f79517d4f7f35258c40d422fd5e4f77f27074235996",
+      "content_bytes": 273881
+    },
+    {
+      "path": "companyfacts-CIK0000040545.json.gz",
+      "request": "sec:/api/xbrl/companyfacts/CIK0000040545.json",
+      "retrieved_at": "2026-09-26T17:51:52.286038Z",
+      "compression": "gzip",
+      "compressed_sha256": "a8bb3cb2c0440c0633a04ee05087e9ce1b4d8200f70dccf4c41baa8df55559ab",
+      "compressed_bytes": 435279,
+      "content_sha256": "8c18acb17bbe0760fae6205c5df75b805480c58d4d1dbbabeba206d9ca36e1e3",
+      "content_bytes": 6101059
+    },
+    {
+      "path": "submissions-CIK0000909832.json.gz",
+      "request": "sec:/submissions/CIK0000909832.json",
+      "retrieved_at": "2026-09-26T17:51:52.709752Z",
+      "compression": "gzip",
+      "compressed_sha256": "2144cce294b8da0ef77cbb7dc81a16d700c7d48d52e377ce98689e03be78cd80",
+      "compressed_bytes": 23485,
+      "content_sha256": "4adb0612389f9106dba1b6d9f9ffe1f0a538e4b1fd04dff75c42a26d8f994a71",
+      "content_bytes": 159116
+    },
+    {
+      "path": "CIK0000909832-submissions-001.json.gz",
+      "request": "sec:/submissions/CIK0000909832-submissions-001.json",
+      "retrieved_at": "2026-09-26T17:51:53.356037Z",
+      "compression": "gzip",
+      "compressed_sha256": "a79df3e8417dc0d63fbb6c6cf81b208a8bd50f31650d037567672cb89bdc1710",
+      "compressed_bytes": 37402,
+      "content_sha256": "d5d8573e42c4f3cb9d01269dce142752415677866493281b21e838c29b702eeb",
+      "content_bytes": 268868
+    },
+    {
+      "path": "companyfacts-CIK0000909832.json.gz",
+      "request": "sec:/api/xbrl/companyfacts/CIK0000909832.json",
+      "retrieved_at": "2026-09-26T17:51:53.882136Z",
+      "compression": "gzip",
+      "compressed_sha256": "86e42d8895e20854e89bba02413e8ae25002a7e93f49f9f72d0ba50f7b948843",
+      "compressed_bytes": 246558,
+      "content_sha256": "71a4fd99c86f27c3aa27b8f05b3a9705c16f0060b425395bb1a367ce239b7d1f",
+      "content_bytes": 3617189
+    }
+  ],
+  "target_readiness": {
+    "status": "pending",
+    "platform_listing_ids_pinned": false,
+    "trading_calendar_pinned": false,
+    "chronological_splits_pinned": false,
+    "purge_embargo_pinned": false,
+    "held_out_boundary_pinned": false,
+    "labels_separate": true,
+    "notes": "Source licensing and bytes are reviewed. Analysis targets wait for a platform export that pins listing IDs, XNYS calendar horizons, chronological splits, purge/embargo and the held-out boundary; market labels remain a separate platform artifact."
+  }
+}
