@@ -4,7 +4,10 @@
 
 ```text
 Existing Go platform
-  application analysis workflow
+  hosted research via existing Codex/Claude review bridge (new task types planned)
+    → canonical role/template + bounded evidence → strict review/proposal
+    → Go-owned strategy versions/backtests + concise PostgreSQL research records
+  local Qwen analysis workflow (existing; L03 and optional comparator)
     → provider-neutral LLM client → llama.cpp / future provider
     → allowlisted deterministic tools → existing market services
     → timestamp-filtered retrieval → existing Postgres
@@ -102,8 +105,10 @@ for inputs with at least 20 tokens, multiset-token Jaccard similarity of 0.90 or
 greater. Individual historical sources may legitimately recur in later samples.
 This is a deterministic leakage heuristic, not proof that lower-scoring inputs are
 independent. Survivorship controls and licensing review remain pending. Outcome
-labels belong in a separately permissioned dataset, never the sample schema or a
-trainer mount. Synthetic examples are not financial training data.
+labels belong in a separately permissioned dataset, never the sample schema or an
+LLM/SFT trainer mount. A separate numeric supervised fit job may read its permitted
+training labels; prediction jobs never receive labels. Synthetic examples are not
+financial training data.
 
 ## Go integration contract (implement in the platform repository)
 
@@ -259,3 +264,74 @@ uv export --frozen --no-dev --no-emit-project -o requirements.lock.txt
 The CPU image base is pinned to a resolved multi-platform Python image digest.
 Update it deliberately alongside dependency validation. GPU runtime selection is locked by
 the bootstrap script; actual CUDA compatibility is accepted only after server tests.
+
+## Numeric forecasting boundary (ALPHA01 delivered 2026-10-19)
+
+ALPHA01 introduces a separate numeric contract package and runnable Python
+validators. Model fitting and platform import remain ALPHA02/platform work.
+Existing analysis-v2 messages and Qwen serving are unchanged. Numeric scores do
+not reuse the prose-analysis schema.
+
+The alpha-forecast-v1 family must bind immutable listing ID, UTC cutoff, exact
+calendar-based horizon, feature schema/version, input manifest hash, model artifact,
+training/configuration/code/runtime hashes, score meaning and explicit unavailable
+state. Pin expected listing/cutoff coverage so failures cannot disappear. Preserve
+exact IDs, hashes and financial values; define numeric serialization and test
+canonical hash vectors in Python and Go. Unknown fields must fail. A rank is not a
+calibrated probability or an order, and missing data is never a zero forecast.
+
+Numeric manifests bind separate feature and label artifacts, source revisions,
+identity/universe membership, availability policy (observed versus reconstructed),
+corporate-action basis, feature definitions and label entry/end timestamps. The
+platform computes deterministic financial transforms/labels; model packages own
+learned preprocessing and fitting. Every learned transform is fit inside training
+folds. Group each decision date across listings in the same chronological split;
+purge actual overlapping label windows and record the session embargo. Only
+matured permitted labels may enter training. Held-out labels are evaluation-only.
+LLM prompts, SFT targets and prediction job mounts never receive outcome labels.
+
+The public artifact family is:
+
+| Artifact | Purpose |
+|---|---|
+| `numeric-calendar-v1` | Hash-pinned XNYS session/open/close schedule used to verify next-open entry and calendar-month horizon close |
+| `numeric-input-v1` + `numeric-feature-row-v1` | Feature-only prediction input, expected row coverage, universe/action/availability policy and source provenance |
+| `alpha-request-v1` | Trusted batch/attempt, deadline, model provenance and score semantics |
+| `alpha-forecast-v1` | Complete available or typed-unavailable results bound to the trusted request |
+| `numeric-dataset-v1` + `numeric-label-v1` | Separate supervised labels, target definition, split assignment, purge and embargo evidence |
+
+Numeric values are canonical decimal strings. Listing IDs are canonical positive
+signed-int64 strings so cross-language JSON cannot round them. Self-hashed JSON
+uses sorted UTF-8 keys, compact separators, exact scalar bytes, no floats, no BOM
+and no trailing newline; referenced artifacts hash their raw bytes. The shared
+fixture suite declares ordered error codes and includes values beyond JavaScript's
+safe-integer range, DST, microsecond cutoffs, tampering and coverage failures.
+
+Batch attempts are platform-created and idempotent. Jobs receive immutable bounded
+inputs and emit artifacts; they have no database write or trading credentials.
+Platform import verifies scope, hashes, full coverage, schema and freshness before
+persisting successes, unavailable results or errors. Failed batches cannot silently
+reuse stale scores. Map validated scores to proposals through a separately
+versioned Go rule and existing policy/risk checks. Use PostgreSQL and existing job
+infrastructure rather than a second store or queue.
+
+TEXT01 attributes bind source passages and availability, model/prompt/schema hashes
+and unknown states. Human-reviewed extraction accuracy is separate from financial
+ablation performance. Historical extraction can retain pretrained hindsight even
+when sources are timestamp-filtered. Neither structural references nor model
+quantiles establish semantic truth, calibration or financial benefit.
+
+## Provider-neutral evidence evaluation (planned, 2026-10-07)
+
+Hosted product-agent instructions and application persistence belong to the platform,
+not this repository or engineering-assistant memory. Each call records role/template/
+schema versions, exact input hashes, configured and observed provider/model identity,
+source cutoffs and complete attempt outcomes. Existing review JSON and analysis-v2
+have different purposes; platform AGENT01/AGENT02 introduce tested versioned adapters
+without fabricating local-model artifact hashes for hosted providers.
+
+TEXT01 validates reviewed attribute captures from platform AGENT04, including exact
+listing/cutoff, source passages, unknown states, prompt/model/schema provenance and
+all failures. Qwen may supply a separately labelled comparator. Financial feature
+calculation and concise per-listing research retrieval remain Go-owned; labels never
+enter inference context, including indirectly through later outcomes or summaries.

@@ -1,0 +1,2645 @@
+{
+  "fixture_version": "1",
+  "base": {
+    "calendar": {
+      "schema_version": "numeric-calendar-v1",
+      "calendar_id": "synthetic-xnys-2025-q1",
+      "exchange": "XNYS",
+      "coverage_start": "2025-01-02",
+      "coverage_end": "2025-04-11",
+      "sessions": [
+        {
+          "session": "2025-01-02",
+          "open_at": "2025-01-02T14:30:00Z",
+          "close_at": "2025-01-02T21:00:00Z"
+        },
+        {
+          "session": "2025-01-03",
+          "open_at": "2025-01-03T14:30:00Z",
+          "close_at": "2025-01-03T21:00:00Z"
+        },
+        {
+          "session": "2025-01-06",
+          "open_at": "2025-01-06T14:30:00Z",
+          "close_at": "2025-01-06T21:00:00Z"
+        },
+        {
+          "session": "2025-01-07",
+          "open_at": "2025-01-07T14:30:00Z",
+          "close_at": "2025-01-07T21:00:00Z"
+        },
+        {
+          "session": "2025-01-08",
+          "open_at": "2025-01-08T14:30:00Z",
+          "close_at": "2025-01-08T21:00:00Z"
+        },
+        {
+          "session": "2025-01-10",
+          "open_at": "2025-01-10T14:30:00Z",
+          "close_at": "2025-01-10T21:00:00Z"
+        },
+        {
+          "session": "2025-01-13",
+          "open_at": "2025-01-13T14:30:00Z",
+          "close_at": "2025-01-13T21:00:00Z"
+        },
+        {
+          "session": "2025-01-14",
+          "open_at": "2025-01-14T14:30:00Z",
+          "close_at": "2025-01-14T21:00:00Z"
+        },
+        {
+          "session": "2025-01-15",
+          "open_at": "2025-01-15T14:30:00Z",
+          "close_at": "2025-01-15T21:00:00Z"
+        },
+        {
+          "session": "2025-01-16",
+          "open_at": "2025-01-16T14:30:00Z",
+          "close_at": "2025-01-16T21:00:00Z"
+        },
+        {
+          "session": "2025-01-17",
+          "open_at": "2025-01-17T14:30:00Z",
+          "close_at": "2025-01-17T21:00:00Z"
+        },
+        {
+          "session": "2025-01-21",
+          "open_at": "2025-01-21T14:30:00Z",
+          "close_at": "2025-01-21T21:00:00Z"
+        },
+        {
+          "session": "2025-01-22",
+          "open_at": "2025-01-22T14:30:00Z",
+          "close_at": "2025-01-22T21:00:00Z"
+        },
+        {
+          "session": "2025-01-23",
+          "open_at": "2025-01-23T14:30:00Z",
+          "close_at": "2025-01-23T21:00:00Z"
+        },
+        {
+          "session": "2025-01-24",
+          "open_at": "2025-01-24T14:30:00Z",
+          "close_at": "2025-01-24T21:00:00Z"
+        },
+        {
+          "session": "2025-01-27",
+          "open_at": "2025-01-27T14:30:00Z",
+          "close_at": "2025-01-27T21:00:00Z"
+        },
+        {
+          "session": "2025-01-28",
+          "open_at": "2025-01-28T14:30:00Z",
+          "close_at": "2025-01-28T21:00:00Z"
+        },
+        {
+          "session": "2025-01-29",
+          "open_at": "2025-01-29T14:30:00Z",
+          "close_at": "2025-01-29T21:00:00Z"
+        },
+        {
+          "session": "2025-01-30",
+          "open_at": "2025-01-30T14:30:00Z",
+          "close_at": "2025-01-30T21:00:00Z"
+        },
+        {
+          "session": "2025-01-31",
+          "open_at": "2025-01-31T14:30:00Z",
+          "close_at": "2025-01-31T21:00:00Z"
+        },
+        {
+          "session": "2025-02-03",
+          "open_at": "2025-02-03T14:30:00Z",
+          "close_at": "2025-02-03T21:00:00Z"
+        },
+        {
+          "session": "2025-02-04",
+          "open_at": "2025-02-04T14:30:00Z",
+          "close_at": "2025-02-04T21:00:00Z"
+        },
+        {
+          "session": "2025-02-05",
+          "open_at": "2025-02-05T14:30:00Z",
+          "close_at": "2025-02-05T21:00:00Z"
+        },
+        {
+          "session": "2025-02-06",
+          "open_at": "2025-02-06T14:30:00Z",
+          "close_at": "2025-02-06T21:00:00Z"
+        },
+        {
+          "session": "2025-02-07",
+          "open_at": "2025-02-07T14:30:00Z",
+          "close_at": "2025-02-07T21:00:00Z"
+        },
+        {
+          "session": "2025-02-10",
+          "open_at": "2025-02-10T14:30:00Z",
+          "close_at": "2025-02-10T21:00:00Z"
+        },
+        {
+          "session": "2025-02-11",
+          "open_at": "2025-02-11T14:30:00Z",
+          "close_at": "2025-02-11T21:00:00Z"
+        },
+        {
+          "session": "2025-02-12",
+          "open_at": "2025-02-12T14:30:00Z",
+          "close_at": "2025-02-12T21:00:00Z"
+        },
+        {
+          "session": "2025-02-13",
+          "open_at": "2025-02-13T14:30:00Z",
+          "close_at": "2025-02-13T21:00:00Z"
+        },
+        {
+          "session": "2025-02-14",
+          "open_at": "2025-02-14T14:30:00Z",
+          "close_at": "2025-02-14T21:00:00Z"
+        },
+        {
+          "session": "2025-02-18",
+          "open_at": "2025-02-18T14:30:00Z",
+          "close_at": "2025-02-18T21:00:00Z"
+        },
+        {
+          "session": "2025-02-19",
+          "open_at": "2025-02-19T14:30:00Z",
+          "close_at": "2025-02-19T21:00:00Z"
+        },
+        {
+          "session": "2025-02-20",
+          "open_at": "2025-02-20T14:30:00Z",
+          "close_at": "2025-02-20T21:00:00Z"
+        },
+        {
+          "session": "2025-02-21",
+          "open_at": "2025-02-21T14:30:00Z",
+          "close_at": "2025-02-21T21:00:00Z"
+        },
+        {
+          "session": "2025-02-24",
+          "open_at": "2025-02-24T14:30:00Z",
+          "close_at": "2025-02-24T21:00:00Z"
+        },
+        {
+          "session": "2025-02-25",
+          "open_at": "2025-02-25T14:30:00Z",
+          "close_at": "2025-02-25T21:00:00Z"
+        },
+        {
+          "session": "2025-02-26",
+          "open_at": "2025-02-26T14:30:00Z",
+          "close_at": "2025-02-26T21:00:00Z"
+        },
+        {
+          "session": "2025-02-27",
+          "open_at": "2025-02-27T14:30:00Z",
+          "close_at": "2025-02-27T21:00:00Z"
+        },
+        {
+          "session": "2025-02-28",
+          "open_at": "2025-02-28T14:30:00Z",
+          "close_at": "2025-02-28T21:00:00Z"
+        },
+        {
+          "session": "2025-03-03",
+          "open_at": "2025-03-03T14:30:00Z",
+          "close_at": "2025-03-03T21:00:00Z"
+        },
+        {
+          "session": "2025-03-04",
+          "open_at": "2025-03-04T14:30:00Z",
+          "close_at": "2025-03-04T21:00:00Z"
+        },
+        {
+          "session": "2025-03-05",
+          "open_at": "2025-03-05T14:30:00Z",
+          "close_at": "2025-03-05T21:00:00Z"
+        },
+        {
+          "session": "2025-03-06",
+          "open_at": "2025-03-06T14:30:00Z",
+          "close_at": "2025-03-06T21:00:00Z"
+        },
+        {
+          "session": "2025-03-07",
+          "open_at": "2025-03-07T14:30:00Z",
+          "close_at": "2025-03-07T21:00:00Z"
+        },
+        {
+          "session": "2025-03-10",
+          "open_at": "2025-03-10T13:30:00Z",
+          "close_at": "2025-03-10T20:00:00Z"
+        },
+        {
+          "session": "2025-03-11",
+          "open_at": "2025-03-11T13:30:00Z",
+          "close_at": "2025-03-11T20:00:00Z"
+        },
+        {
+          "session": "2025-03-12",
+          "open_at": "2025-03-12T13:30:00Z",
+          "close_at": "2025-03-12T20:00:00Z"
+        },
+        {
+          "session": "2025-03-13",
+          "open_at": "2025-03-13T13:30:00Z",
+          "close_at": "2025-03-13T20:00:00Z"
+        },
+        {
+          "session": "2025-03-14",
+          "open_at": "2025-03-14T13:30:00Z",
+          "close_at": "2025-03-14T20:00:00Z"
+        },
+        {
+          "session": "2025-03-17",
+          "open_at": "2025-03-17T13:30:00Z",
+          "close_at": "2025-03-17T20:00:00Z"
+        },
+        {
+          "session": "2025-03-18",
+          "open_at": "2025-03-18T13:30:00Z",
+          "close_at": "2025-03-18T20:00:00Z"
+        },
+        {
+          "session": "2025-03-19",
+          "open_at": "2025-03-19T13:30:00Z",
+          "close_at": "2025-03-19T20:00:00Z"
+        },
+        {
+          "session": "2025-03-20",
+          "open_at": "2025-03-20T13:30:00Z",
+          "close_at": "2025-03-20T20:00:00Z"
+        },
+        {
+          "session": "2025-03-21",
+          "open_at": "2025-03-21T13:30:00Z",
+          "close_at": "2025-03-21T20:00:00Z"
+        },
+        {
+          "session": "2025-03-24",
+          "open_at": "2025-03-24T13:30:00Z",
+          "close_at": "2025-03-24T20:00:00Z"
+        },
+        {
+          "session": "2025-03-25",
+          "open_at": "2025-03-25T13:30:00Z",
+          "close_at": "2025-03-25T20:00:00Z"
+        },
+        {
+          "session": "2025-03-26",
+          "open_at": "2025-03-26T13:30:00Z",
+          "close_at": "2025-03-26T20:00:00Z"
+        },
+        {
+          "session": "2025-03-27",
+          "open_at": "2025-03-27T13:30:00Z",
+          "close_at": "2025-03-27T20:00:00Z"
+        },
+        {
+          "session": "2025-03-28",
+          "open_at": "2025-03-28T13:30:00Z",
+          "close_at": "2025-03-28T20:00:00Z"
+        },
+        {
+          "session": "2025-03-31",
+          "open_at": "2025-03-31T13:30:00Z",
+          "close_at": "2025-03-31T20:00:00Z"
+        },
+        {
+          "session": "2025-04-01",
+          "open_at": "2025-04-01T13:30:00Z",
+          "close_at": "2025-04-01T20:00:00Z"
+        },
+        {
+          "session": "2025-04-02",
+          "open_at": "2025-04-02T13:30:00Z",
+          "close_at": "2025-04-02T20:00:00Z"
+        },
+        {
+          "session": "2025-04-03",
+          "open_at": "2025-04-03T13:30:00Z",
+          "close_at": "2025-04-03T20:00:00Z"
+        },
+        {
+          "session": "2025-04-04",
+          "open_at": "2025-04-04T13:30:00Z",
+          "close_at": "2025-04-04T20:00:00Z"
+        },
+        {
+          "session": "2025-04-07",
+          "open_at": "2025-04-07T13:30:00Z",
+          "close_at": "2025-04-07T20:00:00Z"
+        },
+        {
+          "session": "2025-04-08",
+          "open_at": "2025-04-08T13:30:00Z",
+          "close_at": "2025-04-08T20:00:00Z"
+        },
+        {
+          "session": "2025-04-09",
+          "open_at": "2025-04-09T13:30:00Z",
+          "close_at": "2025-04-09T20:00:00Z"
+        },
+        {
+          "session": "2025-04-10",
+          "open_at": "2025-04-10T13:30:00Z",
+          "close_at": "2025-04-10T20:00:00Z"
+        },
+        {
+          "session": "2025-04-11",
+          "open_at": "2025-04-11T13:30:00Z",
+          "close_at": "2025-04-11T20:00:00Z"
+        }
+      ],
+      "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034"
+    },
+    "inputs": {
+      "schema_version": "numeric-input-v1",
+      "dataset_id": "synthetic-numeric-v1",
+      "created_at": "2025-03-07T21:00:01Z",
+      "availability_policy": "observed",
+      "corporate_action_basis": "total_return_adjusted",
+      "action_policy_sha256": "70326812d99af158014a9c33b69b109f891f5e09cbe8dcb7bb8d7a09fbbfede0",
+      "universe": {
+        "snapshot_sha256": "ee8317f59f018133c6262ba8e52fbf038f2526c0288df25423ddad2854f6a650",
+        "membership_policy_sha256": "c2d90a8ec01d9656a0475bb36b2a771104f67023d2e008b373eb9697bdf7ec80",
+        "survivorship": "survivorship_biased_pilot"
+      },
+      "calendar": {
+        "path": "calendar.json",
+        "sha256": "38aaa64a432ad12e0831b70974f41fb9ca0d9bb8931948f590f0ac97c69355f6",
+        "count": 69
+      },
+      "feature_schema": {
+        "version": "synthetic-daily-v1",
+        "features": [
+          {
+            "feature_id": "return_5_sessions",
+            "unit": "decimal_return",
+            "definition_sha256": "0fb1cbc3f369036a45d19971f63e53165222be550bd942fb0ee1522f9d92f005"
+          },
+          {
+            "feature_id": "volume_ratio",
+            "unit": "ratio",
+            "definition_sha256": "b84e471dbad6a83967edbfb85db171ceca56a201add4924e9cc79d2e0fd7c924"
+          }
+        ],
+        "feature_schema_sha256": "e87dcc3f795351e6aaa3e6c4032553fd8db87c48bdde85f7496e573c40c5dc18"
+      },
+      "features": {
+        "path": "features.jsonl",
+        "sha256": "3bae18b00d7afa2879060e9079a041af6ac660e34bd4cb66ef1064612c2bfce4",
+        "count": 4
+      },
+      "expected_rows": [
+        {
+          "row_id": "jan-0",
+          "listing_id": "101",
+          "as_of_timestamp": "2025-01-03T21:00:00Z",
+          "horizon": {
+            "label": "1m",
+            "policy": "xnys-calendar-months-next-open-v1",
+            "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+            "decision_session": "2025-01-03",
+            "entry_session": "2025-01-06",
+            "entry_at": "2025-01-06T14:30:00Z",
+            "end_session": "2025-02-03",
+            "end_at": "2025-02-03T21:00:00Z"
+          }
+        },
+        {
+          "row_id": "jan-1",
+          "listing_id": "9007199254740993",
+          "as_of_timestamp": "2025-01-03T21:00:00Z",
+          "horizon": {
+            "label": "1m",
+            "policy": "xnys-calendar-months-next-open-v1",
+            "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+            "decision_session": "2025-01-03",
+            "entry_session": "2025-01-06",
+            "entry_at": "2025-01-06T14:30:00Z",
+            "end_session": "2025-02-03",
+            "end_at": "2025-02-03T21:00:00Z"
+          }
+        },
+        {
+          "row_id": "mar-0",
+          "listing_id": "101",
+          "as_of_timestamp": "2025-03-07T21:00:00Z",
+          "horizon": {
+            "label": "1m",
+            "policy": "xnys-calendar-months-next-open-v1",
+            "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+            "decision_session": "2025-03-07",
+            "entry_session": "2025-03-10",
+            "entry_at": "2025-03-10T13:30:00Z",
+            "end_session": "2025-04-07",
+            "end_at": "2025-04-07T20:00:00Z"
+          }
+        },
+        {
+          "row_id": "mar-1",
+          "listing_id": "9007199254740993",
+          "as_of_timestamp": "2025-03-07T21:00:00Z",
+          "horizon": {
+            "label": "1m",
+            "policy": "xnys-calendar-months-next-open-v1",
+            "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+            "decision_session": "2025-03-07",
+            "entry_session": "2025-03-10",
+            "entry_at": "2025-03-10T13:30:00Z",
+            "end_session": "2025-04-07",
+            "end_at": "2025-04-07T20:00:00Z"
+          }
+        }
+      ],
+      "input_manifest_sha256": "e2d0b8c6729ce796db13139143458ed5e0d2613238b03e80a8418a5378bb0e51"
+    },
+    "features": [
+      {
+        "schema_version": "numeric-feature-row-v1",
+        "row_id": "jan-0",
+        "sources": [
+          {
+            "source_id": "prices",
+            "revision": "synthetic-revision-1",
+            "content_sha256": "d0f652dc2ee26c69705feec117cd0ffcdbcda2d8e3402e048a6098e78c9769ca",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "license": {
+              "status": "synthetic_only",
+              "reference": "Generated fixture; no real source or training use."
+            }
+          }
+        ],
+        "features": [
+          {
+            "feature_id": "return_5_sessions",
+            "value": {
+              "status": "available",
+              "value": "0.012345678901234567"
+            },
+            "source_ids": [
+              "prices"
+            ]
+          },
+          {
+            "feature_id": "volume_ratio",
+            "value": {
+              "status": "unavailable",
+              "reason": "not_collected"
+            },
+            "source_ids": []
+          }
+        ]
+      },
+      {
+        "schema_version": "numeric-feature-row-v1",
+        "row_id": "jan-1",
+        "sources": [
+          {
+            "source_id": "prices",
+            "revision": "synthetic-revision-1",
+            "content_sha256": "bb03b907ea5744c27422435c0bd0c004364d517b04e3cb740943269a9af5e652",
+            "available_at": "2025-01-03T21:00:00Z",
+            "ingested_at": "2025-01-03T21:00:00Z",
+            "license": {
+              "status": "synthetic_only",
+              "reference": "Generated fixture; no real source or training use."
+            }
+          }
+        ],
+        "features": [
+          {
+            "feature_id": "return_5_sessions",
+            "value": {
+              "status": "available",
+              "value": "0.012345678901234567"
+            },
+            "source_ids": [
+              "prices"
+            ]
+          },
+          {
+            "feature_id": "volume_ratio",
+            "value": {
+              "status": "unavailable",
+              "reason": "not_collected"
+            },
+            "source_ids": []
+          }
+        ]
+      },
+      {
+        "schema_version": "numeric-feature-row-v1",
+        "row_id": "mar-0",
+        "sources": [
+          {
+            "source_id": "prices",
+            "revision": "synthetic-revision-1",
+            "content_sha256": "5b13659ea8a3d9b2e0474e2808fd3624d206df8ef4f9d0d7ee947d88806aa21b",
+            "available_at": "2025-03-07T21:00:00Z",
+            "ingested_at": "2025-03-07T21:00:00Z",
+            "license": {
+              "status": "synthetic_only",
+              "reference": "Generated fixture; no real source or training use."
+            }
+          }
+        ],
+        "features": [
+          {
+            "feature_id": "return_5_sessions",
+            "value": {
+              "status": "available",
+              "value": "0.012345678901234567"
+            },
+            "source_ids": [
+              "prices"
+            ]
+          },
+          {
+            "feature_id": "volume_ratio",
+            "value": {
+              "status": "unavailable",
+              "reason": "not_collected"
+            },
+            "source_ids": []
+          }
+        ]
+      },
+      {
+        "schema_version": "numeric-feature-row-v1",
+        "row_id": "mar-1",
+        "sources": [
+          {
+            "source_id": "prices",
+            "revision": "synthetic-revision-1",
+            "content_sha256": "9483b2343060a1e6738b5f5d7455000b69fff6143601c44f48d07cf3f03353c1",
+            "available_at": "2025-03-07T21:00:00Z",
+            "ingested_at": "2025-03-07T21:00:00Z",
+            "license": {
+              "status": "synthetic_only",
+              "reference": "Generated fixture; no real source or training use."
+            }
+          }
+        ],
+        "features": [
+          {
+            "feature_id": "return_5_sessions",
+            "value": {
+              "status": "available",
+              "value": "0.012345678901234567"
+            },
+            "source_ids": [
+              "prices"
+            ]
+          },
+          {
+            "feature_id": "volume_ratio",
+            "value": {
+              "status": "unavailable",
+              "reason": "not_collected"
+            },
+            "source_ids": []
+          }
+        ]
+      }
+    ],
+    "request": {
+      "schema_version": "alpha-request-v1",
+      "batch_id": "synthetic-batch-1",
+      "attempt_id": "synthetic-attempt-1",
+      "input_manifest_sha256": "e2d0b8c6729ce796db13139143458ed5e0d2613238b03e80a8418a5378bb0e51",
+      "feature_schema_sha256": "e87dcc3f795351e6aaa3e6c4032553fd8db87c48bdde85f7496e573c40c5dc18",
+      "requested_at": "2025-03-07T21:00:02Z",
+      "deadline_at": "2025-03-07T21:01:02Z",
+      "model": {
+        "artifact_sha256": "aa5678202dae1f860ed5a623362b6702f300fbc17f92b965ea86746980090a76",
+        "training_manifest_sha256": "3f35f2a1323eb9dcee10fd617465ac5106333bd1b9dc7db1943961530fc9fa09",
+        "config_sha256": "038fc30cfb385c4bfc79217f223db03b314edd759a632e56c066bd4847af734d",
+        "code_sha256": "7bc38541c0aa6f997f984f4066271c3c6f0da5fc32c9f57ed0dd72e3feaff7cf",
+        "runtime_sha256": "fcc0ff21834452a9976abbdcd0c408c6f8a244cd6b3b9ffbf2ba2044d434685e",
+        "seed": 0
+      },
+      "score_semantics": {
+        "kind": "expected_excess_return",
+        "unit": "decimal_return",
+        "direction": "higher_is_better",
+        "target": {
+          "kind": "benchmark_excess_return",
+          "unit": "decimal_return",
+          "benchmark_listing_id": "9007199254740995",
+          "entry_policy": "next_session_open",
+          "exit_policy": "horizon_close",
+          "price_basis": "total_return_adjusted",
+          "definition_sha256": "bb746f2a96e2f53e31317161683c2e4d770404281fc1fed2ed4e6ef04acc39a4"
+        }
+      }
+    },
+    "forecast": {
+      "schema_version": "alpha-forecast-v1",
+      "batch_id": "synthetic-batch-1",
+      "attempt_id": "synthetic-attempt-1",
+      "input_manifest_sha256": "e2d0b8c6729ce796db13139143458ed5e0d2613238b03e80a8418a5378bb0e51",
+      "feature_schema_sha256": "e87dcc3f795351e6aaa3e6c4032553fd8db87c48bdde85f7496e573c40c5dc18",
+      "model": {
+        "artifact_sha256": "aa5678202dae1f860ed5a623362b6702f300fbc17f92b965ea86746980090a76",
+        "training_manifest_sha256": "3f35f2a1323eb9dcee10fd617465ac5106333bd1b9dc7db1943961530fc9fa09",
+        "config_sha256": "038fc30cfb385c4bfc79217f223db03b314edd759a632e56c066bd4847af734d",
+        "code_sha256": "7bc38541c0aa6f997f984f4066271c3c6f0da5fc32c9f57ed0dd72e3feaff7cf",
+        "runtime_sha256": "fcc0ff21834452a9976abbdcd0c408c6f8a244cd6b3b9ffbf2ba2044d434685e",
+        "seed": 0
+      },
+      "score_semantics": {
+        "kind": "expected_excess_return",
+        "unit": "decimal_return",
+        "direction": "higher_is_better",
+        "target": {
+          "kind": "benchmark_excess_return",
+          "unit": "decimal_return",
+          "benchmark_listing_id": "9007199254740995",
+          "entry_policy": "next_session_open",
+          "exit_policy": "horizon_close",
+          "price_basis": "total_return_adjusted",
+          "definition_sha256": "bb746f2a96e2f53e31317161683c2e4d770404281fc1fed2ed4e6ef04acc39a4"
+        }
+      },
+      "generated_at": "2025-03-07T21:00:03Z",
+      "results": [
+        {
+          "row_id": "jan-0",
+          "listing_id": "101",
+          "as_of_timestamp": "2025-01-03T21:00:00Z",
+          "horizon": {
+            "label": "1m",
+            "policy": "xnys-calendar-months-next-open-v1",
+            "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+            "decision_session": "2025-01-03",
+            "entry_session": "2025-01-06",
+            "entry_at": "2025-01-06T14:30:00Z",
+            "end_session": "2025-02-03",
+            "end_at": "2025-02-03T21:00:00Z"
+          },
+          "score": {
+            "status": "available",
+            "value": "0"
+          }
+        },
+        {
+          "row_id": "jan-1",
+          "listing_id": "9007199254740993",
+          "as_of_timestamp": "2025-01-03T21:00:00Z",
+          "horizon": {
+            "label": "1m",
+            "policy": "xnys-calendar-months-next-open-v1",
+            "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+            "decision_session": "2025-01-03",
+            "entry_session": "2025-01-06",
+            "entry_at": "2025-01-06T14:30:00Z",
+            "end_session": "2025-02-03",
+            "end_at": "2025-02-03T21:00:00Z"
+          },
+          "score": {
+            "status": "unavailable",
+            "reason": "missing_features"
+          }
+        },
+        {
+          "row_id": "mar-0",
+          "listing_id": "101",
+          "as_of_timestamp": "2025-03-07T21:00:00Z",
+          "horizon": {
+            "label": "1m",
+            "policy": "xnys-calendar-months-next-open-v1",
+            "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+            "decision_session": "2025-03-07",
+            "entry_session": "2025-03-10",
+            "entry_at": "2025-03-10T13:30:00Z",
+            "end_session": "2025-04-07",
+            "end_at": "2025-04-07T20:00:00Z"
+          },
+          "score": {
+            "status": "available",
+            "value": "0"
+          }
+        },
+        {
+          "row_id": "mar-1",
+          "listing_id": "9007199254740993",
+          "as_of_timestamp": "2025-03-07T21:00:00Z",
+          "horizon": {
+            "label": "1m",
+            "policy": "xnys-calendar-months-next-open-v1",
+            "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+            "decision_session": "2025-03-07",
+            "entry_session": "2025-03-10",
+            "entry_at": "2025-03-10T13:30:00Z",
+            "end_session": "2025-04-07",
+            "end_at": "2025-04-07T20:00:00Z"
+          },
+          "score": {
+            "status": "unavailable",
+            "reason": "missing_features"
+          }
+        }
+      ],
+      "forecast_sha256": "1caa9dfc5e5cf1823b77ba0b20cd2d84b8c1d126fbd1a74f078f9afe76915ba1"
+    },
+    "dataset": {
+      "schema_version": "numeric-dataset-v1",
+      "dataset_id": "synthetic-numeric-v1",
+      "created_at": "2025-04-08T21:00:00Z",
+      "input_manifest": {
+        "path": "input-manifest.json",
+        "sha256": "1e916d36b94799278de15a9e3eeaef2cfde6a59ccca45fc4a62c1f99b72629b4",
+        "count": 1
+      },
+      "input_manifest_sha256": "e2d0b8c6729ce796db13139143458ed5e0d2613238b03e80a8418a5378bb0e51",
+      "labels": {
+        "path": "labels.jsonl",
+        "sha256": "68642fe910a7e99d5213276adb40077f42541dcbe9d553cc198da0cae2e63d76",
+        "count": 4
+      },
+      "target": {
+        "kind": "benchmark_excess_return",
+        "unit": "decimal_return",
+        "benchmark_listing_id": "9007199254740995",
+        "entry_policy": "next_session_open",
+        "exit_policy": "horizon_close",
+        "price_basis": "total_return_adjusted",
+        "definition_sha256": "bb746f2a96e2f53e31317161683c2e4d770404281fc1fed2ed4e6ef04acc39a4"
+      },
+      "assignments": [
+        {
+          "row_id": "jan-0",
+          "split": "train"
+        },
+        {
+          "row_id": "jan-1",
+          "split": "train"
+        },
+        {
+          "row_id": "mar-0",
+          "split": "validation"
+        },
+        {
+          "row_id": "mar-1",
+          "split": "validation"
+        }
+      ],
+      "split_policy": {
+        "date_grouped": true,
+        "label_window_purged": true,
+        "embargo_sessions": 1,
+        "embargoed_starts": {
+          "validation": "2025-02-04T21:00:00Z",
+          "test": null
+        }
+      },
+      "review": {
+        "status": "synthetic_only",
+        "reviewer": null,
+        "reviewed_at": null,
+        "notes": "Synthetic contract fixtures only; not reviewed training data."
+      },
+      "dataset_manifest_sha256": "440309ad72836a01fb02f14a0ce03ade530807d972c0c25ff22d76ab9d50159c"
+    },
+    "labels": [
+      {
+        "schema_version": "numeric-label-v1",
+        "row_id": "jan-0",
+        "listing_id": "101",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-next-open-v1",
+          "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+          "decision_session": "2025-01-03",
+          "entry_session": "2025-01-06",
+          "entry_at": "2025-01-06T14:30:00Z",
+          "end_session": "2025-02-03",
+          "end_at": "2025-02-03T21:00:00Z"
+        },
+        "target_definition_sha256": "bb746f2a96e2f53e31317161683c2e4d770404281fc1fed2ed4e6ef04acc39a4",
+        "available_at": "2025-02-03T21:00:00Z",
+        "sources": [
+          {
+            "source_id": "label-prices",
+            "revision": "synthetic-revision-1",
+            "content_sha256": "fae0f852c4c3f5c92778e9861235814c048d3b98489d5dacee1f905d6b69b84c",
+            "available_at": "2025-02-03T21:00:00Z",
+            "ingested_at": "2025-02-03T21:00:00Z",
+            "license": {
+              "status": "synthetic_only",
+              "reference": "Generated fixture; no real source or training use."
+            }
+          }
+        ],
+        "label": {
+          "status": "available",
+          "value": "0"
+        }
+      },
+      {
+        "schema_version": "numeric-label-v1",
+        "row_id": "jan-1",
+        "listing_id": "9007199254740993",
+        "as_of_timestamp": "2025-01-03T21:00:00Z",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-next-open-v1",
+          "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+          "decision_session": "2025-01-03",
+          "entry_session": "2025-01-06",
+          "entry_at": "2025-01-06T14:30:00Z",
+          "end_session": "2025-02-03",
+          "end_at": "2025-02-03T21:00:00Z"
+        },
+        "target_definition_sha256": "bb746f2a96e2f53e31317161683c2e4d770404281fc1fed2ed4e6ef04acc39a4",
+        "available_at": "2025-02-03T21:00:00Z",
+        "sources": [
+          {
+            "source_id": "label-prices",
+            "revision": "synthetic-revision-1",
+            "content_sha256": "721f7e6b878357f68c705e2a4c3234dfd3ab354838e637c11c571ec34f2a9c6f",
+            "available_at": "2025-02-03T21:00:00Z",
+            "ingested_at": "2025-02-03T21:00:00Z",
+            "license": {
+              "status": "synthetic_only",
+              "reference": "Generated fixture; no real source or training use."
+            }
+          }
+        ],
+        "label": {
+          "status": "available",
+          "value": "-0.025"
+        }
+      },
+      {
+        "schema_version": "numeric-label-v1",
+        "row_id": "mar-0",
+        "listing_id": "101",
+        "as_of_timestamp": "2025-03-07T21:00:00Z",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-next-open-v1",
+          "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+          "decision_session": "2025-03-07",
+          "entry_session": "2025-03-10",
+          "entry_at": "2025-03-10T13:30:00Z",
+          "end_session": "2025-04-07",
+          "end_at": "2025-04-07T20:00:00Z"
+        },
+        "target_definition_sha256": "bb746f2a96e2f53e31317161683c2e4d770404281fc1fed2ed4e6ef04acc39a4",
+        "available_at": "2025-04-07T20:00:00Z",
+        "sources": [
+          {
+            "source_id": "label-prices",
+            "revision": "synthetic-revision-1",
+            "content_sha256": "337938d5c8a9e141b3541a717d53976a08163d3ed4e8be536c7ec7b59c710b80",
+            "available_at": "2025-04-07T20:00:00Z",
+            "ingested_at": "2025-04-07T20:00:00Z",
+            "license": {
+              "status": "synthetic_only",
+              "reference": "Generated fixture; no real source or training use."
+            }
+          }
+        ],
+        "label": {
+          "status": "available",
+          "value": "0"
+        }
+      },
+      {
+        "schema_version": "numeric-label-v1",
+        "row_id": "mar-1",
+        "listing_id": "9007199254740993",
+        "as_of_timestamp": "2025-03-07T21:00:00Z",
+        "horizon": {
+          "label": "1m",
+          "policy": "xnys-calendar-months-next-open-v1",
+          "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+          "decision_session": "2025-03-07",
+          "entry_session": "2025-03-10",
+          "entry_at": "2025-03-10T13:30:00Z",
+          "end_session": "2025-04-07",
+          "end_at": "2025-04-07T20:00:00Z"
+        },
+        "target_definition_sha256": "bb746f2a96e2f53e31317161683c2e4d770404281fc1fed2ed4e6ef04acc39a4",
+        "available_at": "2025-04-07T20:00:00Z",
+        "sources": [
+          {
+            "source_id": "label-prices",
+            "revision": "synthetic-revision-1",
+            "content_sha256": "5dc32479d7ed03152c844199188d0b0be5160e63b949e6b0a4b5b7da5fa2dbb3",
+            "available_at": "2025-04-07T20:00:00Z",
+            "ingested_at": "2025-04-07T20:00:00Z",
+            "license": {
+              "status": "synthetic_only",
+              "reference": "Generated fixture; no real source or training use."
+            }
+          }
+        ],
+        "label": {
+          "status": "available",
+          "value": "-0.025"
+        }
+      }
+    ]
+  },
+  "cases": [
+    {
+      "name": "mixed-success-and-unavailable",
+      "operation": "forecast",
+      "expect": "valid",
+      "changes": []
+    },
+    {
+      "name": "separate-labels-and-date-grouped-splits",
+      "operation": "dataset",
+      "expect": "valid",
+      "changes": []
+    },
+    {
+      "name": "reconstructed-late-ingestion",
+      "operation": "input",
+      "expect": "valid",
+      "changes": [
+        {
+          "path": [
+            "features",
+            0,
+            "sources",
+            0,
+            "ingested_at"
+          ],
+          "value": "2025-03-07T21:00:00Z"
+        },
+        {
+          "path": [
+            "inputs",
+            "availability_policy"
+          ],
+          "value": "reconstructed"
+        },
+        {
+          "path": [
+            "inputs",
+            "input_manifest_sha256"
+          ],
+          "value": "dd5eeb9c5b2d121197923e158643a0615e372b7fe4bd13a3d64cb03fa05fe033"
+        }
+      ]
+    },
+    {
+      "name": "observed-late-ingestion",
+      "operation": "input",
+      "expect": "source_availability",
+      "changes": [
+        {
+          "path": [
+            "features",
+            0,
+            "sources",
+            0,
+            "ingested_at"
+          ],
+          "value": "2025-01-03T21:00:00.000001Z"
+        }
+      ]
+    },
+    {
+      "name": "future-source-one-microsecond",
+      "operation": "input",
+      "expect": "source_availability",
+      "changes": [
+        {
+          "path": [
+            "features",
+            0,
+            "sources",
+            0,
+            "available_at"
+          ],
+          "value": "2025-01-03T21:00:00.000001Z"
+        },
+        {
+          "path": [
+            "features",
+            0,
+            "sources",
+            0,
+            "ingested_at"
+          ],
+          "value": "2025-01-03T21:00:00.000001Z"
+        }
+      ]
+    },
+    {
+      "name": "ingestion-before-availability",
+      "operation": "input",
+      "expect": "source_availability",
+      "changes": [
+        {
+          "path": [
+            "features",
+            0,
+            "sources",
+            0,
+            "ingested_at"
+          ],
+          "value": "2025-01-03T20:59:59Z"
+        }
+      ]
+    },
+    {
+      "name": "unknown-feature-reference",
+      "operation": "input",
+      "expect": "source_reference",
+      "changes": [
+        {
+          "path": [
+            "features",
+            0,
+            "features",
+            0,
+            "source_ids",
+            0
+          ],
+          "value": "invented"
+        }
+      ]
+    },
+    {
+      "name": "available-feature-without-source",
+      "operation": "input",
+      "expect": "source_reference",
+      "changes": [
+        {
+          "path": [
+            "features",
+            0,
+            "features",
+            0,
+            "source_ids"
+          ],
+          "value": []
+        }
+      ]
+    },
+    {
+      "name": "duplicate-feature",
+      "operation": "input",
+      "expect": "feature_coverage",
+      "changes": [
+        {
+          "path": [
+            "features",
+            0,
+            "features",
+            1,
+            "feature_id"
+          ],
+          "value": "return_5_sessions"
+        }
+      ]
+    },
+    {
+      "name": "missing-feature",
+      "operation": "input",
+      "expect": "feature_coverage",
+      "changes": [
+        {
+          "path": [
+            "features",
+            0,
+            "features"
+          ],
+          "value": [
+            {
+              "feature_id": "return_5_sessions",
+              "value": {
+                "status": "available",
+                "value": "0.012345678901234567"
+              },
+              "source_ids": [
+                "prices"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "extra-feature",
+      "operation": "input",
+      "expect": "feature_coverage",
+      "changes": [
+        {
+          "path": [
+            "features",
+            0,
+            "features",
+            1,
+            "feature_id"
+          ],
+          "value": "future_return"
+        }
+      ]
+    },
+    {
+      "name": "restricted-source",
+      "operation": "input",
+      "expect": "source_reference",
+      "changes": [
+        {
+          "path": [
+            "features",
+            0,
+            "sources",
+            0,
+            "license",
+            "status"
+          ],
+          "value": "restricted"
+        }
+      ]
+    },
+    {
+      "name": "feature-definition-hash-changed",
+      "operation": "input",
+      "expect": "hash_mismatch",
+      "changes": [
+        {
+          "path": [
+            "inputs",
+            "feature_schema",
+            "features",
+            0,
+            "definition_sha256"
+          ],
+          "value": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "path": [
+            "inputs",
+            "input_manifest_sha256"
+          ],
+          "value": "133b589146484f25de482046c00b77f6e9bc340c0a270e2f308a88153942be31"
+        }
+      ]
+    },
+    {
+      "name": "input-hash-changed",
+      "operation": "input",
+      "expect": "hash_mismatch",
+      "changes": [
+        {
+          "path": [
+            "inputs",
+            "universe",
+            "survivorship"
+          ],
+          "value": "unknown"
+        }
+      ]
+    },
+    {
+      "name": "calendar-hash-changed",
+      "operation": "input",
+      "expect": "hash_mismatch",
+      "changes": [
+        {
+          "path": [
+            "calendar",
+            "sessions",
+            0,
+            "open_at"
+          ],
+          "value": "2025-01-02T14:31:00Z"
+        }
+      ]
+    },
+    {
+      "name": "thirty-days-is-not-one-calendar-month",
+      "operation": "input",
+      "expect": "calendar",
+      "changes": [
+        {
+          "path": [
+            "inputs",
+            "expected_rows",
+            0,
+            "horizon",
+            "end_session"
+          ],
+          "value": "2025-02-02"
+        },
+        {
+          "path": [
+            "inputs",
+            "input_manifest_sha256"
+          ],
+          "value": "673108676b05b55c18a8ffdf37062888daad79563d22325a24a9ca35605e8bb5"
+        }
+      ]
+    },
+    {
+      "name": "cutoff-close-is-not-executable-entry",
+      "operation": "input",
+      "expect": "calendar",
+      "changes": [
+        {
+          "path": [
+            "inputs",
+            "expected_rows",
+            0,
+            "horizon",
+            "entry_at"
+          ],
+          "value": "2025-01-03T21:00:00Z"
+        },
+        {
+          "path": [
+            "inputs",
+            "input_manifest_sha256"
+          ],
+          "value": "a511b07047a7995d680d9af393d943d64efb02fdf6ddd89d57965cfacad013fa"
+        }
+      ]
+    },
+    {
+      "name": "dst-entry-offset",
+      "operation": "input",
+      "expect": "calendar",
+      "changes": [
+        {
+          "path": [
+            "inputs",
+            "expected_rows",
+            2,
+            "horizon",
+            "entry_at"
+          ],
+          "value": "2025-03-10T14:30:00Z"
+        },
+        {
+          "path": [
+            "inputs",
+            "input_manifest_sha256"
+          ],
+          "value": "4d054691d797e6bbc60afd44e1b956a35e7e9c5ffa1134c85dd2942f3a7c37d7"
+        }
+      ]
+    },
+    {
+      "name": "label-in-feature-row",
+      "operation": "input",
+      "expect": "schema",
+      "changes": [
+        {
+          "path": [
+            "features",
+            0,
+            "label"
+          ],
+          "value": {
+            "status": "available",
+            "value": "0.2"
+          }
+        }
+      ]
+    },
+    {
+      "name": "unknown-horizon-field",
+      "operation": "input",
+      "expect": "schema",
+      "changes": [
+        {
+          "path": [
+            "inputs",
+            "expected_rows",
+            0,
+            "horizon",
+            "return"
+          ],
+          "value": "0.2"
+        },
+        {
+          "path": [
+            "inputs",
+            "input_manifest_sha256"
+          ],
+          "value": "a4e6a1f70e6a942c9ffe9107deae772f11fb28befc02f35c8d06ccbf904c3b85"
+        }
+      ]
+    },
+    {
+      "name": "json-number-listing-id",
+      "operation": "input",
+      "expect": "schema",
+      "changes": [
+        {
+          "path": [
+            "inputs",
+            "expected_rows",
+            0,
+            "listing_id"
+          ],
+          "value": 101
+        },
+        {
+          "path": [
+            "inputs",
+            "input_manifest_sha256"
+          ],
+          "value": "ceef52fce6dd0e69de87dd2dc732ffc594c44f067de517deed4317c24fd87c7c"
+        }
+      ]
+    },
+    {
+      "name": "int64-overflow",
+      "operation": "input",
+      "expect": "schema",
+      "changes": [
+        {
+          "path": [
+            "inputs",
+            "expected_rows",
+            0,
+            "listing_id"
+          ],
+          "value": "9223372036854775808"
+        },
+        {
+          "path": [
+            "inputs",
+            "input_manifest_sha256"
+          ],
+          "value": "672e5223e66b5569fffc6457ba6706f584fdb5cbd56e49bcf00b49bb11b1e327"
+        }
+      ]
+    },
+    {
+      "name": "float-feature",
+      "operation": "input",
+      "expect": "schema",
+      "changes": [
+        {
+          "path": [
+            "features",
+            0,
+            "features",
+            0,
+            "value",
+            "value"
+          ],
+          "value": 0.25
+        }
+      ]
+    },
+    {
+      "name": "unavailable-feature-has-value",
+      "operation": "input",
+      "expect": "schema",
+      "changes": [
+        {
+          "path": [
+            "features",
+            0,
+            "features",
+            1,
+            "value",
+            "value"
+          ],
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "name": "invalid-utc",
+      "operation": "input",
+      "expect": "schema",
+      "changes": [
+        {
+          "path": [
+            "inputs",
+            "expected_rows",
+            0,
+            "as_of_timestamp"
+          ],
+          "value": "2025-01-03T21:00:00+00:00"
+        },
+        {
+          "path": [
+            "inputs",
+            "input_manifest_sha256"
+          ],
+          "value": "1eba45dff844b287cdeed15a034919227da0d6e530876c4c02a4b8a2db2e2dcf"
+        }
+      ]
+    },
+    {
+      "name": "noncanonical-decimal--0",
+      "operation": "forecast",
+      "expect": "schema",
+      "changes": [
+        {
+          "path": [
+            "forecast",
+            "forecast_sha256"
+          ],
+          "value": "db1ea97a5890d81ffe60ac7e29f906d39ffc6c19f20c86b2f7b006119d5abf68"
+        },
+        {
+          "path": [
+            "forecast",
+            "results",
+            0,
+            "score",
+            "value"
+          ],
+          "value": "-0"
+        }
+      ]
+    },
+    {
+      "name": "noncanonical-decimal-01",
+      "operation": "forecast",
+      "expect": "schema",
+      "changes": [
+        {
+          "path": [
+            "forecast",
+            "forecast_sha256"
+          ],
+          "value": "b6d954994ea438d7adec1fbb4780dec2c688bcdf8c4fb329a0281f72bed04435"
+        },
+        {
+          "path": [
+            "forecast",
+            "results",
+            0,
+            "score",
+            "value"
+          ],
+          "value": "01"
+        }
+      ]
+    },
+    {
+      "name": "noncanonical-decimal-0.10",
+      "operation": "forecast",
+      "expect": "schema",
+      "changes": [
+        {
+          "path": [
+            "forecast",
+            "forecast_sha256"
+          ],
+          "value": "31d29da3be950d5d51ab22efae81ee41e29b7b1a5d8d5c2b7be4ae72f86c9253"
+        },
+        {
+          "path": [
+            "forecast",
+            "results",
+            0,
+            "score",
+            "value"
+          ],
+          "value": "0.10"
+        }
+      ]
+    },
+    {
+      "name": "noncanonical-decimal-1e-3",
+      "operation": "forecast",
+      "expect": "schema",
+      "changes": [
+        {
+          "path": [
+            "forecast",
+            "forecast_sha256"
+          ],
+          "value": "a3ed66773d01bf6fdf86756a4ad4f03cb68cbb00e615100c5f68c4e12a1e0d30"
+        },
+        {
+          "path": [
+            "forecast",
+            "results",
+            0,
+            "score",
+            "value"
+          ],
+          "value": "1e-3"
+        }
+      ]
+    },
+    {
+      "name": "noncanonical-decimal-NaN",
+      "operation": "forecast",
+      "expect": "schema",
+      "changes": [
+        {
+          "path": [
+            "forecast",
+            "forecast_sha256"
+          ],
+          "value": "4fb08a8307e81f6f24262bad0c17349cb3af1957b4fa696c1c5ba931f39d517b"
+        },
+        {
+          "path": [
+            "forecast",
+            "results",
+            0,
+            "score",
+            "value"
+          ],
+          "value": "NaN"
+        }
+      ]
+    },
+    {
+      "name": "noncanonical-decimal-1.0000000000000000001",
+      "operation": "forecast",
+      "expect": "schema",
+      "changes": [
+        {
+          "path": [
+            "forecast",
+            "forecast_sha256"
+          ],
+          "value": "dc448a80c2dfa50ddc29592e50c3db098c3d422f211c79a9a02cff6881a1f403"
+        },
+        {
+          "path": [
+            "forecast",
+            "results",
+            0,
+            "score",
+            "value"
+          ],
+          "value": "1.0000000000000000001"
+        }
+      ]
+    },
+    {
+      "name": "changed-listing_id",
+      "operation": "forecast",
+      "expect": "identity_mismatch",
+      "changes": [
+        {
+          "path": [
+            "forecast",
+            "forecast_sha256"
+          ],
+          "value": "be0f0ed5fa89303e0496dd4519b7cfb559a987322d7de723979a84467a06efa9"
+        },
+        {
+          "path": [
+            "forecast",
+            "results",
+            1,
+            "listing_id"
+          ],
+          "value": "9007199254740992"
+        }
+      ]
+    },
+    {
+      "name": "changed-as_of_timestamp",
+      "operation": "forecast",
+      "expect": "identity_mismatch",
+      "changes": [
+        {
+          "path": [
+            "forecast",
+            "forecast_sha256"
+          ],
+          "value": "39be1144439c2145bfb31d93a3e1f2820d4e75f6a5697cd7486975d07484e73f"
+        },
+        {
+          "path": [
+            "forecast",
+            "results",
+            1,
+            "as_of_timestamp"
+          ],
+          "value": "2025-01-03T20:59:59Z"
+        }
+      ]
+    },
+    {
+      "name": "forecast-horizon-mismatch",
+      "operation": "forecast",
+      "expect": "identity_mismatch",
+      "changes": [
+        {
+          "path": [
+            "forecast",
+            "forecast_sha256"
+          ],
+          "value": "050a79cacf0bff64f47683240091890076aa31474a4f0e7845437fd85b4147d0"
+        },
+        {
+          "path": [
+            "forecast",
+            "results",
+            0,
+            "horizon",
+            "label"
+          ],
+          "value": "3m"
+        }
+      ]
+    },
+    {
+      "name": "missing-result",
+      "operation": "forecast",
+      "expect": "coverage",
+      "changes": [
+        {
+          "path": [
+            "forecast",
+            "forecast_sha256"
+          ],
+          "value": "6498daaacbb35a8b2cbc2eba763f51bf291b545cf21998f42321b4f03ff2ff02"
+        },
+        {
+          "path": [
+            "forecast",
+            "results"
+          ],
+          "value": [
+            {
+              "row_id": "jan-0",
+              "listing_id": "101",
+              "as_of_timestamp": "2025-01-03T21:00:00Z",
+              "horizon": {
+                "label": "1m",
+                "policy": "xnys-calendar-months-next-open-v1",
+                "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+                "decision_session": "2025-01-03",
+                "entry_session": "2025-01-06",
+                "entry_at": "2025-01-06T14:30:00Z",
+                "end_session": "2025-02-03",
+                "end_at": "2025-02-03T21:00:00Z"
+              },
+              "score": {
+                "status": "available",
+                "value": "0"
+              }
+            },
+            {
+              "row_id": "jan-1",
+              "listing_id": "9007199254740993",
+              "as_of_timestamp": "2025-01-03T21:00:00Z",
+              "horizon": {
+                "label": "1m",
+                "policy": "xnys-calendar-months-next-open-v1",
+                "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+                "decision_session": "2025-01-03",
+                "entry_session": "2025-01-06",
+                "entry_at": "2025-01-06T14:30:00Z",
+                "end_session": "2025-02-03",
+                "end_at": "2025-02-03T21:00:00Z"
+              },
+              "score": {
+                "status": "unavailable",
+                "reason": "missing_features"
+              }
+            },
+            {
+              "row_id": "mar-0",
+              "listing_id": "101",
+              "as_of_timestamp": "2025-03-07T21:00:00Z",
+              "horizon": {
+                "label": "1m",
+                "policy": "xnys-calendar-months-next-open-v1",
+                "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+                "decision_session": "2025-03-07",
+                "entry_session": "2025-03-10",
+                "entry_at": "2025-03-10T13:30:00Z",
+                "end_session": "2025-04-07",
+                "end_at": "2025-04-07T20:00:00Z"
+              },
+              "score": {
+                "status": "available",
+                "value": "0"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "duplicate-result",
+      "operation": "forecast",
+      "expect": "coverage",
+      "changes": [
+        {
+          "path": [
+            "forecast",
+            "forecast_sha256"
+          ],
+          "value": "1d288605413d48d409f67806a0b4c3bff95c3bb0d4fbdc8e27b10981ce82d712"
+        },
+        {
+          "path": [
+            "forecast",
+            "results"
+          ],
+          "value": [
+            {
+              "row_id": "jan-0",
+              "listing_id": "101",
+              "as_of_timestamp": "2025-01-03T21:00:00Z",
+              "horizon": {
+                "label": "1m",
+                "policy": "xnys-calendar-months-next-open-v1",
+                "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+                "decision_session": "2025-01-03",
+                "entry_session": "2025-01-06",
+                "entry_at": "2025-01-06T14:30:00Z",
+                "end_session": "2025-02-03",
+                "end_at": "2025-02-03T21:00:00Z"
+              },
+              "score": {
+                "status": "available",
+                "value": "0"
+              }
+            },
+            {
+              "row_id": "jan-1",
+              "listing_id": "9007199254740993",
+              "as_of_timestamp": "2025-01-03T21:00:00Z",
+              "horizon": {
+                "label": "1m",
+                "policy": "xnys-calendar-months-next-open-v1",
+                "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+                "decision_session": "2025-01-03",
+                "entry_session": "2025-01-06",
+                "entry_at": "2025-01-06T14:30:00Z",
+                "end_session": "2025-02-03",
+                "end_at": "2025-02-03T21:00:00Z"
+              },
+              "score": {
+                "status": "unavailable",
+                "reason": "missing_features"
+              }
+            },
+            {
+              "row_id": "mar-0",
+              "listing_id": "101",
+              "as_of_timestamp": "2025-03-07T21:00:00Z",
+              "horizon": {
+                "label": "1m",
+                "policy": "xnys-calendar-months-next-open-v1",
+                "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+                "decision_session": "2025-03-07",
+                "entry_session": "2025-03-10",
+                "entry_at": "2025-03-10T13:30:00Z",
+                "end_session": "2025-04-07",
+                "end_at": "2025-04-07T20:00:00Z"
+              },
+              "score": {
+                "status": "available",
+                "value": "0"
+              }
+            },
+            {
+              "row_id": "mar-1",
+              "listing_id": "9007199254740993",
+              "as_of_timestamp": "2025-03-07T21:00:00Z",
+              "horizon": {
+                "label": "1m",
+                "policy": "xnys-calendar-months-next-open-v1",
+                "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+                "decision_session": "2025-03-07",
+                "entry_session": "2025-03-10",
+                "entry_at": "2025-03-10T13:30:00Z",
+                "end_session": "2025-04-07",
+                "end_at": "2025-04-07T20:00:00Z"
+              },
+              "score": {
+                "status": "unavailable",
+                "reason": "missing_features"
+              }
+            },
+            {
+              "row_id": "jan-0",
+              "listing_id": "101",
+              "as_of_timestamp": "2025-01-03T21:00:00Z",
+              "horizon": {
+                "label": "1m",
+                "policy": "xnys-calendar-months-next-open-v1",
+                "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+                "decision_session": "2025-01-03",
+                "entry_session": "2025-01-06",
+                "entry_at": "2025-01-06T14:30:00Z",
+                "end_session": "2025-02-03",
+                "end_at": "2025-02-03T21:00:00Z"
+              },
+              "score": {
+                "status": "available",
+                "value": "0"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "unknown-result",
+      "operation": "forecast",
+      "expect": "coverage",
+      "changes": [
+        {
+          "path": [
+            "forecast",
+            "forecast_sha256"
+          ],
+          "value": "60b5f4f01c783154f7169813ed5037a78b0d8db8f141aec5caff72c54a246c5c"
+        },
+        {
+          "path": [
+            "forecast",
+            "results"
+          ],
+          "value": [
+            {
+              "row_id": "jan-0",
+              "listing_id": "101",
+              "as_of_timestamp": "2025-01-03T21:00:00Z",
+              "horizon": {
+                "label": "1m",
+                "policy": "xnys-calendar-months-next-open-v1",
+                "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+                "decision_session": "2025-01-03",
+                "entry_session": "2025-01-06",
+                "entry_at": "2025-01-06T14:30:00Z",
+                "end_session": "2025-02-03",
+                "end_at": "2025-02-03T21:00:00Z"
+              },
+              "score": {
+                "status": "available",
+                "value": "0"
+              }
+            },
+            {
+              "row_id": "jan-1",
+              "listing_id": "9007199254740993",
+              "as_of_timestamp": "2025-01-03T21:00:00Z",
+              "horizon": {
+                "label": "1m",
+                "policy": "xnys-calendar-months-next-open-v1",
+                "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+                "decision_session": "2025-01-03",
+                "entry_session": "2025-01-06",
+                "entry_at": "2025-01-06T14:30:00Z",
+                "end_session": "2025-02-03",
+                "end_at": "2025-02-03T21:00:00Z"
+              },
+              "score": {
+                "status": "unavailable",
+                "reason": "missing_features"
+              }
+            },
+            {
+              "row_id": "mar-0",
+              "listing_id": "101",
+              "as_of_timestamp": "2025-03-07T21:00:00Z",
+              "horizon": {
+                "label": "1m",
+                "policy": "xnys-calendar-months-next-open-v1",
+                "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+                "decision_session": "2025-03-07",
+                "entry_session": "2025-03-10",
+                "entry_at": "2025-03-10T13:30:00Z",
+                "end_session": "2025-04-07",
+                "end_at": "2025-04-07T20:00:00Z"
+              },
+              "score": {
+                "status": "available",
+                "value": "0"
+              }
+            },
+            {
+              "row_id": "mar-1",
+              "listing_id": "9007199254740993",
+              "as_of_timestamp": "2025-03-07T21:00:00Z",
+              "horizon": {
+                "label": "1m",
+                "policy": "xnys-calendar-months-next-open-v1",
+                "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+                "decision_session": "2025-03-07",
+                "entry_session": "2025-03-10",
+                "entry_at": "2025-03-10T13:30:00Z",
+                "end_session": "2025-04-07",
+                "end_at": "2025-04-07T20:00:00Z"
+              },
+              "score": {
+                "status": "unavailable",
+                "reason": "missing_features"
+              }
+            },
+            {
+              "row_id": "unknown",
+              "listing_id": "101",
+              "as_of_timestamp": "2025-01-03T21:00:00Z",
+              "horizon": {
+                "label": "1m",
+                "policy": "xnys-calendar-months-next-open-v1",
+                "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+                "decision_session": "2025-01-03",
+                "entry_session": "2025-01-06",
+                "entry_at": "2025-01-06T14:30:00Z",
+                "end_session": "2025-02-03",
+                "end_at": "2025-02-03T21:00:00Z"
+              },
+              "score": {
+                "status": "available",
+                "value": "0"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "wrong-model-artifact_sha256",
+      "operation": "forecast",
+      "expect": "provenance_mismatch",
+      "changes": [
+        {
+          "path": [
+            "forecast",
+            "forecast_sha256"
+          ],
+          "value": "d247ae2f4c703b07d84b4df74ef09d8104f679917ca941c86712dd4b7f900a20"
+        },
+        {
+          "path": [
+            "forecast",
+            "model",
+            "artifact_sha256"
+          ],
+          "value": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ]
+    },
+    {
+      "name": "wrong-model-training_manifest_sha256",
+      "operation": "forecast",
+      "expect": "provenance_mismatch",
+      "changes": [
+        {
+          "path": [
+            "forecast",
+            "forecast_sha256"
+          ],
+          "value": "2d6ec3619e41a0db5fbde39f288280d462310c89e8cf34e860af94da76a4a274"
+        },
+        {
+          "path": [
+            "forecast",
+            "model",
+            "training_manifest_sha256"
+          ],
+          "value": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ]
+    },
+    {
+      "name": "wrong-model-config_sha256",
+      "operation": "forecast",
+      "expect": "provenance_mismatch",
+      "changes": [
+        {
+          "path": [
+            "forecast",
+            "forecast_sha256"
+          ],
+          "value": "ecbd20c0c09efd724ecc1a4a0101ef6b9cfa6b8e5b816cb0e4cadac685dde405"
+        },
+        {
+          "path": [
+            "forecast",
+            "model",
+            "config_sha256"
+          ],
+          "value": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ]
+    },
+    {
+      "name": "wrong-model-code_sha256",
+      "operation": "forecast",
+      "expect": "provenance_mismatch",
+      "changes": [
+        {
+          "path": [
+            "forecast",
+            "forecast_sha256"
+          ],
+          "value": "2df7949a75d7b4dfc26a91f9a8a04108189ea5417bd55dfddb6847fcaed383c4"
+        },
+        {
+          "path": [
+            "forecast",
+            "model",
+            "code_sha256"
+          ],
+          "value": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ]
+    },
+    {
+      "name": "wrong-model-runtime_sha256",
+      "operation": "forecast",
+      "expect": "provenance_mismatch",
+      "changes": [
+        {
+          "path": [
+            "forecast",
+            "forecast_sha256"
+          ],
+          "value": "3864f45a0e381df38d428caf0f8cdbd9114af46482eb7df9cd5cf36668727e43"
+        },
+        {
+          "path": [
+            "forecast",
+            "model",
+            "runtime_sha256"
+          ],
+          "value": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ]
+    },
+    {
+      "name": "wrong-batch_id",
+      "operation": "forecast",
+      "expect": "provenance_mismatch",
+      "changes": [
+        {
+          "path": [
+            "forecast",
+            "batch_id"
+          ],
+          "value": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "path": [
+            "forecast",
+            "forecast_sha256"
+          ],
+          "value": "94e23b2d5fad4cc84bed4265fa4ad115c20f38ef7a8856e7492705c0244a40e5"
+        }
+      ]
+    },
+    {
+      "name": "wrong-attempt_id",
+      "operation": "forecast",
+      "expect": "provenance_mismatch",
+      "changes": [
+        {
+          "path": [
+            "forecast",
+            "attempt_id"
+          ],
+          "value": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "path": [
+            "forecast",
+            "forecast_sha256"
+          ],
+          "value": "2b178fe9d9447fecea9328648e585586309bc12af2deafff73cff8f976fd455f"
+        }
+      ]
+    },
+    {
+      "name": "wrong-input_manifest_sha256",
+      "operation": "forecast",
+      "expect": "provenance_mismatch",
+      "changes": [
+        {
+          "path": [
+            "forecast",
+            "forecast_sha256"
+          ],
+          "value": "f1ee40b8f1149bb46c7aa6f2926aa134a35f6dfbf26d1f30292ce0e5e12771f0"
+        },
+        {
+          "path": [
+            "forecast",
+            "input_manifest_sha256"
+          ],
+          "value": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ]
+    },
+    {
+      "name": "wrong-feature_schema_sha256",
+      "operation": "forecast",
+      "expect": "provenance_mismatch",
+      "changes": [
+        {
+          "path": [
+            "forecast",
+            "feature_schema_sha256"
+          ],
+          "value": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "path": [
+            "forecast",
+            "forecast_sha256"
+          ],
+          "value": "55315883e90037de61685a3d3f57c554209a2275d9e59f98580b53f30e1defc7"
+        }
+      ]
+    },
+    {
+      "name": "unavailable-score-has-zero",
+      "operation": "forecast",
+      "expect": "schema",
+      "changes": [
+        {
+          "path": [
+            "forecast",
+            "forecast_sha256"
+          ],
+          "value": "b59db252b89cdc9f464de18844133b4db39de64bf2736a94f58b63af86a192c3"
+        },
+        {
+          "path": [
+            "forecast",
+            "results",
+            1,
+            "score",
+            "value"
+          ],
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "name": "rank-labelled-as-probability",
+      "operation": "forecast",
+      "expect": "schema",
+      "changes": [
+        {
+          "path": [
+            "request",
+            "score_semantics",
+            "kind"
+          ],
+          "value": "probability"
+        }
+      ]
+    },
+    {
+      "name": "rank-wrong-unit",
+      "operation": "forecast",
+      "expect": "provenance_mismatch",
+      "changes": [
+        {
+          "path": [
+            "request",
+            "score_semantics",
+            "kind"
+          ],
+          "value": "ranking_score"
+        }
+      ]
+    },
+    {
+      "name": "deadline-exceeded-by-microsecond",
+      "operation": "forecast",
+      "expect": "generation_time",
+      "changes": [
+        {
+          "path": [
+            "forecast",
+            "forecast_sha256"
+          ],
+          "value": "27bcb7a3044818708a2230b869e64399bf847fab24994a6ef046d9f8c8fd9fe3"
+        },
+        {
+          "path": [
+            "forecast",
+            "generated_at"
+          ],
+          "value": "2025-03-07T21:01:02.000001Z"
+        }
+      ]
+    },
+    {
+      "name": "before-request",
+      "operation": "forecast",
+      "expect": "generation_time",
+      "changes": [
+        {
+          "path": [
+            "forecast",
+            "forecast_sha256"
+          ],
+          "value": "3dd8a2de2bf25c697f2c4d6aebbcad5f23d6f137cd78fe03e8aedbcccd3de86e"
+        },
+        {
+          "path": [
+            "forecast",
+            "generated_at"
+          ],
+          "value": "2025-03-07T21:00:01Z"
+        }
+      ]
+    },
+    {
+      "name": "forecast-hash-tampering",
+      "operation": "forecast",
+      "expect": "hash_mismatch",
+      "changes": [
+        {
+          "path": [
+            "forecast",
+            "results",
+            0,
+            "score",
+            "value"
+          ],
+          "value": "0.1"
+        }
+      ]
+    },
+    {
+      "name": "missing-label",
+      "operation": "dataset",
+      "expect": "coverage",
+      "changes": [
+        {
+          "path": [
+            "dataset",
+            "dataset_manifest_sha256"
+          ],
+          "value": "95392c7e0f314e0bfea57c01267cf75c412f1a381823fe86babd8ff60c6f1190"
+        },
+        {
+          "path": [
+            "dataset",
+            "labels",
+            "count"
+          ],
+          "value": 3
+        },
+        {
+          "path": [
+            "labels"
+          ],
+          "value": [
+            {
+              "schema_version": "numeric-label-v1",
+              "row_id": "jan-0",
+              "listing_id": "101",
+              "as_of_timestamp": "2025-01-03T21:00:00Z",
+              "horizon": {
+                "label": "1m",
+                "policy": "xnys-calendar-months-next-open-v1",
+                "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+                "decision_session": "2025-01-03",
+                "entry_session": "2025-01-06",
+                "entry_at": "2025-01-06T14:30:00Z",
+                "end_session": "2025-02-03",
+                "end_at": "2025-02-03T21:00:00Z"
+              },
+              "target_definition_sha256": "bb746f2a96e2f53e31317161683c2e4d770404281fc1fed2ed4e6ef04acc39a4",
+              "available_at": "2025-02-03T21:00:00Z",
+              "sources": [
+                {
+                  "source_id": "label-prices",
+                  "revision": "synthetic-revision-1",
+                  "content_sha256": "fae0f852c4c3f5c92778e9861235814c048d3b98489d5dacee1f905d6b69b84c",
+                  "available_at": "2025-02-03T21:00:00Z",
+                  "ingested_at": "2025-02-03T21:00:00Z",
+                  "license": {
+                    "status": "synthetic_only",
+                    "reference": "Generated fixture; no real source or training use."
+                  }
+                }
+              ],
+              "label": {
+                "status": "available",
+                "value": "0"
+              }
+            },
+            {
+              "schema_version": "numeric-label-v1",
+              "row_id": "jan-1",
+              "listing_id": "9007199254740993",
+              "as_of_timestamp": "2025-01-03T21:00:00Z",
+              "horizon": {
+                "label": "1m",
+                "policy": "xnys-calendar-months-next-open-v1",
+                "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+                "decision_session": "2025-01-03",
+                "entry_session": "2025-01-06",
+                "entry_at": "2025-01-06T14:30:00Z",
+                "end_session": "2025-02-03",
+                "end_at": "2025-02-03T21:00:00Z"
+              },
+              "target_definition_sha256": "bb746f2a96e2f53e31317161683c2e4d770404281fc1fed2ed4e6ef04acc39a4",
+              "available_at": "2025-02-03T21:00:00Z",
+              "sources": [
+                {
+                  "source_id": "label-prices",
+                  "revision": "synthetic-revision-1",
+                  "content_sha256": "721f7e6b878357f68c705e2a4c3234dfd3ab354838e637c11c571ec34f2a9c6f",
+                  "available_at": "2025-02-03T21:00:00Z",
+                  "ingested_at": "2025-02-03T21:00:00Z",
+                  "license": {
+                    "status": "synthetic_only",
+                    "reference": "Generated fixture; no real source or training use."
+                  }
+                }
+              ],
+              "label": {
+                "status": "available",
+                "value": "-0.025"
+              }
+            },
+            {
+              "schema_version": "numeric-label-v1",
+              "row_id": "mar-0",
+              "listing_id": "101",
+              "as_of_timestamp": "2025-03-07T21:00:00Z",
+              "horizon": {
+                "label": "1m",
+                "policy": "xnys-calendar-months-next-open-v1",
+                "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+                "decision_session": "2025-03-07",
+                "entry_session": "2025-03-10",
+                "entry_at": "2025-03-10T13:30:00Z",
+                "end_session": "2025-04-07",
+                "end_at": "2025-04-07T20:00:00Z"
+              },
+              "target_definition_sha256": "bb746f2a96e2f53e31317161683c2e4d770404281fc1fed2ed4e6ef04acc39a4",
+              "available_at": "2025-04-07T20:00:00Z",
+              "sources": [
+                {
+                  "source_id": "label-prices",
+                  "revision": "synthetic-revision-1",
+                  "content_sha256": "337938d5c8a9e141b3541a717d53976a08163d3ed4e8be536c7ec7b59c710b80",
+                  "available_at": "2025-04-07T20:00:00Z",
+                  "ingested_at": "2025-04-07T20:00:00Z",
+                  "license": {
+                    "status": "synthetic_only",
+                    "reference": "Generated fixture; no real source or training use."
+                  }
+                }
+              ],
+              "label": {
+                "status": "available",
+                "value": "0"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "wrong-label-identity",
+      "operation": "dataset",
+      "expect": "identity_mismatch",
+      "changes": [
+        {
+          "path": [
+            "labels",
+            0,
+            "listing_id"
+          ],
+          "value": "102"
+        }
+      ]
+    },
+    {
+      "name": "wrong-label-target",
+      "operation": "dataset",
+      "expect": "provenance_mismatch",
+      "changes": [
+        {
+          "path": [
+            "labels",
+            0,
+            "target_definition_sha256"
+          ],
+          "value": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ]
+    },
+    {
+      "name": "unmatured-available-label",
+      "operation": "dataset",
+      "expect": "label_maturity",
+      "changes": [
+        {
+          "path": [
+            "labels",
+            0,
+            "available_at"
+          ],
+          "value": "2025-02-03T20:59:59Z"
+        }
+      ]
+    },
+    {
+      "name": "unavailable-training-label",
+      "operation": "dataset",
+      "expect": "label_maturity",
+      "changes": [
+        {
+          "path": [
+            "labels",
+            0,
+            "label",
+            "reason"
+          ],
+          "value": "not_matured"
+        },
+        {
+          "path": [
+            "labels",
+            0,
+            "label",
+            "status"
+          ],
+          "value": "unavailable"
+        },
+        {
+          "path": [
+            "labels",
+            0,
+            "label",
+            "value"
+          ],
+          "remove": true
+        }
+      ]
+    },
+    {
+      "name": "label-source-after-dataset",
+      "operation": "dataset",
+      "expect": "label_maturity",
+      "changes": [
+        {
+          "path": [
+            "labels",
+            0,
+            "sources",
+            0,
+            "ingested_at"
+          ],
+          "value": "2025-04-09T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "name": "same-decision-date-in-two-splits",
+      "operation": "dataset",
+      "expect": "split_leakage",
+      "changes": [
+        {
+          "path": [
+            "dataset",
+            "assignments",
+            0,
+            "split"
+          ],
+          "value": "validation"
+        },
+        {
+          "path": [
+            "dataset",
+            "dataset_manifest_sha256"
+          ],
+          "value": "be3ed217b5f877aee0d8fbe95d2cd7826787d1d083d437baa4954c18c7306f3e"
+        }
+      ]
+    },
+    {
+      "name": "embargo-start-after-first-cutoff",
+      "operation": "dataset",
+      "expect": "split_leakage",
+      "changes": [
+        {
+          "path": [
+            "dataset",
+            "dataset_manifest_sha256"
+          ],
+          "value": "93220380d86f6f7fdbc2119b2f8d210087f5c2f7407ea375c62d78c7dbfcec7f"
+        },
+        {
+          "path": [
+            "dataset",
+            "split_policy",
+            "embargoed_starts",
+            "validation"
+          ],
+          "value": "2025-03-07T21:00:00.000001Z"
+        }
+      ]
+    },
+    {
+      "name": "embargo-before-earlier-label-end",
+      "operation": "dataset",
+      "expect": "split_leakage",
+      "changes": [
+        {
+          "path": [
+            "dataset",
+            "dataset_manifest_sha256"
+          ],
+          "value": "d11b146c84b4e7a9520a9554a3ef95fa9b50c2164a59f88200b473c1c7dbb76a"
+        },
+        {
+          "path": [
+            "dataset",
+            "split_policy",
+            "embargoed_starts",
+            "validation"
+          ],
+          "value": "2025-02-03T21:00:00Z"
+        }
+      ]
+    },
+    {
+      "name": "session-embargo-too-short",
+      "operation": "dataset",
+      "expect": "split_leakage",
+      "changes": [
+        {
+          "path": [
+            "dataset",
+            "dataset_manifest_sha256"
+          ],
+          "value": "fe012d942aa1584779eb0efe05c4ba5e0a41d22e371aee68c787e8ff31ae78ce"
+        },
+        {
+          "path": [
+            "dataset",
+            "split_policy",
+            "embargo_sessions"
+          ],
+          "value": 2
+        }
+      ]
+    },
+    {
+      "name": "disable-purge",
+      "operation": "dataset",
+      "expect": "schema",
+      "changes": [
+        {
+          "path": [
+            "dataset",
+            "dataset_manifest_sha256"
+          ],
+          "value": "cde5fca05515b6b732b689a0a2195e2dbff21d9d80662083f619dac38f073d3b"
+        },
+        {
+          "path": [
+            "dataset",
+            "split_policy",
+            "label_window_purged"
+          ],
+          "value": false
+        }
+      ]
+    },
+    {
+      "name": "review-without-reviewer",
+      "operation": "dataset",
+      "expect": "schema",
+      "changes": [
+        {
+          "path": [
+            "dataset",
+            "dataset_manifest_sha256"
+          ],
+          "value": "0e75c53c99b7ecc934e0beb5c76ba65ea2cadb54988bfd63406d29616d9e3682"
+        },
+        {
+          "path": [
+            "dataset",
+            "review",
+            "status"
+          ],
+          "value": "reviewed"
+        }
+      ]
+    }
+  ]
+}

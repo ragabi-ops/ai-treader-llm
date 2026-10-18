@@ -1,0 +1,31 @@
+{
+  "schema_version": "alpha-request-v1",
+  "batch_id": "synthetic-batch-1",
+  "attempt_id": "synthetic-attempt-1",
+  "input_manifest_sha256": "e2d0b8c6729ce796db13139143458ed5e0d2613238b03e80a8418a5378bb0e51",
+  "feature_schema_sha256": "e87dcc3f795351e6aaa3e6c4032553fd8db87c48bdde85f7496e573c40c5dc18",
+  "requested_at": "2025-03-07T21:00:02Z",
+  "deadline_at": "2025-03-07T21:01:02Z",
+  "model": {
+    "artifact_sha256": "aa5678202dae1f860ed5a623362b6702f300fbc17f92b965ea86746980090a76",
+    "training_manifest_sha256": "3f35f2a1323eb9dcee10fd617465ac5106333bd1b9dc7db1943961530fc9fa09",
+    "config_sha256": "038fc30cfb385c4bfc79217f223db03b314edd759a632e56c066bd4847af734d",
+    "code_sha256": "7bc38541c0aa6f997f984f4066271c3c6f0da5fc32c9f57ed0dd72e3feaff7cf",
+    "runtime_sha256": "fcc0ff21834452a9976abbdcd0c408c6f8a244cd6b3b9ffbf2ba2044d434685e",
+    "seed": 0
+  },
+  "score_semantics": {
+    "kind": "expected_excess_return",
+    "unit": "decimal_return",
+    "direction": "higher_is_better",
+    "target": {
+      "kind": "benchmark_excess_return",
+      "unit": "decimal_return",
+      "benchmark_listing_id": "9007199254740995",
+      "entry_policy": "next_session_open",
+      "exit_policy": "horizon_close",
+      "price_basis": "total_return_adjusted",
+      "definition_sha256": "bb746f2a96e2f53e31317161683c2e4d770404281fc1fed2ed4e6ef04acc39a4"
+    }
+  }
+}

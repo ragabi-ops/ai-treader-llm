@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "alpha-forecast-v1"
+    },
+    "forecast_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "batch_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "attempt_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "input_manifest_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "feature_schema_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]{1,6})?Z$"
+    },
+    "model": {
+      "$ref": "numeric-common-v1.schema.json#/$defs/model"
+    },
+    "score_semantics": {
+      "$ref": "numeric-common-v1.schema.json#/$defs/semantics"
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "row_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+          },
+          "listing_id": {
+            "$ref": "numeric-common-v1.schema.json#/$defs/listing_id"
+          },
+          "as_of_timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]{1,6})?Z$"
+          },
+          "horizon": {
+            "$ref": "numeric-common-v1.schema.json#/$defs/horizon"
+          },
+          "score": {
+            "$ref": "numeric-common-v1.schema.json#/$defs/score"
+          }
+        },
+        "required": [
+          "row_id",
+          "listing_id",
+          "as_of_timestamp",
+          "horizon",
+          "score"
+        ]
+      },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "schema_version",
+    "forecast_sha256",
+    "batch_id",
+    "attempt_id",
+    "input_manifest_sha256",
+    "feature_schema_sha256",
+    "generated_at",
+    "model",
+    "score_semantics",
+    "results"
+  ]
+}

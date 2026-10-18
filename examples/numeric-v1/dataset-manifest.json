@@ -1,0 +1,59 @@
+{
+  "schema_version": "numeric-dataset-v1",
+  "dataset_id": "synthetic-numeric-v1",
+  "created_at": "2025-04-08T21:00:00Z",
+  "input_manifest": {
+    "path": "input-manifest.json",
+    "sha256": "1e916d36b94799278de15a9e3eeaef2cfde6a59ccca45fc4a62c1f99b72629b4",
+    "count": 1
+  },
+  "input_manifest_sha256": "e2d0b8c6729ce796db13139143458ed5e0d2613238b03e80a8418a5378bb0e51",
+  "labels": {
+    "path": "labels.jsonl",
+    "sha256": "68642fe910a7e99d5213276adb40077f42541dcbe9d553cc198da0cae2e63d76",
+    "count": 4
+  },
+  "target": {
+    "kind": "benchmark_excess_return",
+    "unit": "decimal_return",
+    "benchmark_listing_id": "9007199254740995",
+    "entry_policy": "next_session_open",
+    "exit_policy": "horizon_close",
+    "price_basis": "total_return_adjusted",
+    "definition_sha256": "bb746f2a96e2f53e31317161683c2e4d770404281fc1fed2ed4e6ef04acc39a4"
+  },
+  "assignments": [
+    {
+      "row_id": "jan-0",
+      "split": "train"
+    },
+    {
+      "row_id": "jan-1",
+      "split": "train"
+    },
+    {
+      "row_id": "mar-0",
+      "split": "validation"
+    },
+    {
+      "row_id": "mar-1",
+      "split": "validation"
+    }
+  ],
+  "split_policy": {
+    "date_grouped": true,
+    "label_window_purged": true,
+    "embargo_sessions": 1,
+    "embargoed_starts": {
+      "validation": "2025-02-04T21:00:00Z",
+      "test": null
+    }
+  },
+  "review": {
+    "status": "synthetic_only",
+    "reviewer": null,
+    "reviewed_at": null,
+    "notes": "Synthetic contract fixtures only; not reviewed training data."
+  },
+  "dataset_manifest_sha256": "440309ad72836a01fb02f14a0ce03ade530807d972c0c25ff22d76ab9d50159c"
+}

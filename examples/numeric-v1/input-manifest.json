@@ -1,0 +1,102 @@
+{
+  "schema_version": "numeric-input-v1",
+  "dataset_id": "synthetic-numeric-v1",
+  "created_at": "2025-03-07T21:00:01Z",
+  "availability_policy": "observed",
+  "corporate_action_basis": "total_return_adjusted",
+  "action_policy_sha256": "70326812d99af158014a9c33b69b109f891f5e09cbe8dcb7bb8d7a09fbbfede0",
+  "universe": {
+    "snapshot_sha256": "ee8317f59f018133c6262ba8e52fbf038f2526c0288df25423ddad2854f6a650",
+    "membership_policy_sha256": "c2d90a8ec01d9656a0475bb36b2a771104f67023d2e008b373eb9697bdf7ec80",
+    "survivorship": "survivorship_biased_pilot"
+  },
+  "calendar": {
+    "path": "calendar.json",
+    "sha256": "38aaa64a432ad12e0831b70974f41fb9ca0d9bb8931948f590f0ac97c69355f6",
+    "count": 69
+  },
+  "feature_schema": {
+    "version": "synthetic-daily-v1",
+    "features": [
+      {
+        "feature_id": "return_5_sessions",
+        "unit": "decimal_return",
+        "definition_sha256": "0fb1cbc3f369036a45d19971f63e53165222be550bd942fb0ee1522f9d92f005"
+      },
+      {
+        "feature_id": "volume_ratio",
+        "unit": "ratio",
+        "definition_sha256": "b84e471dbad6a83967edbfb85db171ceca56a201add4924e9cc79d2e0fd7c924"
+      }
+    ],
+    "feature_schema_sha256": "e87dcc3f795351e6aaa3e6c4032553fd8db87c48bdde85f7496e573c40c5dc18"
+  },
+  "features": {
+    "path": "features.jsonl",
+    "sha256": "3bae18b00d7afa2879060e9079a041af6ac660e34bd4cb66ef1064612c2bfce4",
+    "count": 4
+  },
+  "expected_rows": [
+    {
+      "row_id": "jan-0",
+      "listing_id": "101",
+      "as_of_timestamp": "2025-01-03T21:00:00Z",
+      "horizon": {
+        "label": "1m",
+        "policy": "xnys-calendar-months-next-open-v1",
+        "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+        "decision_session": "2025-01-03",
+        "entry_session": "2025-01-06",
+        "entry_at": "2025-01-06T14:30:00Z",
+        "end_session": "2025-02-03",
+        "end_at": "2025-02-03T21:00:00Z"
+      }
+    },
+    {
+      "row_id": "jan-1",
+      "listing_id": "9007199254740993",
+      "as_of_timestamp": "2025-01-03T21:00:00Z",
+      "horizon": {
+        "label": "1m",
+        "policy": "xnys-calendar-months-next-open-v1",
+        "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+        "decision_session": "2025-01-03",
+        "entry_session": "2025-01-06",
+        "entry_at": "2025-01-06T14:30:00Z",
+        "end_session": "2025-02-03",
+        "end_at": "2025-02-03T21:00:00Z"
+      }
+    },
+    {
+      "row_id": "mar-0",
+      "listing_id": "101",
+      "as_of_timestamp": "2025-03-07T21:00:00Z",
+      "horizon": {
+        "label": "1m",
+        "policy": "xnys-calendar-months-next-open-v1",
+        "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+        "decision_session": "2025-03-07",
+        "entry_session": "2025-03-10",
+        "entry_at": "2025-03-10T13:30:00Z",
+        "end_session": "2025-04-07",
+        "end_at": "2025-04-07T20:00:00Z"
+      }
+    },
+    {
+      "row_id": "mar-1",
+      "listing_id": "9007199254740993",
+      "as_of_timestamp": "2025-03-07T21:00:00Z",
+      "horizon": {
+        "label": "1m",
+        "policy": "xnys-calendar-months-next-open-v1",
+        "calendar_sha256": "787b5dc9146bbcfb410215bf1e103d7e645f3877a2d92248faa46ed776b65034",
+        "decision_session": "2025-03-07",
+        "entry_session": "2025-03-10",
+        "entry_at": "2025-03-10T13:30:00Z",
+        "end_session": "2025-04-07",
+        "end_at": "2025-04-07T20:00:00Z"
+      }
+    }
+  ],
+  "input_manifest_sha256": "e2d0b8c6729ce796db13139143458ed5e0d2613238b03e80a8418a5378bb0e51"
+}

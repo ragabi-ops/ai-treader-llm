@@ -61,6 +61,30 @@ docker version
 The fresh session's `id` output must contain `docker`. Do not grant this group to
 other users.
 
+### Hardware qualification capture
+
+Install `dmidecode`, `smartmontools`, and `lm-sensors` on the target, then capture
+the read-only HARD01 evidence as root. The script is fixed to `/dev/sda`, verifies
+the expected `/` and `/data` mounts, and checks mount metadata for the Windows-owned
+NVMe devices. It never opens or probes either NVMe device. Keep the generated record
+out of Git because it includes hardware serial numbers.
+
+```bash
+sudo bash scripts/qualification/hardware.sh \
+  | tee /data/evaluations/hardware-qualification-$(date -u +%Y%m%dT%H%M%SZ).txt
+```
+
+The PSU is not normally exposed by consumer motherboard firmware. Separately record
+the manufacturer, exact model, rated wattage, physical condition, and whether the
+GPU power plugs use the connector layout required by the exact card. Inspect dust,
+fan operation, and cable seating while powered off. A software estimate or the GPU's
+reported power limit is not evidence of PSU capacity.
+
+For cooling acceptance, bracket a versioned sustained benchmark with
+`nvidia-smi -q -d PERFORMANCE,TEMPERATURE,POWER`. Record peak temperature, fan and
+power behavior, any active slowdown reason, and before/after slowdown counters.
+Do not interpret a stable endpoint response alone as proof of adequate cooling.
+
 The checkout directory must be empty for `git clone`. Use your existing Git access
 or a repository-scoped read-only key on the server. No agent forwarding is required.
 `pin-runtime.sh` pulls an amd64 image and writes the actual digest; the placeholder
@@ -178,6 +202,22 @@ This image contains synthetic fixtures and CPU tooling only. Real jobs must moun
 explicit input directories read-only; never mount the entire `/data` tree into a
 trainer. Run jobs locally with `uv` on the Mac to avoid the GPU Compose dependency.
 
+For a real source bundle, validate its tracked review receipt first. Omitting
+`--source-root` checks the receipt structure; supplying the read-only bundle also
+checks the capture manifest plus compressed and decoded hashes:
+
+```bash
+uv run --frozen ai-treader-llm validate-source-review \
+  examples/data-review-v1/sec-edgar-r11.json \
+  --source-root ../ai-treader-platform/backend/internal/secfacts/testdata/r11
+```
+
+This receipt approves the recorded SEC source for local personal research and
+records its survivorship-biased pilot scope. It does not approve analysis targets
+or performance claims. Keep target readiness pending until platform listing IDs,
+calendar horizons, chronological splits, purge/embargo, and the held-out boundary
+are all pinned; keep outcome labels in their separate artifact.
+
 ## Stop, upgrade, and recover
 
 ```bash
@@ -189,3 +229,43 @@ Stop inference before any future training job. An exclusive GPU job lock is stil
 required in the future trainer. Save the previous runtime lock, model receipt, and
 configuration before changing any version. Re-run GPU, endpoint, tool, and schema
 tests after upgrades; rollback restores the previous bundle and restarts inference.
+
+## Numeric contract validation and planned jobs
+
+ALPHA01 installs offline numeric contract validators; it does not install a model
+or prediction job. Validate the committed synthetic bundle with:
+
+```bash
+uv run --frozen ai-treader-llm validate-numeric-input examples/numeric-v1/input-manifest.json
+uv run --frozen ai-treader-llm validate-numeric-dataset examples/numeric-v1/dataset-manifest.json
+uv run --frozen ai-treader-llm validate-alpha examples/numeric-v1/forecast.json \
+  --request examples/numeric-v1/request.json \
+  --input examples/numeric-v1/input-manifest.json
+```
+
+Regenerate the shared Python/Go conformance fixtures after a deliberate contract
+change with `uv run --frozen python -m ai_treader_llm.numeric_fixtures`, then run
+`make check`. Contract changes require a new version once platform adoption begins.
+
+Until their later acceptance closes, do not report training, Chronos-2 forecasting
+or text extraction as available.
+Future jobs use locked CPU dependencies for the linear/LightGBM baseline, immutable
+platform exports, separate fit/evaluation labels and feature-only prediction mounts.
+Keep models, datasets and generated reports out of Git. GPU runs require measured
+capacity and one exclusive GPU owner; GPU packages are not Mac/CPU dependencies.
+
+The 8192-context / 2048-output candidate is already reflected in pre-existing local
+configuration edits and a host override. CTX01 must capture realistic first/repair
+requests, overflow, sustained latency/VRAM, recovery and rollback with exact hashes.
+BENCH01 measured the earlier configuration; the pre-fence 52/52 platform probe is
+not a full endpoint benchmark or approval of L03 revision 5. This planning change
+neither deploys configuration nor freezes that revision.
+
+## Hosted-agent priority (2026-10-07)
+
+The platform owns Codex/Claude bridge operation and future agent call contracts.
+Local numeric CPU work does not require Qwen, CTX01 or TOOLS01 completion. Preserve
+the existing endpoint and uncommitted qualification/configuration changes; this
+planning revision does not stop inference or change L03. HARD01 still gates GPU
+experiments. Hosted qualification, data disclosure, rate/cost limits and runtime
+failure behavior are platform AGENT tasks; TEXT01 only evaluates exported captures.

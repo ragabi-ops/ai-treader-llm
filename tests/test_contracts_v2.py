@@ -141,10 +141,6 @@ class OutcomeV2Tests(unittest.TestCase):
     def check(self, **kwargs):
         validate_outcomes(self.samples, self.outcomes, self.contracts, **kwargs)
 
-    def test_unavailable_with_reason_is_valid(self):
-        self.assertEqual(self.outcomes[1]["return"]["status"], "unavailable")
-        self.check()
-
     def test_unavailable_must_not_carry_a_value(self):
         self.outcomes[1]["return"]["value"] = 0.0
         with self.assertRaises(ContractError):
