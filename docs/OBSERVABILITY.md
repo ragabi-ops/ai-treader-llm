@@ -55,9 +55,9 @@ records may remain until the next run begins. The status file is visibility only
 it is not durable run evidence and cannot authorize a signal, order, promotion, or
 policy change. PostgreSQL remains authoritative once L03b persistence exists.
 
-## Training status producer
+## Numeric-fit status producer
 
-Future training code may atomically replace `/data/status/training.json` with the
+Future CPU fitting code may atomically replace `/data/status/training.json` with the
 same size and safety rules. Accepted status values are `idle`, `queued`, `running`,
 `succeeded`, `failed`, and `cancelled`; stages are `idle`, `preparing`,
 `loading_model`, `training`, `checkpointing`, `exporting`, `evaluating`, and

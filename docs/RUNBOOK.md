@@ -8,13 +8,11 @@ Prerequisites: Git and `uv`. Run from the repository root:
 uv sync --frozen --python 3.12
 make check
 uv run --frozen ai-treader-llm build-inputs examples/samples.jsonl
-uv run --frozen ai-treader-llm evaluate-tools \
-  examples/tool-call-fixtures.jsonl examples/tool-call-predictions.jsonl
 ```
 
-Fixtures are synthetic. The evaluators check schema/reference validity and offline
-tool-call correctness; a passing run does not demonstrate a useful financial model,
-actual tool execution, or deployed template/parser compatibility.
+Fixtures are synthetic. The validators and evaluator check contract, dataset and
+reference integrity; a passing run does not demonstrate a useful financial model or
+deployed runtime quality.
 
 ## Server: after hardware, Ubuntu, SSH, and GPU setup
 
@@ -34,7 +32,7 @@ findmnt -no SOURCE,FSTYPE,TARGET / /data
 grep -F ' /data ' /etc/fstab
 sudo install -d -o ai-treader-llm -g ai-treader-llm /srv/ai-treader
 sudo install -d -o ai-treader-llm -g ai-treader-llm \
-  /data/models /data/datasets /data/checkpoints /data/adapters \
+  /data/models /data/datasets /data/checkpoints \
   /data/cache /data/evaluations /data/training /data/status
 git clone git@github.com:ragabi-ops/ai-treader-llm.git /srv/ai-treader
 cd /srv/ai-treader
@@ -108,8 +106,8 @@ curl --fail http://127.0.0.1:8080/v1/chat/completions \
 ```
 
 Confirm GPU layer offload and VRAM usage in logs/`nvidia-smi`. A successful HTTP
-response alone does not prove GPU execution. Run final-schema and tool-call contract
-tests before wiring an analysis into the platform.
+response alone does not prove GPU execution. Run the platform-owned schema and
+tool-dispatch integration checks before wiring an analysis into the platform.
 
 ## Mac: connect through SSH
 
@@ -184,7 +182,7 @@ sudo ufw status numbered
 ```
 
 From a Mac on that subnet, open `http://192.168.50.182:8090/`. The UI refreshes every
-two seconds. It intentionally shows pipeline and training telemetry as unavailable
+two seconds. It intentionally shows pipeline and numeric-fit telemetry as unavailable
 until a real producer atomically writes the allowlisted files in `/data/status`; see
 [OBSERVABILITY.md](OBSERVABILITY.md). Anyone on the allowed subnet can read operational
 metadata, so add authentication before using a broader or untrusted network.
@@ -231,10 +229,10 @@ sudo systemctl stop ai-treader-llm
 sudo docker compose --env-file .env --env-file configs/runtime.lock.env stop inference
 ```
 
-Stop inference before any future training job. An exclusive GPU job lock is still
-required in the future trainer. Save the previous runtime lock, model receipt, and
-configuration before changing any version. Re-run GPU, endpoint, tool, and schema
-tests after upgrades; rollback restores the previous bundle and restarts inference.
+Stop inference before any optional RTX 3080 evaluation job, and use an exclusive GPU lock.
+Save the previous runtime lock, model receipt, and configuration before changing any
+version. Re-run GPU, endpoint and schema tests after upgrades; rollback restores the
+previous bundle and restarts inference.
 
 ## Numeric contract validation and planned jobs
 
@@ -257,8 +255,9 @@ Until their later acceptance closes, do not report training, Chronos-2 forecasti
 or text extraction as available.
 Future jobs use locked CPU dependencies for the linear/LightGBM baseline, immutable
 platform exports, separate fit/evaluation labels and feature-only prediction mounts.
-Keep models, datasets and generated reports out of Git. GPU runs require measured
-capacity and one exclusive GPU owner; GPU packages are not Mac/CPU dependencies.
+Keep models, datasets and generated reports out of Git. CPU is the default. Optional
+RTX 3080 runs require measured capacity and one exclusive GPU owner; GPU packages are
+not Mac/CPU dependencies, and no larger GPU is part of the approved plan.
 
 The 8192-context / 2048-output candidate is already reflected in pre-existing local
 configuration edits and a host override. CTX01 must capture realistic first/repair
@@ -267,11 +266,13 @@ BENCH01 measured the earlier configuration; the pre-fence 52/52 platform probe i
 not a full endpoint benchmark or approval of L03 revision 5. This planning change
 neither deploys configuration nor freezes that revision.
 
-## Hosted-agent priority (2026-10-07)
+## Hosted-agent and numeric priority (2026-10-22)
 
-The platform owns Codex/Claude bridge operation and future agent call contracts.
-Local numeric CPU work does not require Qwen, CTX01 or TOOLS01 completion. Preserve
+The platform owns Codex/Claude bridge operation and agent call contracts.
+Local numeric CPU work does not require Qwen or CTX01 completion. Preserve
 the existing endpoint and uncommitted qualification/configuration changes; this
-planning revision does not stop inference or change L03. HARD01 still gates GPU
-experiments. Hosted qualification, data disclosure, rate/cost limits and runtime
-failure behavior are platform AGENT tasks; TEXT01 only evaluates exported captures.
+scope cleanup does not stop inference or change L03. HARD01 still gates GPU
+experiments. Platform ALPHA01–02 are complete; operator approval of platform ALPHA03
+is the remaining prerequisite for LLM ALPHA02.
+Hosted qualification, data disclosure, rate/cost limits and runtime failure behavior
+remain platform-owned; TEXT01 only evaluates reviewed exports, which do not yet exist.

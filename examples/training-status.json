@@ -1,7 +1,7 @@
 {
   "schema_version": "1",
   "updated_at": "2026-09-29T20:00:05Z",
-  "run_id": "training-run-example",
+  "run_id": "numeric-fit-run-example",
   "dataset_id": "reviewed-dataset-example",
   "status": "running",
   "stage": "training",
@@ -15,5 +15,5 @@
   "total_steps": 800,
   "loss": 1.8421,
   "eta_seconds": 4120,
-  "message": "QLoRA adapter training"
+  "message": "LightGBM baseline fitting"
 }

@@ -4,13 +4,12 @@
 
 ```text
 Existing Go platform
-  hosted research via existing Codex/Claude review bridge (new task types planned)
+  hosted research via the Codex/Claude review bridge
     → canonical role/template + bounded evidence → strict review/proposal
     → Go-owned strategy versions/backtests + concise PostgreSQL research records
-  local Qwen analysis workflow (existing; L03 and optional comparator)
+  local Qwen analysis workflow (existing L03 only)
     → provider-neutral LLM client → llama.cpp / future provider
-    → allowlisted deterministic tools → existing market services
-    → timestamp-filtered retrieval → existing Postgres
+    → Go-built bounded point-in-time evidence from existing platform services
     → validated analysis persistence → signal / portfolio / risk pipeline
 
 This repository
@@ -20,7 +19,7 @@ This repository
                   ↓
              offline evaluation → versioned report
   deployment scripts → pinned model/runtime → inference container
-  future trainer → PEFT adapter → GGUF export → evaluation → promotion
+  future numeric batch job → locked CPU fit/predict → forecast artifact
 ```
 
 Dependencies flow toward contracts; no module imports trading execution code.
@@ -28,7 +27,7 @@ There is no standalone gateway, queue, vector database, or model registry servic
 
 Runtime placement is an explicit deployment choice, not an API boundary. The
 accepted interim deployment keeps digest-pinned llama.cpp inference in Docker,
-future GPU training/evaluation jobs in on-demand containers, and the read-only host
+future measured model-evaluation jobs in on-demand containers, and the read-only host
 dashboard in a restricted native systemd process. Reassess native inference at the
 dedicated-host migration, or earlier only for a demonstrated container-specific
 reliability or GPU compatibility blocker. A native candidate must pass the same
@@ -39,7 +38,7 @@ VRAM, startup/recovery, and reproducible rollback.
 
 | Module | Public boundary | Responsibility |
 |---|---|---|
-| `contracts.py` | `Contracts.validate`, `Contracts.analysis`, `Contracts.tool_arguments` | JSON Schema, trusted request identity, evidence/metric references, strict tool arguments |
+| `contracts.py` | `Contracts.validate`, `Contracts.analysis` | JSON Schema, trusted request identity, and evidence/metric references |
 | `contracts_v2.py` | `validate_context`, `validate_analysis`, `context_hash` | Contract v2: trusted envelope, canonical hash, shared-code grounding checks |
 | `contract_fixtures.py` | `build` / `python -m ai_treader_llm.contract_fixtures` | Generates the shared v2 fixtures and v2 examples; tests fail on drift |
 | `datasets/samples.py` | `validate_sample`, `validate_dataset` | Source availability, ingestion cutoff, content hashes, IDs, chronological split order |
@@ -50,7 +49,6 @@ VRAM, startup/recovery, and reproducible rollback.
 | `datasets/reviews.py` | `validate_source_review` | Real-source receipts, external compressed/decoded bytes, linked target-plan hash and source coverage |
 | `datasets/targets.py` | `validate_data_targets` | Reviewed identities/horizons, cutoff-group splits, explicit session embargo, held-out boundary and absent labels |
 | `evaluation/runner.py` | `evaluate` | Counts every expected sample; missing/invalid responses are failures |
-| `evaluation/tools.py` | `evaluate_tool_calls` | Scores allowlists, required/unnecessary calls, strict arguments, and trusted symbol/time boundaries |
 | `inference/client.py` | `smoke` | Health and first completion; not a production orchestration client |
 | `benchmark.py` | `benchmark-endpoint` | Versioned synthetic latency, throughput, context, concurrency, and sustained-load measurement; never stores prompt or response content |
 | `monitoring/collector.py` | `StatusCollector.snapshot` | Read-only host, GPU, Docker, llama.cpp, deployment, and allowlisted pipeline/training/benchmark telemetry |
@@ -63,24 +61,7 @@ resolve locally; remote schema retrieval is not enabled.
 
 Exit codes: `0` completed with no contract failures; `1` evaluation includes failed
 predictions; `2` invalid input or operational failure. JSON reports go to stdout;
-errors go to stderr. Neither evaluator permits model promotion.
-
-## Offline tool-call evaluation
-
-Tool-call fixtures contain model-visible messages plus a separately named trusted
-scope, per-case allowlist, and expected tool names. The evaluator never adds
-`trusted_scope` or `expected_tool_names` to the messages. Fixture allowlists must
-resolve to schemas in `contracts/tools/`, and expected names must be a subset of the
-allowlist. Saved predictions use a strict envelope; each proposed argument object is
-validated against the named tool's strict schema.
-
-A case passes only when all required calls are present and no unauthorized,
-incorrect, unnecessary, schema-invalid, wrong-symbol, or out-of-bound time call is
-present. Missing and malformed predictions remain in the denominator. Reports expose
-stable per-category counts and individual failure records. These checks do not
-execute tools, assess returned data, or prove prompt/template parsing, grounding, or
-financial quality. The Go dispatcher must independently repeat authorization and
-trusted-boundary enforcement at runtime.
+errors go to stderr. The evaluator never permits model promotion.
 
 ## Dataset design refinement
 
@@ -149,8 +130,9 @@ Workflow:
 3. Fit history, tool definitions/results, and reserved output within context budget.
 4. Call provider with deadline/cancellation. Start with one in-flight request;
    bound queued requests and return a retriable busy error when full.
-5. Validate proposed tool arguments against `contracts/tools`. Enforce symbol,
-   `start <= end <= as_of`, authorization, and output limits in Go separately.
+5. Validate proposed tool arguments against the platform-owned versioned tool
+   contracts. Enforce symbol, `start <= end <= as_of`, authorization, and output
+   limits in Go.
 6. Execute tools with timeouts. Preserve tool call IDs; return structured failures.
 7. Stop after six rounds. When gathering is complete, make a final schema-constrained
    call without tools so tool selection and final JSON constraints do not conflict.
@@ -175,29 +157,32 @@ implementation plan; this repo intentionally supplies no speculative migrations.
 Persist run status transitions (`queued → running → succeeded | failed | cancelled`),
 request ID, deployment ID, timestamps, tool events, validated analysis JSONB,
 source snapshot references, and error category. Index `(instrument_id, as_of_timestamp)`
-and deployment/run references. Registry records are immutable versions; a separate
-active deployment pointer changes transactionally. Training retries create attempts
-without changing completed artifacts. Use UTC timestamptz and explicit monetary units.
+and deployment/run references. Registry records are immutable versions. Numeric
+fit/predict retries create attempts without changing completed artifacts. Use UTC
+timestamptz and explicit monetary units.
 
 ## Future job boundaries
 
-- Retrieval: versioned document → section chunks → CPU embeddings → existing
-  Postgres; filter availability before selection and recheck returned chunks.
-- Training: validated dataset manifest + exact base + locked configuration → adapter.
-  A shared exclusive GPU lock is mandatory; stop inference first. No outcome mount.
-- Export: adapter + original base → merged safetensors → GGUF → quantized candidate.
-- Promotion: complete evaluation gates → registry transaction → readiness check;
-  rollback restores the prior artifact/configuration bundle.
+- Numeric fit: validated feature and label manifests + locked configuration → immutable
+  regularized-linear or LightGBM artifact. Training labels are mounted only here.
+- Numeric predict: immutable model + feature-only manifest → strict alpha-forecast-v1
+  artifact with complete expected coverage; labels are never mounted.
+- Chronos challenger: isolated pinned runtime and weights → batch forecasts. CPU is
+  the default; an RTX 3080 run requires HARD01 and exclusive scheduling.
+- Text evaluation: reviewed platform export → offline accuracy/failure report and
+  numeric fixtures; hosted calls and application writes remain platform-owned.
 
-Reserved packages deliberately have no fake successful training/RAG implementation.
-No library or container here loads GPU training dependencies on the Mac.
+The retired local general-LLM tool evaluator, RAG, QLoRA, adapter-export and
+deployment-promotion branch has been removed. Reintroducing it requires a new
+architecture decision and measured need. No library or container here loads GPU
+dependencies on the Mac/CPU environment.
 
 ## Artifact and prompt ownership
 
 Downloaded models receive an immutable manifest beside the artifact. A deployment
-records the base repository/revision, tokenizer/template revision, GGUF and adapter
-hashes, quantization, runtime digest, context/decoding settings, prompt/schema hashes,
-dataset/training/evaluation hashes, code commit, seed, creation time and lifecycle state.
+records the base repository/revision, tokenizer/template revision, existing GGUF hash,
+quantization, runtime digest, context/decoding settings, prompt/schema hashes,
+dataset/evaluation hashes, code commit, seed, creation time and lifecycle state.
 Do not invent revisions or provenance for synthetic examples.
 
 Dataset manifests keep artifact paths relative and contained; validate them with
@@ -326,17 +311,18 @@ ablation performance. Historical extraction can retain pretrained hindsight even
 when sources are timestamp-filtered. Neither structural references nor model
 quantiles establish semantic truth, calibration or financial benefit.
 
-## Provider-neutral evidence evaluation (planned, 2026-10-07)
+## Provider-neutral evidence evaluation (current boundary, 2026-10-22)
 
 Hosted product-agent instructions and application persistence belong to the platform,
 not this repository or engineering-assistant memory. Each call records role/template/
 schema versions, exact input hashes, configured and observed provider/model identity,
 source cutoffs and complete attempt outcomes. Existing review JSON and analysis-v2
-have different purposes; platform AGENT01/AGENT02 introduce tested versioned adapters
+have different purposes; platform AGENT01/AGENT02 delivered tested versioned adapters
 without fabricating local-model artifact hashes for hosted providers.
 
-TEXT01 validates reviewed attribute captures from platform AGENT04, including exact
+TEXT01 will validate reviewed attribute captures from platform AGENT04, including exact
 listing/cutoff, source passages, unknown states, prompt/model/schema provenance and
-all failures. Qwen may supply a separately labelled comparator. Financial feature
+all failures. The workflow exists, but no real capture set, human-reviewed target or
+TEXT01 export exists yet. Financial feature
 calculation and concise per-listing research retrieval remain Go-owned; labels never
 enter inference context, including indirectly through later outcomes or summaries.
