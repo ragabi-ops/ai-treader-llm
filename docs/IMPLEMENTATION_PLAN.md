@@ -1,7 +1,8 @@
 # AI-Treader local LLM implementation plan
 
 Accepted architecture reference, 2026-09-26; supervised research extension approved
-2026-10-06; hosted-agent priority revision approved 2026-10-07. This document describes implementation
+2026-10-06; hosted-agent priority revision approved 2026-10-07; obsolete local
+general-LLM expansion removed 2026-10-22. This document describes implementation
 shape, not current task state or order. See [root STATUS](../STATUS.md) and
 [the backlog](../tasks/BACKLOG.csv) for delivery state, and [CODE_DESIGN.md](CODE_DESIGN.md)
 for module boundaries. Hardware compatibility references were checked during planning;
@@ -9,12 +10,12 @@ every deployment still requires validation on its target machine.
 
 ## 1. Recommended Final Architecture
 
-Current direction (2026-10-07): the platform's existing Codex/Claude review bridge
-is the preferred boundary for evaluated hosted research and analysis. This repository
-prioritizes numeric contracts, CPU linear/LightGBM and Chronos-2 experiments. Qwen is
-retained for L03 and optional comparison; the local-runtime installation sections
-below describe that supported path, not a requirement to train a competing general
-LLM. No DGX or larger GPU purchase is required by the approved plan.
+Current direction (2026-10-22): the platform's Codex/Claude bridge owns hosted
+research and analysis. This repository prioritizes numeric contracts, CPU
+linear/LightGBM, Chronos-2 and offline text-attribute evaluation. Qwen is retained
+only for the existing L03 experiment. Standalone local-model tool qualification,
+RAG, QLoRA, adapter export and local-model promotion are no longer planned work.
+No DGX or larger GPU purchase is required by the approved plan.
 
 **First, prepare and verify the Windows machine, then install Ubuntu Server.** Upgrade to 64 GB RAM if practical; keep the existing GPU and disks. On the current interim dual-boot host, Linux may use only `/dev/sda`; both NVMe devices are reserved for Windows and must not be mounted, formatted, repartitioned, or used for AI-Treader data. A future dedicated host may adopt a different disk layout only through a separate operator decision.
 
@@ -26,13 +27,13 @@ LLM. No DGX or larger GPU purchase is required by the approved plan.
 | Initial model | Qwen3-8B, GGUF Q4_K_M |
 | Initial capacity | One request at a time; 4,096-token benchmark baseline; 8,192/2,048 context/output candidate needs CTX01 qualification and separate L03 revision approval |
 | Backend | Existing Go backend with a small LLM client/orchestrator |
-| Training | On-demand Python container: Unsloth, PyTorch, Transformers, PEFT, TRL, bitsandbytes |
+| Numeric jobs | Isolated locked CPU environment for regularized linear and LightGBM fit/predict; separately pinned Chronos runtime |
 | Persistence | Existing Postgres + versioned artifacts on disk |
-| Retrieval | Existing Postgres, with pgvector when document retrieval is introduced |
+| Research context | Platform-owned bounded as-of PostgreSQL summaries; no vector service |
 
 Deployment decision, accepted 2026-09-29: keep inference in the pinned Docker
 container on the interim host, run the read-only operations dashboard as a
-restricted native systemd service, and run future training/evaluation containers
+restricted native systemd service, and run future numeric/evaluation containers
 only on demand. Linux containers use the host kernel and direct NVIDIA device
 access; the image digest keeps llama.cpp and CUDA userspace reproducible while the
 host driver remains independently managed.
@@ -49,10 +50,10 @@ the OpenAI-compatible HTTP boundary so either runtime remains replaceable.
 ```text
 Mac ── SSH / Git ───────────────────────► Ubuntu AI server
  │                                          │
-Go AI-Treader backend                       ├─ llama.cpp inference
+Go AI-Treader backend                       ├─ llama.cpp inference (existing L03)
  ├─ LLM client ── private HTTP ─────────────►│
- ├─ Tool dispatcher                         ├─ Training jobs
- │   ├─ Structured market-data services     └─ Evaluation / embedding jobs
+ ├─ Tool dispatcher                         ├─ CPU numeric fit/predict jobs
+ │   ├─ Structured market-data services     └─ Optional measured Chronos job
  │   └─ Document retrieval
  └─ Existing Postgres + analysis records
 
@@ -78,7 +79,10 @@ Perform these checks before erasing Windows, in order:
 7. Verify wired Ethernet. Use the existing interface; no networking upgrade is required.
 8. Install the RAM upgrade and run a memory test, then repeat a sustained CPU/GPU stability test.
 
-64 GB is sufficient for preprocessing and CPU-side model merging. 128 GB offers little immediate benefit because 10 GB VRAM remains the main training constraint. Starting inference with the existing 32 GB is viable. The board revision matters for firmware and memory compatibility. [Gigabyte specifications](https://www.gigabyte.com/Motherboard/B550-AORUS-ELITE-AX-V2-rev-10/sp)
+The existing 32 GB is the accepted starting point for inference and CPU baselines;
+64 GB remains an optional capacity improvement, not a prerequisite. No adapter merge
+or high-end GPU training workload is planned. The board revision matters for firmware
+and memory compatibility. [Gigabyte specifications](https://www.gigabyte.com/Motherboard/B550-AORUS-ELITE-AX-V2-rev-10/sp)
 
 ## 3. Phase 1 — Ubuntu Installation
 
@@ -101,23 +105,22 @@ must use filesystem UUIDs. The NVMe disks are not Linux capacity.
 |---|---|---|
 | `/dev/sda2` | EFI system partition mounted at `/boot/efi` | Linux boot files |
 | `/dev/sda3` | ext4 `/` | OS, Docker, `/srv/ai-treader`, service state |
-| `/dev/sda1` | ext4 `/data`, mounted by UUID | Models, datasets, adapters, training artifacts |
+| `/dev/sda1` | ext4 `/data`, mounted by UUID | Models, datasets and numeric evaluation artifacts |
 | `/dev/nvme0n1`, `/dev/nvme1n1` | Windows-owned; out of scope | Never mount, format, repartition, or use from this deployment |
 
 ```text
 /srv/ai-treader/          Git checkout, Compose configuration
 /data/models/            Immutable inference and original model files
 /data/datasets/          Versioned snapshots and manifests
-/data/checkpoints/       Resumable training checkpoints
-/data/adapters/          PEFT adapters
+/data/checkpoints/       Resumable numeric fit checkpoints
 /data/cache/             Disposable Hugging Face / download caches
 /data/evaluations/       Reports and evaluation outputs
-/data/training/          Training logs and exports
+/data/training/          Numeric fit logs and immutable model artifacts
 ```
 
 Use the existing plain ext4 filesystems on `/dev/sda`; skip LVM, ZFS, and RAID.
 Keep approximately 15–20% disk space free. Enable periodic TRIM when supported by
-the external SSD. Back up irreplaceable datasets, adapters, metadata, and database
+the external SSD. Back up irreplaceable datasets, numeric model artifacts, metadata, and database
 backups off this machine; downloadable model caches need not be backed up. Make
 service startup require the `/dev/sda1` filesystem to be mounted at `/data` by UUID,
 preventing accidental writes into the root filesystem's empty mount-point directory.
@@ -224,17 +227,13 @@ Preferred: llama.cpp, for direct GGUF support and explicit context, GPU offload,
 
 Fallback: Ollama, if simpler model lifecycle management becomes more valuable than runtime control. Its OpenAI-compatible API must pass the same contract tests. [Ollama compatibility](https://docs.ollama.com/api/openai-compatibility)
 
-Defer vLLM until larger VRAM or concurrency justifies it. Transformers remains part of training and reference evaluation. [vLLM requirements](https://docs.vllm.ai/en/latest/getting_started/installation/gpu/)
-
 - Initial model: `Qwen/Qwen3-8B`, with instruction following, tool use, and controllable thinking mode.
 - Inference: official `Qwen/Qwen3-8B-GGUF`, `Q4_K_M`; approximately 5.03 GB of weights.
-- Current comparison candidate: `Qwen/Qwen3.5-9B`; evaluate text-only analysis and memory usage before replacement.
 - Initial mode: thinking disabled, 4,096 total tokens, one request, maximum 1,024 output tokens.
-- Training source: original Hugging Face safetensors at a recorded revision.
-- Training quantization: bitsandbytes NF4 with double quantization.
-- Adapter format: PEFT safetensors + adapter configuration.
 
-Qwen3-8B is selected for a reproducible first deployment and training path, not as a claim that it is the strongest current model. [Qwen3-8B](https://huggingface.co/Qwen/Qwen3-8B), [official GGUF](https://huggingface.co/Qwen/Qwen3-8B-GGUF/tree/main), [Qwen3.5-9B](https://huggingface.co/Qwen/Qwen3.5-9B)
+Qwen3-8B is the reproducible model for the existing L03 deployment, not a default
+for new research and not a claim that it is the strongest current model.
+[Qwen3-8B](https://huggingface.co/Qwen/Qwen3-8B), [official GGUF](https://huggingface.co/Qwen/Qwen3-8B-GGUF/tree/main)
 
 The executable skeleton uses `compose.yaml`, `.env.example`, and the bootstrap scripts to download an immutable model revision, record its hash, and pin the runtime digest. See [RUNBOOK.md](RUNBOOK.md) for exact commands. The original minimal deployment is equivalent to:
 
@@ -338,14 +337,16 @@ Reuse instruments, market data, documents, portfolios, and analysis records.
 | Table | Minimum responsibility |
 |---|---|
 | `llm_models` | Revision, quantization, artifact hash, runtime digest |
-| `llm_adapters` | Exact base, version, artifact, training-run reference |
 | `llm_datasets` | Immutable manifest, temporal splits, provenance, hash |
-| `llm_training_runs` | Dataset, configuration, code/image versions, status, artifacts |
 | `llm_evaluations` | Deployment configuration, suite version, metrics, report |
-| `llm_analysis_runs` | Existing analysis reference, inputs, model/adapter/prompt versions, status |
+| `llm_analysis_runs` | Existing analysis reference, inputs, model/runtime/prompt versions, status |
 | `llm_tool_calls` | Run, arguments, snapshot references, latency, errors |
 
-Every registry record has creation time and lifecycle state. A single active deployment reference contains model, adapter, runtime, prompt, and schema versions. Promotion updates it atomically; retain the previous deployment for rollback. Store large artifacts on disk and paths/hashes in Postgres. No MLflow or duplicate market-data database.
+Every registry record has creation time and lifecycle state. Existing L03 deployment
+records retain the model, runtime, prompt and schema versions they already use. Numeric
+model lifecycle and activation remain platform ALPHA work; this repository does not
+add a second model registry. Store large artifacts on disk and paths/hashes in
+Postgres. No MLflow or duplicate market-data database.
 
 ### Security and observability
 
@@ -359,15 +360,16 @@ endpoint. [Docker firewall behavior](https://docs.docker.com/engine/install/ubun
 
 Use restricted secret files, read-only model mounts, and no Docker socket in containers. Retrieved documents are untrusted input. Start with rotated JSON logs, `nvidia-smi`, `nvtop`, `htop`, and disk monitoring. Record loaded deployment, GPU temperature/utilization/VRAM, CPU/RAM, disk usage, request latency, tokens/second, failures, and training progress. Keep sensitive raw payloads out of routine logs.
 
-## 8. Phase 6 — Dataset / RAG / Evaluation
+## 8. Phase 6 — Dataset and evaluation
 
 | Information | Mechanism |
 |---|---|
 | Prices, ratios, indicators, exposure, returns | Structured APIs and deterministic calculations |
-| Filings, transcripts, reports, strategy documents | Timestamp-filtered document retrieval |
-| Formatting, tool selection, analysis behavior | Prompts first; fine-tuning later |
+| Filings and research records | Platform-owned point-in-time evidence and bounded as-of summaries |
+| Analysis behavior | Versioned hosted prompts/contracts; existing frozen L03 prompt |
 
-Introduce RAG after the tool baseline. Use Postgres full-text search plus pgvector, with `BAAI/bge-small-en-v1.5` on CPU for English document embeddings. Chunk by document sections, preserve citations, and respect the embedding input limit. This avoids consuming inference VRAM or adding a vector database. [pgvector](https://github.com/pgvector/pgvector), [embedding model](https://huggingface.co/BAAI/bge-small-en-v1.5)
+The platform already owns document passages, cited evidence and bounded as-of research
+summaries. Do not add an LLM-repository RAG or vector-memory layer.
 
 ```text
 AnalysisSample:
@@ -400,61 +402,40 @@ Mandatory leakage controls:
 
 Pretraining contamination remains possible: a model may already know subsequent historical events. Treat retrospective results as diagnostic and confirm behavior with prospective paper evaluation after freezing the model.
 
-### Evaluation before training
+### Evaluation boundaries
 
-Start with approximately 200 reviewed cases including normal conditions, missing/stale data, conflicting evidence, malformed tools, and document prompt injection. Compare identical cases and budgets:
-
-```text
-Qwen3-8B + tools
-Qwen3.5-9B + tools
-Selected model + tools + RAG
-Selected model + tools + RAG + adapter
-```
-
-Measure first-pass/final JSON validity; tool name/argument correctness and unnecessary calls; citation validity, numerical consistency, unsupported claims; risk identification and abstention; repeat-run consistency; p50/p95 latency, generation speed, peak VRAM, and context failures.
-
-Initial proposed gates: 100% valid persisted outputs, zero unauthorized tool execution, zero timestamp violations, and at least 95% tool-call correctness on reviewed fixtures. Report failures rather than silently dropping them. Historical financial evaluation freezes downstream signal/portfolio/risk rules and compares walk-forward returns, drawdown, turnover, and exposure after costs/slippage. Keep financial results separate from analysis-quality scores.
-
-## 9. Phase 7 — QLoRA Training
+Compare candidates on identical versioned inputs and budgets. Keep hosted research,
+the existing L03 experiment, numeric baselines, Chronos and text-feature ablations as
+separate protocols; a result in one does not promote another.
 
 ```text
-Base → Tools/prompts → Evaluation → Failure collection
-     → Reviewed dataset → QLoRA → Evaluation → Promotion
+Hosted provider arm(s) + deterministic baseline
+Existing frozen L03 arm(s)
+Regularized linear + LightGBM + deterministic numeric baselines
+Chronos-2 and numeric-plus-reviewed-text challengers
 ```
 
-Start with one general financial-analysis adapter, only after measured failures justify training.
+Measure first-pass/final JSON validity, citation validity, numerical consistency,
+unsupported claims, risk identification, abstention, repeat-run consistency, p50/p95
+latency, generation speed, peak VRAM, and context failures. Platform workflows that
+use tools measure authorization and argument correctness in the platform suite.
 
-| Dependency | Purpose |
-|---|---|
-| PyTorch | GPU tensor computation |
-| Transformers | Loading and tokenization |
-| PEFT | Portable adapters |
-| TRL | Supervised fine-tuning |
-| bitsandbytes | NF4 and memory-efficient optimization |
-| Unsloth | Reduce training memory |
+Initial proposed gates include 100% valid persisted outputs, zero unauthorized tool
+execution and zero timestamp violations. Any platform tool-call threshold belongs to
+that workflow's frozen protocol, not a synthetic evaluator in this repository. Report
+failures rather than silently dropping them. Historical financial evaluation freezes
+downstream signal/portfolio/risk rules and compares walk-forward returns, drawdown,
+turnover, and exposure after costs/slippage. Keep financial results separate from
+analysis-quality scores.
 
-Use upstream Unsloth core, pinned by digest, without Studio/Jupyter. Preserve its compatible dependency set instead of independently upgrading PyTorch/Transformers. [Unsloth Docker](https://unsloth.ai/docs/get-started/install/docker.md), [Qwen3 training](https://unsloth.ai/blog/qwen3)
+## 9. Retired local general-LLM expansion
 
-For a separately built reference environment, PyTorch 2.10.0 with CUDA 12.8 wheels is a verified available combination, not a claim that every current Unsloth release accepts it. Resolve and lock the actual training container's full package inventory in its smoke test. [PyTorch versions](https://pytorch.org/get-started/previous-versions/)
-
-```text
-4-bit NF4 + double quantization
-BF16 compute when supported
-sequence length: 1,024 initially; test 2,048 afterward
-microbatch: 1
-gradient accumulation: 16
-LoRA rank: 8; alpha: 16
-targets: attention projections initially
-gradient checkpointing: enabled
-optimizer: paged AdamW 8-bit
-learning rate: 1e-4
-epochs: 1 initially
-loss: assistant responses only
-```
-
-These starting values require a short memory and convergence test. Stop inference during training and enforce one GPU-job lock. If memory is insufficient, shorten sequences before changing architecture.
-
-Save PEFT, merge with the exact original base using CPU RAM, convert to GGUF, then quantize to Q4_K_M. Evaluate the final quantized deployment artifact, not only the training checkpoint. Preserve the unmerged adapter for future runtimes. Promote only if targeted failures improve without material grounding, tool-use, or risk regressions. Specialized adapters for filings, earnings, risk, and theses can follow if evaluation demonstrates a need.
+The former standalone tool-suite, RAG, QLoRA, adapter-export and local-model
+promotion branch was removed from the backlog on 2026-10-22. Hosted research now
+lives in the platform, and numeric learning uses isolated batch jobs. The existing
+Qwen deployment remains supported for L03, but it is not extended into a competing
+general research stack. Reintroducing any retired capability requires a new explicit
+architecture decision, a measured gap and a bounded backlog row.
 
 ## 10. Repository Structure
 
@@ -463,10 +444,10 @@ ai-treader-llm/
 ├── compose.yaml
 ├── .env.example
 ├── contracts/             Analysis, dataset, provenance, tools
-├── configs/               Inference, training, evaluation
-├── python/                Dataset, retrieval, training, evaluation
+├── configs/               Inference and evaluation
+├── python/                Contracts, dataset integrity, numeric jobs, evaluation
 ├── docker/
-├── scripts/               Bootstrap, smoke, export, promotion
+├── scripts/               Bootstrap, qualification and smoke checks
 └── docs/
 ```
 
@@ -478,44 +459,46 @@ Go client and platform migrations belong in the existing backend repository. Lar
 |---|---|---|---|
 | Existing backend | Go | Tools, orchestration, validation, persistence | Existing API |
 | Inference | C++ / llama.cpp | Generation | Loopback 8080, `/v1/*` |
-| Training job | Python | QLoRA and export | None |
+| Numeric batch job | Python | CPU fit/predict; Chronos evaluation when separately pinned | None |
 | Evaluation job | Python | Fixtures, scoring, benchmarks | None |
-| Embedding/ingestion job | Python, CPU | Documents and vectors | None initially |
 | Existing Postgres | SQL | Platform records, registry, retrieval | Existing private connection |
 
 Only inference runs continuously on the AI server. Jobs use Compose profiles or one-shot runs. Compose is sufficient; no Kubernetes, service mesh, distributed training platform, or unnecessary supporting service.
 
 ## 12. Initial Hardware Limits
 
-The RTX 3080 10 GB is suitable for one quantized 7B–8B model with modest context; structured analysis, summaries, and bounded tool loops; carefully configured short-context QLoRA.
+The RTX 3080 10 GB is suitable for the existing quantized Qwen deployment and may
+be measured for a separately pinned Chronos challenger after HARD01.
 
-It is unsuitable for full-precision 8B inference entirely in VRAM; full fine-tuning or foundation-model training; simultaneous training/inference; large concurrent batches or assumed 32K+ context. System RAM is not GPU memory. Start at 4K context and increase only after measuring realistic peak memory. Do not promise tokens/second before benchmarking this exact system.
+It is unsuitable for assumed simultaneous model residency, large concurrent batches
+or unmeasured 32K+ context. System RAM is not GPU memory. Do not promise throughput
+or challenger capacity before benchmarking the exact pinned workload.
 
-## 13. Upgrade Path
+## 13. Fixed resource boundary
 
-1. 24 GB+ GPU: increase context/training sequence length and evaluate larger models. Recheck PSU/cooling.
-2. More serving demand: evaluate vLLM behind the same Go provider interface.
-3. Multiple GPUs: independent workers first; split models only as needed. Verify motherboard bandwidth and clearance.
-4. Cloud training: same locked image and immutable datasets; return adapters/evaluation artifacts.
-5. Remote inference: endpoint/authentication changes followed by provider contract tests.
+The approved plan uses the current CPU environment and RTX 3080. It contains no
+larger-GPU, multi-GPU or alternative serving-stack work. If a future measured protocol
+cannot run within this boundary, record that limitation and require a new architecture
+decision instead of keeping speculative upgrade tasks in this plan.
 
-Durable boundaries: HTTP API, typed tools, analysis schema, immutable dataset manifests, portable adapters, deployment registry. Hardware changes do not require a platform rewrite.
+Durable boundaries: HTTP API, strict schemas, immutable dataset manifests and hashed
+model/evaluation artifacts. Hardware changes do not require a platform rewrite.
 
 ## 14. Approved supervised research extension (2026-10-06)
 
 The operator approved local personal research using the existing Go platform and
-a numeric prediction track. The 2026-10-07 revision prefers evaluated hosted
-Codex/Claude analysis; Qwen is retained for separate L03 and optional comparison. This is implementation scope, not
+a numeric prediction track. The 2026-10-22 scope keeps hosted Codex/Claude research
+in the platform and retains Qwen only for separate L03. This is implementation scope, not
 an implemented model, an approved experiment protocol or performance evidence.
 The CSV owns order and state; this section defines the architecture.
 
 | Work | This repository | Platform boundary |
 |---|---|---|
-| Numeric contracts | ALPHA01 delivered strict alpha-forecast-v1, numeric dataset schemas and Python fixtures | ALPHA01 consumes shared fixtures and validates Go |
-| Dataset | DATA01 delivered the reviewed R11 source receipt and controlled analysis-target plan; ALPHA02 validates numeric exports | ALPHA02 generates PIT features and separate matured labels |
+| Numeric contracts | ALPHA01 delivered strict alpha-forecast-v1, numeric dataset schemas and Python fixtures | ALPHA01 Go shared-fixture conformance delivered |
+| Dataset | DATA01 delivered the reviewed R11 source receipt and controlled analysis-target plan; ALPHA02 consumes the frozen export after protocol approval | Platform ALPHA02 delivered PIT features and separate matured labels |
 | CPU baseline | ALPHA02 trains regularized linear and LightGBM models and emits batch predictions | ALPHA03 freezes protocol; ALPHA04 imports; ALPHA05 evaluates |
 | Pretrained challenger | ALPHA03 benchmarks pinned Chronos-2 without fine-tuning | ALPHA06 compares under separately frozen parameters |
-| Text attributes | TEXT01 evaluates provider-neutral captures and exports numeric fixtures | AGENT04 owns hosted capture; ALPHA07 measures numeric-only versus numeric-plus-text |
+| Text attributes | TEXT01 evaluates reviewed provider-neutral exports and publishes numeric fixtures | AGENT04 workflow is delivered but a real reviewed export is still required; ALPHA07 measures numeric-only versus numeric-plus-text |
 | Forward evidence | Immutable artifacts and reproducible jobs | ALPHA09 records matured observation; operator decides promotion |
 
 Begin with daily numeric features, a one-calendar-month target and weekly decisions;
@@ -529,16 +512,16 @@ Go validates and persists results, including missing/failed predictions. Go owns
 financial feature/label definitions, portfolio calculations, policy and execution.
 No new daemon, database, broker path or experiment-tracking service is needed.
 Numeric CPU dependencies are isolated from the existing LLM runtime. GPU libraries
-stay off the Mac/CPU environment. GPU challengers require HARD01 qualification,
-resource measurements and exclusive scheduling; do not assume concurrent Qwen and
-forecast-model residency or buy hardware from paper estimates.
+stay off the Mac/CPU environment. The existing RTX 3080 is the fixed GPU boundary;
+optional GPU challengers require HARD01 qualification, resource measurements and
+exclusive scheduling. Do not assume concurrent Qwen and forecast-model residency.
 
-Model promotion follows held-out and matured forward evidence, including costs,
+Numeric candidate decisions follow held-out and matured forward evidence, including costs,
 delays, drawdown, turnover, exposure and failures. CatBoost may be considered if
 categorical features justify a bounded comparison. Custom PatchTST/TFT training,
 RL and intraday work remain deferred. Platform ALPHA08 is a go/no-go decision on
 combining models, not authorization to implement or activate an untested blend.
-RAG and QLoRA are preserved but sequenced after the CPU baseline.
+Local general-LLM RAG and QLoRA are outside the approved architecture.
 
 The existing L03 arms, frozen revision 4 and protected evaluation windows remain
 unchanged. Revision 5 still needs its own approval. New numeric work does not wait
@@ -552,17 +535,18 @@ benchmarks are not evidence of trading performance.
 
 ## 15. Hosted-agent ownership revision (2026-10-07)
 
-Platform AGENT01 owns canonical versioned call instructions and new task schemas;
-AGENT02 provider qualification/listing analysis; AGENT03 bounded declarative
-strategies/backtests; AGENT04 text capture; AGENT05 concise per-listing research
-records; AGENT06 qualification/protocol and AGENT07 matured paper evaluation.
+Platform AGENT01–06 delivered canonical call instructions, qualified adapters,
+bounded proposals/backtests, the text-capture workflow, concise as-of research
+records and the evaluation/protocol machinery. AGENT07 remains the separately frozen
+matured paper evaluation.
 The existing reviewer contract and roles are reused without an unversioned change.
 See [platform PLAN](../../ai-treader-platform/tasks/PLAN.md) for exact call and memory
 requirements. LLM TEXT01 consumes AGENT04 captures via XPLAT09; it does not own
 hosted credentials, provider calls or application database writes.
 
-DATA01 and CPU ALPHA02 precede unfinished hardware/local-LLM enhancements in the
-queue. HARD01 is still required before GPU experiments. Qwen tool qualification,
-RAG, QLoRA and export remain retained lower-priority work, not prerequisites for
-hosted research or CPU fitting. No provider or model is silently substituted during
-an experiment. L03's frozen parameters and external-provider exclusion remain intact.
+Platform ALPHA01–02 are complete; operator approval of platform ALPHA03 is the
+remaining cross-repository prerequisite for CPU ALPHA02.
+HARD01 remains required before GPU experiments but does not block the CPU or platform
+numeric path. CTX01 belongs only to the separate L03 revision-5 path. No provider or
+model is silently substituted during an experiment. L03's frozen parameters and
+external-provider exclusion remain intact.

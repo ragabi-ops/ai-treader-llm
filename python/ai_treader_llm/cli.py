@@ -16,7 +16,6 @@ from ai_treader_llm.datasets.reviews import validate_source_review
 from ai_treader_llm.datasets.samples import build_messages, read_jsonl, validate_dataset
 from ai_treader_llm.datasets.targets import validate_data_targets
 from ai_treader_llm.evaluation.runner import evaluate
-from ai_treader_llm.evaluation.tools import evaluate_tool_calls
 from ai_treader_llm.inference.client import smoke
 
 
@@ -74,9 +73,6 @@ def main() -> int:
     evaluation = commands.add_parser("evaluate")
     evaluation.add_argument("samples", type=Path)
     evaluation.add_argument("predictions", type=Path)
-    tool_evaluation = commands.add_parser("evaluate-tools")
-    tool_evaluation.add_argument("fixtures", type=Path)
-    tool_evaluation.add_argument("predictions", type=Path)
     health = commands.add_parser("smoke")
     health.add_argument("--base-url", default="http://127.0.0.1:18080")
     health.add_argument("--model", default="ai-treader-analyst")
@@ -188,12 +184,6 @@ def main() -> int:
             )
             print(json.dumps({"valid": True, **summary}))
             return 0
-        if args.command == "evaluate-tools":
-            report = evaluate_tool_calls(
-                read_jsonl(args.fixtures), read_jsonl(args.predictions), contracts
-            )
-            print(json.dumps(report, indent=2))
-            return 1 if report["failures"] else 0
         samples = read_jsonl(args.samples)
         validate_dataset(samples, contracts)
         if args.command == "validate-outcomes":

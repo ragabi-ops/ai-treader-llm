@@ -1,15 +1,19 @@
 # AI-Treader architecture
 
-Architecture and delivery snapshot — **2026-10-07**.
+Architecture and delivery snapshot — **2026-10-22**.
 
 We are building a local, personal research and trading system that turns traceable
 evidence into recommendations, measures those recommendations in paper trading,
 and can eventually operate within separately approved live limits.
 
-**Today:** the platform foundation, hosted strategy-review bridge and local Qwen endpoint work. Hosted Codex/Claude agents are the preferred research direction; listing analysis, strategy proposals and concise research memory still require implementation. The L03 replay
-engine is built, but its evaluation is unfinished. Numeric v1 contracts are
-delivered in Python; feature export, Go conformance and prediction models remain
-planned. No broker is connected and no live trading is authorized.
+**Today:** the platform foundation, hosted research contracts, bounded proposal loop,
+provider-neutral text-capture workflow, concise as-of research summaries and hosted
+evaluation harness are delivered. The live hosted benchmark did not beat the
+do-nothing baseline, so no hosted forward protocol is frozen. The local Qwen endpoint
+is retained only for the existing L03 experiment, whose evaluation is unfinished.
+Numeric v1 contracts, Python/Go conformance and platform PIT feature/label export are
+delivered; the frozen protocol and prediction models remain planned. No broker is connected and no live trading is
+authorized.
 
 This document is a visual explanation, not another backlog. Current task state and
 order remain in the [LLM backlog](tasks/BACKLOG.csv) and
@@ -24,14 +28,14 @@ and the **operator approves experiments and authority**.
 | Component | Responsibility | Runs where | Delivery state |
 |---|---|---|---|
 | React cockpit | Show recommendations, evidence, operations and outcomes | Platform UI in the browser | Existing surfaces delivered; new numeric views not implemented |
-| Go backend | Ingest data, select information available at a cutoff, calculate financial features, orchestrate jobs, validate results and enforce policy/risk | Existing platform deployment | Foundation delivered; numeric extensions planned |
-| PostgreSQL | Authoritative identities, source revisions, datasets, runs, decisions, paper ledger and outcomes | Existing platform database | Delivered; new numeric records planned |
-| Hosted agent bridge | Existing bounded strategy review; planned listing analysis, declarative proposals and text attributes | Platform CLI adapters; inference at the provider | Review bridge delivered; new contracts and provider qualification planned |
-| Qwen3-8B / llama.cpp | Retained local L03 analysis and optional measured comparator | Pinned Docker inference on Ubuntu / RTX 3080 | Endpoint and Go integration delivered |
+| Go backend | Ingest data, select information available at a cutoff, calculate financial features, orchestrate jobs, validate results and enforce policy/risk | Existing platform deployment | Foundation, numeric validation and PIT export delivered; batch prediction integration planned |
+| PostgreSQL | Authoritative identities, source revisions, datasets, runs, decisions, paper ledger and outcomes | Existing platform database | Delivered, including immutable numeric export records; prediction records planned |
+| Hosted agent bridge | Bounded listing analysis, declarative proposals, reviewed text attributes and as-of research summaries | Platform CLI adapters; inference at the provider | AGENT01–06 delivered; no forward protocol frozen |
+| Qwen3-8B / llama.cpp | Retained existing L03 analysis only | Pinned Docker inference on Ubuntu / RTX 3080 | Endpoint and Go integration delivered; no new local general-LLM branch |
 | Linear model / LightGBM | Learn numeric relationships and produce relative-return scores | Planned isolated CPU batch jobs owned by LLM repository | Not started |
 | Chronos-2 | Challenge the numeric baseline with pretrained time-series forecasts | Planned local batch job; CPU/GPU placement measured before use | Not started |
-| Reviewed text attributes | Extract cited guidance, liquidity and event attributes; evaluate accuracy and numeric usefulness | Platform hosted captures; LLM repository offline evaluation | Not started |
-| Contract validators | Reject malformed, out-of-scope or mismatched results | Python in LLM repository; Go in platform | Analysis v2 and Python numeric v1 delivered; numeric Go conformance planned |
+| Reviewed text attributes | Extract cited guidance, liquidity and event attributes; evaluate accuracy and numeric usefulness | Platform hosted captures; LLM repository offline evaluation | Workflow delivered; real reviewed capture/export and LLM evaluation still absent |
+| Contract validators | Reject malformed, out-of-scope or mismatched results | Python in LLM repository; Go in platform | Analysis v2 and numeric v1 cross-language conformance delivered |
 | Paper engine and journal | Simulate orders, enforce risk, record fills/costs/holdings and mature outcomes | Go and PostgreSQL | Delivered; comparative evaluation unfinished |
 | Host dashboard | Report sanitized hardware and endpoint health | Restricted native service on Ubuntu | Delivered; future-job telemetry remains unavailable |
 | Broker adapter | Reconcile accounts and eventually submit authorized orders | Future Go integration | Not started; separate security and approval gates |
@@ -51,8 +55,8 @@ flowchart TB
     subgraph Platform["ai-treader-platform — Go / React / PostgreSQL"]
         PIT["Identity, revisions and cutoff filtering<br/>Delivered foundation"]
         DB[("PostgreSQL<br/>Authoritative records — delivered")]
-        Bridge["Hosted agent bridge<br/>Review delivered; research extensions planned"]
-        Text["Reviewed text attributes<br/>Planned platform capture"]
+        Bridge["Hosted agent bridge<br/>AGENT01–06 delivered; protocol not frozen"]
+        Text["Reviewed text attributes<br/>Workflow delivered; real reviewed export absent"]
         Worker["Go orchestration and validation<br/>LLM delivered; numeric import planned"]
         Rules["Versioned proposal mapping and risk<br/>Existing paper rules; new mappings planned"]
         Paper["Paper execution and outcome journal<br/>Delivered"]
@@ -60,12 +64,12 @@ flowchart TB
     end
 
     subgraph Models["ai-treader-llm — model runtime and research jobs"]
-        Qwen["Qwen3-8B via llama.cpp<br/>Delivered private endpoint"]
+        Qwen["Qwen3-8B via llama.cpp<br/>Delivered; retained for L03 only"]
         Trees["Linear / LightGBM<br/>Planned CPU batch prediction"]
         Chronos["Chronos-2<br/>Planned independent challenger"]
     end
 
-    Hosted["Codex / Claude provider inference<br/>Existing review adapters; qualification pending"]
+    Hosted["Codex / Claude provider inference<br/>Qualified adapters; research benchmark below baseline"]
     Broker["Broker adapter<br/>Future; disconnected today"]
     Sources --> PIT --> DB
     DB --> Worker
@@ -92,7 +96,8 @@ flowchart TB
     classDef future fill:#f3f4f6,stroke:#6b7280,color:#111827;
     class Sources,PIT,DB,Qwen,Paper,UI delivered;
     class Worker,Rules,Bridge,Hosted partial;
-    class Trees,Chronos,Text planned;
+    class Trees,Chronos planned;
+    class Text partial;
     class Broker future;
 ```
 
@@ -134,9 +139,10 @@ predictive value. L03 Stage 1 is incomplete: revision 4 encountered reply trunca
 revision 5 proposes 8192 context / 2048 output tokens and still needs separate approval.
 The newer host configuration needs CTX01 qualification beyond the earlier benchmark.
 
-The existing hosted strategy-review bridge is a separate advisory workflow. It does
-not yet implement general listing analysis or autonomous strategy creation. AGENT01–07
-add those bounded research capabilities without changing this frozen L03 path.
+The hosted research workflow is a separate advisory path. AGENT01–06 implement
+bounded listing analysis, strategy proposals, text capture, as-of summaries and
+evaluation without changing this frozen L03 path. AGENT07 remains conditional on an
+operator-frozen protocol and actual elapsed forward evidence.
 
 ## 4. Planned numeric learning and prediction
 
@@ -186,16 +192,16 @@ calibration checks. A combined model is considered only after incremental eviden
 | Capability | Current position | Remaining work / owner |
 |---|---|---|
 | Data and paper foundation | Identity, revisions, PIT machinery, policy/risk, ledger and journal delivered | Real training coverage and historical universe evidence still needed |
-| Hosted agents | Existing restricted strategy-review bridge | Platform AGENT01–04: versioned instructions, qualification, proposals and text capture |
-| Concise research history | Existing run/backtest/review/journal records | Platform AGENT05: linked immutable summaries and as-of retrieval; AGENT06–07 evaluation |
-| Local LLM | Endpoint, Go client, strict analysis and attempt persistence delivered | LLM HARD01, CTX01 and TOOLS01 qualification |
-| Reviewed datasets | Integrity tooling exists; real reviewed dataset not complete | LLM DATA01; platform ALPHA02 numeric export |
+| Hosted agents | AGENT01–06 delivered; live benchmark below do-nothing baseline | Operator protocol decision and, only after a freeze, AGENT07 forward evidence |
+| Concise research history | Immutable linked summaries and bounded as-of retrieval delivered | Use only under a frozen hosted protocol; no vector-memory service |
+| Local LLM | Endpoint, Go client, strict analysis and attempt persistence delivered | Existing L03 only; CTX01 is conditional on revision-5 approval |
+| Reviewed datasets | LLM DATA01 source receipt and target plan delivered | Platform ALPHA02 numeric export |
 | Existing L03 experiment | Replay/evaluator built; Stage 1 unfinished | Platform L03d revision-5 approval and run; L03e forward observation |
-| Numeric contracts and models | Python contract and fixtures delivered; no model | LLM ALPHA02; platform ALPHA01–ALPHA05 |
+| Numeric contracts and models | Contracts, cross-language conformance and platform PIT numeric export delivered; no model | Operator/platform ALPHA03, LLM ALPHA02, then platform ALPHA04–05 |
 | Chronos-2 and text attributes | Planned | LLM ALPHA03 / TEXT01; platform ALPHA06 / ALPHA07 |
 | Combined challenger | Conditional decision only | Platform ALPHA08; implement only through subsequent bounded tasks |
 | Numeric forward evidence | Not started | Platform ALPHA09; actual elapsed time and matured outcomes required |
-| RAG / QLoRA / GGUF export / promotion | Not implemented; retained later in backlog | LLM RAG01 / TRAIN01 / EXPORT01 / PROMOTE01 |
+| Retired local general-LLM branch | Standalone tool-suite qualification, RAG, QLoRA, adapter export and local-model promotion are not part of the approved path | Reintroduce only through a new explicit architecture decision and measured need |
 | Broker and bounded live operation | No connection or authorization | Platform B00s–B03; independent account, security and operator gates |
 
 The existing 13-listing L03 universe and survivorship-biased pilot/sizing universe
@@ -235,7 +241,7 @@ flowchart LR
     end
 ```
 
-Hosted and numeric implementation do not depend on completing L03e. It must preserve L03's protected
+Hosted and numeric implementation do not depend on completing L03e. They must preserve L03's protected
 evaluation windows. These arrows summarize milestones; exact dependencies and
 serial work order are owned by the two backlogs, not this diagram.
 
@@ -245,14 +251,14 @@ serial work order are owned by the two backlogs, not this diagram.
 |---|---|---|
 | Mac development environment | Repository work and CPU checks; no GPU dependency environment | Isolated CPU numeric development and validation |
 | Platform deployment | Go backend, React cockpit, PostgreSQL and worker infrastructure | Batch orchestration/import and numeric evaluation; same infrastructure |
-| Ubuntu AI host | RTX 3080, pinned Qwen Docker inference, private access and read-only dashboard | Measured on-demand model jobs with exclusive GPU scheduling |
-| Hosted provider | Existing Codex/Claude review adapters; inference outside the local machine | Qualified research calls with explicitly scoped outbound evidence |
+| Ubuntu AI host | RTX 3080, pinned Qwen Docker inference, private access and read-only dashboard | Optional measured Chronos jobs on the same fixed GPU with exclusive scheduling |
+| Hosted provider | Qualified Codex/Claude adapters and bounded research tasks; inference outside the local machine | A separately frozen forward protocol only if evidence justifies one |
 | Artifact storage | Versioned model files and manifests; generated artifacts outside Git | Hashed numeric datasets, trained models and evaluation reports |
 
 Local operation does not make hosted inference local: scoped evidence is sent to the
 selected provider. Keep credentials and unnecessary private records out of envelopes.
-Use the existing machine for CPU baselines and measure Chronos-2 resource needs before
-a hardware purchase; this direction does not require a DGX or a dedicated Qwen server.
+Use the existing CPU environment for baselines. Chronos-2 starts on CPU and may use
+the existing RTX 3080 only after measurement; no larger GPU purchase is in scope.
 
 No additional always-on model gateway, queue, vector service or experiment database
 is planned. CPU baselines come first. Hardware qualification is unfinished; 64 GiB
@@ -300,10 +306,10 @@ written later cannot enter an earlier simulated decision merely because it descr
 old data. Outcome maturity and protected evaluation partitions remain enforced.
 
 See the [platform implementation plan](../ai-treader-platform/tasks/PLAN.md#hosted-agents-call-instructions-and-research-records-approved-2026-10-07)
-for the canonical planned envelopes and record fields. No new database or vector
-service is required by this design. Next local task: **LLM DATA01** (reviewed data
-manifests and analysis targets). Platform agent and numeric tasks retain their own
-order and dependencies.
+for the canonical envelopes and record fields. No new database or vector service is
+required by this design. Platform ALPHA01–02 are complete; the current cross-repository
+critical path is operator/platform ALPHA03, followed by LLM ALPHA02 and platform ALPHA04.
+HARD01 can proceed in parallel and does not unblock that numeric path.
 
 ## 8. What we want to accomplish
 
