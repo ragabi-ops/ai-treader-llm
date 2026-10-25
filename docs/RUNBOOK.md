@@ -234,10 +234,10 @@ Save the previous runtime lock, model receipt, and configuration before changing
 version. Re-run GPU, endpoint and schema tests after upgrades; rollback restores the
 previous bundle and restarts inference.
 
-## Numeric contract validation and planned jobs
+## Numeric contract validation and CPU numeric jobs
 
-ALPHA01 installs offline numeric contract validators; it does not install a model
-or prediction job. Validate the committed synthetic bundle with:
+ALPHA01 installs offline numeric contract validators. Validate the committed
+synthetic bundle with:
 
 ```bash
 uv run --frozen ai-treader-llm validate-numeric-input examples/numeric-v1/input-manifest.json
@@ -251,10 +251,37 @@ Regenerate the shared Python/Go conformance fixtures after a deliberate contract
 change with `uv run --frozen python -m ai_treader_llm.numeric_fixtures`, then run
 `make check`. Contract changes require a new version once platform adoption begins.
 
-Until their later acceptance closes, do not report training, Chronos-2 forecasting
-or text extraction as available.
-Future jobs use locked CPU dependencies for the linear/LightGBM baseline, immutable
-platform exports, separate fit/evaluation labels and feature-only prediction mounts.
+ALPHA02 adds the CPU ridge/LightGBM jobs. They need the locked `numeric` extra
+(`make setup-numeric`; on macOS LightGBM also needs `libomp`, so the jobs and
+`make test-numeric` run on the Linux target host). `make check` runs both lanes;
+`make check-core` runs the contract lane alone. Inputs are immutable platform
+numeric exports (`calendar.json`, `input-manifest.json`, `features.jsonl`,
+`labels.jsonl`, unchanged bytes) under `/data/datasets/alpha03/`; outputs are new
+directories under `/data/training/alpha03/`:
+
+```bash
+uv run --frozen --extra numeric ai-treader-llm alpha-train \
+  --input /data/datasets/alpha03/alpha03-dev-1m/input-manifest.json \
+  --labels /data/datasets/alpha03/alpha03-dev-1m/labels.jsonl \
+  --labels-sha256 <labels_sha256 the platform recorded> \
+  --benchmark-listing-id 11 --horizon 1m \
+  --out /data/training/alpha03/1m-<dataset_id>
+uv run --frozen --extra numeric ai-treader-llm alpha-predict \
+  --challengers /data/training/alpha03/1m-<dataset_id>/challengers.json --arm G \
+  --input <feature-only input-manifest.json> --request <alpha-request-v1> --out forecast.json
+```
+
+`alpha-train` refuses parameters other than the frozen ALPHA03 file
+(`configs/numeric/alpha03-parameters.json`, sha256 `5cba481a…acac5`), an export
+whose decisions differ from the protocol windows, a label at or past the fence and
+an existing output directory. It writes `trial-draw.json` before any fit, then
+`trials.jsonl`, `artifacts/{R,G}.json`, `training-manifest.json`,
+`challengers.json` and `run.json` (timing only). A rerun on the same runtime
+reproduces every file except `run.json` byte for byte. `alpha-predict` reads no
+labels and refuses a request whose model pins or score semantics differ from
+`challengers.json`, or a host whose code or runtime hash differs from the frozen
+one. `alpha-request` builds such a request for local checks; the platform builds
+its own under ALPHA04. Chronos-2 forecasting and text extraction are not available.
 Keep models, datasets and generated reports out of Git. CPU is the default. Optional
 RTX 3080 runs require measured capacity and one exclusive GPU owner; GPU packages are
 not Mac/CPU dependencies, and no larger GPU is part of the approved plan.

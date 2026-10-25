@@ -496,7 +496,7 @@ The CSV owns order and state; this section defines the architecture.
 |---|---|---|
 | Numeric contracts | ALPHA01 delivered strict alpha-forecast-v1, numeric dataset schemas and Python fixtures | ALPHA01 Go shared-fixture conformance delivered |
 | Dataset | DATA01 delivered the reviewed R11 source receipt and controlled analysis-target plan; ALPHA02 consumes the frozen export after protocol approval | Platform ALPHA02 delivered PIT features and separate matured labels |
-| CPU baseline | ALPHA02 trains regularized linear and LightGBM models and emits batch predictions | ALPHA03 freezes protocol; ALPHA04 imports; ALPHA05 evaluates |
+| CPU baseline | ALPHA02 delivered locked ridge/LightGBM training under the frozen ALPHA03 protocol and feature-only batch prediction | ALPHA03 froze the protocol; ALPHA04 imports; ALPHA05 evaluates |
 | Pretrained challenger | ALPHA03 benchmarks pinned Chronos-2 without fine-tuning | ALPHA06 compares under separately frozen parameters |
 | Text attributes | TEXT01 evaluates reviewed provider-neutral exports and publishes numeric fixtures | AGENT04 workflow is delivered but a real reviewed export is still required; ALPHA07 measures numeric-only versus numeric-plus-text |
 | Forward evidence | Immutable artifacts and reproducible jobs | ALPHA09 records matured observation; operator decides promotion |
@@ -544,8 +544,8 @@ See [platform PLAN](../../ai-treader-platform/tasks/PLAN.md) for exact call and 
 requirements. LLM TEXT01 consumes AGENT04 captures via XPLAT09; it does not own
 hosted credentials, provider calls or application database writes.
 
-Platform ALPHA01–02 are complete; operator approval of platform ALPHA03 is the
-remaining cross-repository prerequisite for CPU ALPHA02.
+Platform ALPHA01–03 and CPU ALPHA02 are complete; platform ALPHA04 orchestration is
+the next numeric step.
 HARD01 remains required before GPU experiments but does not block the CPU or platform
 numeric path. CTX01 belongs only to the separate L03 revision-5 path. No provider or
 model is silently substituted during an experiment. L03's frozen parameters and

@@ -1,6 +1,6 @@
 # STATUS
 
-Updated 2026-10-23. [tasks/BACKLOG.csv](tasks/BACKLOG.csv) is the task-state,
+Updated 2026-10-26. [tasks/BACKLOG.csv](tasks/BACKLOG.csv) is the task-state,
 execution-order and cross-repository dependency authority. Run
 `python3 scripts/backlog.py` before selecting work.
 
@@ -29,26 +29,28 @@ See [architecture.md](architecture.md) for the cross-repository component and fl
   distinct from the earlier BENCH01 deployment; CTX01 qualifies the new configuration
   only if the separate L03 revision-5 path proceeds.
 - Numeric v1 schemas, Python/Go validators and synthetic shared conformance fixtures are delivered.
-  Numeric models, batch forecasting and text-attribute extraction remain planned;
-  no numeric model or protocol-frozen research dataset exists. DATA01 is complete:
+- ALPHA02 is complete: locked CPU ridge/LightGBM training under the frozen ALPHA03
+  protocol and feature-only batch prediction (`alpha-train`, `alpha-predict`, numeric
+  extra). Frozen 1m and 3m challengers trained on the platform pilot development
+  exports live under `/data/training/alpha03/` on the target host; their pins are
+  mirrored in platform `tasks/evidence/XLLM03-challengers-*.json`. Validation rank
+  correlations are selection diagnostics, not trading evidence; the 2025 test was not
+  read. Chronos-2 and text-attribute extraction remain planned. DATA01 is complete:
   the hash-verified SEC EDGAR R11 receipt now links a reviewed nine-target plan
   with pinned platform identity/calendar provenance, one-month horizons, three
   chronological cutoff groups, 21-session embargo evidence and a protected test
   boundary. The plan is explicitly survivorship-biased historical reconstruction;
-  expected analyses and outcomes are absent and labels remain separate. Numeric model
-  fitting is not implemented; local general-LLM RAG/adaptation/export/promotion is
-  outside the approved architecture.
+  expected analyses and outcomes are absent and labels remain separate. Local
+  general-LLM RAG/adaptation/export/promotion is outside the approved architecture.
   Offline structural checks
   do not establish semantic grounding, model quality, trading performance or authority.
 
 ## Next work
 
-Platform ALPHA01–02 and LLM mirrors XPLAT05–06 are done. Platform ALPHA03 is now in
-progress: its D1–D9 choices are settled and ALPHA03a/b are done; ALPHA03c power
-simulation/parameters and the final freeze remain. Platform is not waiting on this
-repository today. CPU ALPHA02 here remains gated by that final freeze/XPLAT07. Once
-it closes, ownership flips: LLM ALPHA02/XLLM03 becomes the handoff platform ALPHA04
-waits for.
+Platform ALPHA01–03 (mirrors XPLAT05–07) and CPU ALPHA02 here (platform XLLM03) are
+done. Platform ALPHA04 orchestration is next on the numeric path; it invokes these
+jobs and validates and persists their forecasts. Platform is not waiting on this
+repository for it.
 
 HARD01 remains the next eligible local task in parallel and is required only before
 GPU experiments such as ALPHA03; it does not block the platform numeric path. CTX01
@@ -66,6 +68,17 @@ The host still lacks complete RAM topology, cooling, PSU and permitted-disk
 qualification. A completed reviewed numeric dataset, point-in-time universe controls,
 real human-reviewed text captures and prospective evaluation are also outstanding; DATA01's
 small R11 target plan is not training or performance evidence.
+
+## CPU numeric jobs validation (2026-10-26)
+
+ALPHA02 is complete: `make check` passed on the target host (102 contract and 11
+numeric-job tests, 13 fixture commands, shell syntax); `make check-core` passed on the
+Mac, where LightGBM cannot load without libomp. On the real 1m development export
+(3,591 rows, 189 decisions, 3,157 usable) all 25 trials completed; ridge α=1000 and
+LightGBM trial 23 were selected (mean validation rank correlation −0.0066 and +0.0622;
+momentum reference +0.0463). The 3m family selected ridge α=1000 (+0.0198) and
+LightGBM trial 20 (+0.0829; momentum −0.0073). A rerun reproduced every artifact byte
+for byte. The pilot is survivorship-biased and uses reconstruction availability.
 
 ## Scope cleanup validation (2026-10-23)
 

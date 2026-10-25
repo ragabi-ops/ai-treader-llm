@@ -161,12 +161,15 @@ and deployment/run references. Registry records are immutable versions. Numeric
 fit/predict retries create attempts without changing completed artifacts. Use UTC
 timestamptz and explicit monetary units.
 
-## Future job boundaries
+## Job boundaries
 
-- Numeric fit: validated feature and label manifests + locked configuration → immutable
-  regularized-linear or LightGBM artifact. Training labels are mounted only here.
-- Numeric predict: immutable model + feature-only manifest → strict alpha-forecast-v1
-  artifact with complete expected coverage; labels are never mounted.
+- Numeric fit (ALPHA02, `alpha-train`): validated feature manifest + hash-pinned label
+  artifact + the frozen ALPHA03 parameters → immutable ridge and LightGBM artifacts,
+  a wall-clock-free training manifest and frozen challenger pins. Training labels
+  are read only here.
+- Numeric predict (ALPHA02, `alpha-predict`): frozen challenger + feature-only
+  manifest + trusted request → strict alpha-forecast-v1 with complete expected
+  coverage; labels are never read.
 - Chronos challenger: isolated pinned runtime and weights → batch forecasts. CPU is
   the default; an RTX 3080 run requires HARD01 and exclusive scheduling.
 - Text evaluation: reviewed platform export → offline accuracy/failure report and
@@ -258,7 +261,8 @@ the bootstrap script; actual CUDA compatibility is accepted only after server te
 ## Numeric forecasting boundary (ALPHA01 delivered 2026-10-19)
 
 ALPHA01 introduces a separate numeric contract package and runnable Python
-validators. Model fitting and platform import remain ALPHA02/platform work.
+validators. ALPHA02 (`python/ai_treader_llm/alpha/`) adds the CPU fit/predict jobs;
+platform import is ALPHA04.
 Existing analysis-v2 messages and Qwen serving are unchanged. Numeric scores do
 not reuse the prose-analysis schema.
 
@@ -296,6 +300,17 @@ uses sorted UTF-8 keys, compact separators, exact scalar bytes, no floats, no BO
 and no trailing newline; referenced artifacts hash their raw bytes. The shared
 fixture suite declares ordered error codes and includes values beyond JavaScript's
 safe-integer range, DST, microsecond cutoffs, tampering and coverage failures.
+
+ALPHA02 fixes the job-side choices the protocol leaves open: features enter in
+feature-schema order as float64; a row with any unavailable feature or label is
+excluded and counted; the target is the label demeaned across each date's usable
+rows; standardization uses population deviation (zero → 1); per-date Spearman uses
+average ranks and is undefined (excluded, counted) below two rows or for a constant
+side; a fold's score is the mean of its defined dates and selection uses the mean
+of the fold scores. Scores are `ranking_score`/`unitless` with the label target
+attached, written with at most 15 fractional digits. BLAS/OpenMP run on one thread.
+`code_sha256` covers the job and contract modules; `runtime_sha256` covers Python,
+OS/machine, numpy/scipy/LightGBM versions, `uv.lock` and thread pins.
 
 Batch attempts are platform-created and idempotent. Jobs receive immutable bounded
 inputs and emit artifacts; they have no database write or trading credentials.
