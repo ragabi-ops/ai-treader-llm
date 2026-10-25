@@ -1,0 +1,399 @@
+{
+  "account": {
+    "cash_range": [
+      0,
+      1
+    ],
+    "fractional_quantities": "mock accounts only, labelled",
+    "leverage": false,
+    "position_cap": 0.2,
+    "shorting": false,
+    "starting_value_usd": 100000
+  },
+  "arms": {
+    "G": {
+      "draw": "seeded random search over the grid, recorded before any fit",
+      "fixed": {
+        "deterministic": true,
+        "num_threads": 1,
+        "seed": 20261023
+      },
+      "grid": {
+        "feature_fraction": [
+          0.7,
+          1
+        ],
+        "lambda_l2": [
+          0,
+          1,
+          10
+        ],
+        "learning_rate": [
+          0.02,
+          0.05,
+          0.1
+        ],
+        "min_data_in_leaf": [
+          20,
+          50,
+          100
+        ],
+        "n_estimators": [
+          100,
+          300,
+          600
+        ],
+        "num_leaves": [
+          7,
+          15,
+          31
+        ]
+      },
+      "grid_keys": [
+        "feature_fraction",
+        "lambda_l2",
+        "learning_rate",
+        "min_data_in_leaf",
+        "n_estimators",
+        "num_leaves"
+      ],
+      "model": "LightGBM regression, CPU",
+      "seed": 20261023,
+      "trials": 20
+    },
+    "M": {
+      "rule": "momentum-20-rank-v1",
+      "trials": 1
+    },
+    "R": {
+      "alpha": [
+        0.1,
+        1,
+        10,
+        100,
+        1000
+      ],
+      "model": "ridge regression on train-only standardized features",
+      "trials": 5
+    },
+    "T": {
+      "reported_only": true,
+      "rule": "trend-200-v1",
+      "trials": 1
+    },
+    "baselines": [
+      "cash",
+      "equal-weight buy-and-hold of the active universe, same next open and costs"
+    ]
+  },
+  "availability": {
+    "forward": "observed",
+    "historical": "reconstruction (the pilot was recorded in 2026)"
+  },
+  "benchmark": {
+    "label_benchmark": "KO",
+    "label_benchmark_cik": "21344",
+    "training_target": "platform-label-v1 demeaned across the active listings on each date (the benchmark cancels)"
+  },
+  "calendar": "xnys-2021-2027-v1",
+  "costs": {
+    "delay_stress": "execution at the open of the second session after the decision",
+    "fee_bps_per_leg": 10,
+    "sensitivity_bps_per_leg": 30,
+    "slippage_bps_per_leg": 5
+  },
+  "decisions": {
+    "D1": "19 pilot listings (all 20 except GOOG), frozen by issuer CIK and security label",
+    "D2": "development ends at label end before the L03 fence; 2025 is a single read-once retrospective test; no L03 artifact used or fed",
+    "D3": "KO label benchmark, cancelled by per-date demeaning in training; equal-weight buy-and-hold is the portfolio comparator; no market-relative claim",
+    "D4": "1m primary; 3m a separate descriptive family; 6m not run",
+    "D5": "R ridge (5 alphas) and G LightGBM (20 seeded configs) vs M momentum-20-rank-v1; T trend-200-v1 reported; selection by mean validation rank correlation; trial family 27",
+    "D6": "alpha-rank-map-v1: enter ranks 1-5, hold through rank 10, exit at 11 or below; 20% slots; USD 100,000; 10 + 5 bps per leg; 30 bps and one-session-delay stress",
+    "D7": "52 decision weeks plus the exact 1m label follow-up, starting after the §4 gate with daily capture current",
+    "D8": "power simulation attached before the freeze (tasks/evidence/ALPHA03-power.json)",
+    "D9": "§4 retrospective gate; §5.3 eligibility, reject and inconclusive rules with Holm over two challengers; §5.4 stopping rules"
+  },
+  "eligible_for_review": [
+    "§4 gate passed",
+    "Holm-adjusted 95% one-sided lower bound of Δ \u003e 0 at every block length",
+    "point Δ ≥ +0.02 of starting NAV",
+    "max drawdown ≤ M's + 5 percentage points",
+    "terminal NAV \u003e cash",
+    "point Δ \u003e 0 under the 30 bps and one-session-delay reruns",
+    "coverage and leakage gates hold over the whole stage"
+  ],
+  "feature_version": "platform-daily-v1",
+  "forward": {
+    "decision_weeks": 52,
+    "label_follow_up": "exact 1m label end of the last decision",
+    "start": "first ISO week after the §4 gate passes and daily Tiingo capture is current"
+  },
+  "horizon_policy": "xnys-calendar-months-next-open-v1",
+  "inconclusive": "everything else; M stays incumbent, the challenger is archived",
+  "label_version": "platform-label-v1",
+  "mapping": {
+    "enter_rank": 5,
+    "hold_rank": 10,
+    "order": "exits before entries",
+    "slot_fraction": 0.2,
+    "slots": 5,
+    "ties": "listing_id ascending",
+    "time_exit": false,
+    "unavailable_score": "no model-driven change: hold what is held, no new entry",
+    "version": "alpha-rank-map-v1"
+  },
+  "mapping_version": "alpha-rank-map-v1",
+  "numeric_contract_bundle_sha256": "2aa440c14b851cef68fa5348b1bdb17819efb662afca13ee62f2d499747b00d6",
+  "power": {
+    "evidence": "tasks/evidence/ALPHA03-power.json",
+    "false_promotion_rate_at_zero_edge": 0.0475,
+    "minimum_detectable_delta_at_80pct": 0.8916893001618424
+  },
+  "preregistration": "ALPHA03",
+  "reject": "Holm-adjusted 95% one-sided upper bound of Δ \u003c 0 at every block length, or any stopping rule",
+  "retrospective_gate": {
+    "all_trials_recorded": true,
+    "durable_record_every_listing_week": true,
+    "equity_curves_reproducible": true,
+    "forecast_coverage_min": 0.95,
+    "leakage_violations": 0
+  },
+  "revision": "1",
+  "schedule": {
+    "cutoff": "pre-open-v1: one second before the open of the session after the decision session",
+    "decision_session": "last XNYS session of each ISO week, as_of = its close",
+    "execution": "next session's raw open (L01a next-open fill and gap/no-fill policy)"
+  },
+  "selection": {
+    "criterion": "mean over V1-V3 of the per-date Spearman rank correlation between score and label",
+    "final_fit": "selected configs refit on all development decisions and frozen before the test is read",
+    "ties": "fewer leaves, then fewer estimators, then larger alpha"
+  },
+  "stopping_rules": [
+    "leakage or authorization violation: immediately",
+    "forecast coverage \u003c 0.90 over any 4 consecutive weeks",
+    "drawdown \u003e 20% from the arm's peak",
+    "3 or more missed weeks",
+    "any change to a frozen item"
+  ],
+  "test": {
+    "alpha_one_sided": 0.05,
+    "block_lengths_weeks": [
+      4,
+      8,
+      13
+    ],
+    "bootstrap": "stationary block bootstrap of paired weekly vectors; one-sided percentile bounds",
+    "endpoint": "Δ_X = Π(1+r_X,t) − Π(1+r_M,t) for X in {R, G}, weekly net returns; open positions marked at market less one exit leg",
+    "multiplicity": "Holm across the two challengers",
+    "resamples": 10000,
+    "seed": 20261023
+  },
+  "trial_family": {
+    "1m": 27,
+    "3m_fitted": 25
+  },
+  "universe": [
+    {
+      "cik": "320193",
+      "security_label": "Common stock",
+      "symbol": "AAPL"
+    },
+    {
+      "cik": "1045810",
+      "security_label": "Common stock",
+      "symbol": "NVDA"
+    },
+    {
+      "cik": "1318605",
+      "security_label": "Common stock",
+      "symbol": "TSLA"
+    },
+    {
+      "cik": "1018724",
+      "security_label": "Common stock",
+      "symbol": "AMZN"
+    },
+    {
+      "cik": "1652044",
+      "security_label": "Class A common stock",
+      "symbol": "GOOGL"
+    },
+    {
+      "cik": "104169",
+      "security_label": "Common stock",
+      "symbol": "WMT"
+    },
+    {
+      "cik": "1058090",
+      "security_label": "Common stock",
+      "symbol": "CMG"
+    },
+    {
+      "cik": "40545",
+      "security_label": "Common stock",
+      "symbol": "GE"
+    },
+    {
+      "cik": "66740",
+      "security_label": "Common stock",
+      "symbol": "MMM"
+    },
+    {
+      "cik": "21344",
+      "security_label": "Common stock",
+      "symbol": "KO"
+    },
+    {
+      "cik": "909832",
+      "security_label": "Common stock",
+      "symbol": "COST"
+    },
+    {
+      "cik": "1326801",
+      "security_label": "Class A common stock",
+      "symbol": "META"
+    },
+    {
+      "cik": "1512673",
+      "security_label": "Class A common stock",
+      "symbol": "XYZ"
+    },
+    {
+      "cik": "1418091",
+      "security_label": "Common stock",
+      "symbol": "TWTR"
+    },
+    {
+      "cik": "718877",
+      "security_label": "Common stock",
+      "symbol": "ATVI"
+    },
+    {
+      "cik": "719739",
+      "security_label": "Common stock",
+      "symbol": "SIVB"
+    },
+    {
+      "cik": "886158",
+      "security_label": "Common stock",
+      "symbol": "BBBY"
+    },
+    {
+      "cik": "1163302",
+      "security_label": "Common stock",
+      "symbol": "X"
+    },
+    {
+      "cik": "1038357",
+      "security_label": "Common stock",
+      "symbol": "PXD"
+    }
+  ],
+  "windows": {
+    "1m": {
+      "development": {
+        "first": "2021-03-19",
+        "last": "2024-10-25",
+        "decisions": 189
+      },
+      "label_end_before": "2024-12-02",
+      "retrospective_test": {
+        "first": "2025-01-03",
+        "last": "2025-11-28",
+        "decisions": 48
+      },
+      "validation_folds": [
+        {
+          "train": {
+            "first": "2021-03-19",
+            "last": "2021-11-05",
+            "decisions": 34
+          },
+          "validation": {
+            "first": "2022-01-07",
+            "last": "2022-12-30",
+            "decisions": 52
+          }
+        },
+        {
+          "train": {
+            "first": "2021-03-19",
+            "last": "2022-11-04",
+            "decisions": 86
+          },
+          "validation": {
+            "first": "2023-01-06",
+            "last": "2023-12-29",
+            "decisions": 52
+          }
+        },
+        {
+          "train": {
+            "first": "2021-03-19",
+            "last": "2023-11-03",
+            "decisions": 138
+          },
+          "validation": {
+            "first": "2024-01-05",
+            "last": "2024-10-25",
+            "decisions": 43
+          }
+        }
+      ]
+    },
+    "3m": {
+      "development": {
+        "first": "2021-03-19",
+        "last": "2024-08-23",
+        "decisions": 180
+      },
+      "label_end_before": "2024-12-02",
+      "retrospective_test": {
+        "first": "2025-01-03",
+        "last": "2025-09-26",
+        "decisions": 39
+      },
+      "validation_folds": [
+        {
+          "train": {
+            "first": "2021-03-19",
+            "last": "2021-09-03",
+            "decisions": 25
+          },
+          "validation": {
+            "first": "2022-01-07",
+            "last": "2022-12-30",
+            "decisions": 52
+          }
+        },
+        {
+          "train": {
+            "first": "2021-03-19",
+            "last": "2022-09-02",
+            "decisions": 77
+          },
+          "validation": {
+            "first": "2023-01-06",
+            "last": "2023-12-29",
+            "decisions": 52
+          }
+        },
+        {
+          "train": {
+            "first": "2021-03-19",
+            "last": "2023-09-01",
+            "decisions": 129
+          },
+          "validation": {
+            "first": "2024-01-05",
+            "last": "2024-08-23",
+            "decisions": 34
+          }
+        }
+      ]
+    },
+    "embargo_sessions": 21,
+    "purge": "a training row whose label interval reaches the next window's start is dropped"
+  }
+}

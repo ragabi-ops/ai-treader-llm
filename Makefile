@@ -1,9 +1,16 @@
-.PHONY: setup test check fixtures shell
+.PHONY: setup setup-numeric test test-numeric check check-core fixtures shell
 setup:
 	uv sync --frozen --python 3.12
 
+setup-numeric:
+	uv sync --frozen --python 3.12 --extra numeric
+
+# Contract tooling; the numeric job tests need the numeric extra (and libomp on macOS).
 test:
-	uv run --frozen python -m unittest discover -s tests -v
+	uv run --frozen python -m unittest discover -s tests -p 'test_[!a]*.py' -v
+
+test-numeric:
+	uv run --frozen --extra numeric python -m unittest discover -s tests -p 'test_alpha_*.py' -v
 
 fixtures:
 	uv run --frozen ai-treader-llm validate-analysis examples/analysis.json --context examples/context.json
@@ -23,8 +30,11 @@ fixtures:
 shell:
 	bash -n scripts/bootstrap/*.sh scripts/qualification/*.sh scripts/smoke/*.sh
 
-check:
+check-core:
 	python3 scripts/backlog.py
 	$(MAKE) shell
 	$(MAKE) test
 	$(MAKE) fixtures
+
+check: check-core
+	$(MAKE) test-numeric

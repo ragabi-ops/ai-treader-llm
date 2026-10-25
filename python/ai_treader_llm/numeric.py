@@ -295,6 +295,34 @@ def validate_forecast(value: dict, request: dict, inputs: dict, calendar: dict,
             fail('identity_mismatch', key)
 
 
+def check_label(label: dict, scope: dict, target_sha256: str, created) -> None:
+    if any(label[field] != scope[field] for field in SCOPE_FIELDS):
+        fail('identity_mismatch', scope['row_id'])
+    if label['target_definition_sha256'] != target_sha256:
+        fail('provenance_mismatch', 'label target definition')
+    sources = validate_sources(label['sources'])
+    availability = timestamp(label['available_at'])
+    if availability > created or any(timestamp(s['ingested_at']) > created or timestamp(s['available_at']) > availability for s in sources.values()):
+        fail('label_maturity', 'label/source not available at dataset creation')
+    if label['label']['status'] == 'available':
+        if availability < timestamp(scope['horizon']['end_at']) or not sources:
+            fail('label_maturity', 'available label requires matured horizon and sources')
+        if any(s['license']['status'] == 'restricted' for s in sources.values()):
+            fail('source_reference', 'restricted label source')
+
+
+def validate_labels(labels: list[dict], inputs: dict, target_sha256: str, created, contracts: Contracts) -> None:
+    """Label rules of validate_dataset before any split exists (platform ValidateNumericLabels)."""
+    for label in labels:
+        schema(label, 'numeric-label-v1', contracts)
+    if created < timestamp(inputs['created_at']):
+        fail('generation_time', 'labels predate their input manifest')
+    expected, actual = indexed(inputs['expected_rows'], 'row_id'), indexed(labels, 'row_id')
+    same_keys(actual, expected)
+    for key, label in actual.items():
+        check_label(label, expected[key], target_sha256, created)
+
+
 def validate_dataset(value: dict, inputs: dict, calendar: dict, rows: list[dict],
                      labels: list[dict], contracts: Contracts) -> None:
     validate_input(inputs, calendar, rows, contracts)
@@ -322,20 +350,8 @@ def validate_dataset(value: dict, inputs: dict, calendar: dict, rows: list[dict]
     splits = {name: [] for name in ('train', 'validation', 'test')}
     for key, label in actual.items():
         scope = expected[key]
-        if any(label[field] != scope[field] for field in SCOPE_FIELDS):
-            fail('identity_mismatch', key)
-        if label['target_definition_sha256'] != value['target']['definition_sha256']:
-            fail('provenance_mismatch', 'label target definition')
-        sources = validate_sources(label['sources'])
-        availability = timestamp(label['available_at'])
-        if availability > created or any(timestamp(s['ingested_at']) > created or timestamp(s['available_at']) > availability for s in sources.values()):
-            fail('label_maturity', 'label/source not available at dataset creation')
+        check_label(label, scope, value['target']['definition_sha256'], created)
         state = label['label']
-        if state['status'] == 'available':
-            if availability < timestamp(scope['horizon']['end_at']) or not sources:
-                fail('label_maturity', 'available label requires matured horizon and sources')
-            if any(s['license']['status'] == 'restricted' for s in sources.values()):
-                fail('source_reference', 'restricted label source')
         split = assignments[key]['split']
         if split == 'train' and state['status'] != 'available':
             fail('label_maturity', 'training rows require a matured available label')

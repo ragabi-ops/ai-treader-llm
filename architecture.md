@@ -11,8 +11,9 @@ provider-neutral text-capture workflow, concise as-of research summaries and hos
 evaluation harness are delivered. The live hosted benchmark did not beat the
 do-nothing baseline, so no hosted forward protocol is frozen. The local Qwen endpoint
 is retained only for the existing L03 experiment, whose evaluation is unfinished.
-Numeric v1 contracts, Python/Go conformance and platform PIT feature/label export are
-delivered; the frozen protocol and prediction models remain planned. No broker is connected and no live trading is
+Numeric v1 contracts, Python/Go conformance, platform PIT feature/label export, the
+frozen ALPHA03 protocol and the CPU ridge/LightGBM jobs are delivered; platform
+prediction import (ALPHA04) remains planned. No broker is connected and no live trading is
 authorized.
 
 This document is a visual explanation, not another backlog. Current task state and
@@ -32,7 +33,7 @@ and the **operator approves experiments and authority**.
 | PostgreSQL | Authoritative identities, source revisions, datasets, runs, decisions, paper ledger and outcomes | Existing platform database | Delivered, including immutable numeric export records; prediction records planned |
 | Hosted agent bridge | Bounded listing analysis, declarative proposals, reviewed text attributes and as-of research summaries | Platform CLI adapters; inference at the provider | AGENT01–06 delivered; no forward protocol frozen |
 | Qwen3-8B / llama.cpp | Retained existing L03 analysis only | Pinned Docker inference on Ubuntu / RTX 3080 | Endpoint and Go integration delivered; no new local general-LLM branch |
-| Linear model / LightGBM | Learn numeric relationships and produce relative-return scores | Planned isolated CPU batch jobs owned by LLM repository | Not started |
+| Linear model / LightGBM | Learn numeric relationships and produce relative-return scores | Isolated CPU batch jobs owned by LLM repository (target host) | ALPHA02 delivered: frozen 1m/3m challengers on the pilot development export; platform import planned |
 | Chronos-2 | Challenge the numeric baseline with pretrained time-series forecasts | Planned local batch job; CPU/GPU placement measured before use | Not started |
 | Reviewed text attributes | Extract cited guidance, liquidity and event attributes; evaluate accuracy and numeric usefulness | Platform hosted captures; LLM repository offline evaluation | Workflow delivered; real reviewed capture/export and LLM evaluation still absent |
 | Contract validators | Reject malformed, out-of-scope or mismatched results | Python in LLM repository; Go in platform | Analysis v2 and numeric v1 cross-language conformance delivered |
@@ -197,7 +198,7 @@ calibration checks. A combined model is considered only after incremental eviden
 | Local LLM | Endpoint, Go client, strict analysis and attempt persistence delivered | Existing L03 only; CTX01 is conditional on revision-5 approval |
 | Reviewed datasets | LLM DATA01 source receipt and target plan delivered | Platform ALPHA02 numeric export |
 | Existing L03 experiment | Replay/evaluator built; Stage 1 unfinished | Platform L03d revision-5 approval and run; L03e forward observation |
-| Numeric contracts and models | Contracts, cross-language conformance and platform PIT numeric export delivered; no model | Operator/platform ALPHA03, LLM ALPHA02, then platform ALPHA04–05 |
+| Numeric contracts and models | Contracts, conformance, PIT export, frozen ALPHA03 protocol and LLM ALPHA02 CPU jobs delivered | Platform ALPHA04–05 |
 | Chronos-2 and text attributes | Planned | LLM ALPHA03 / TEXT01; platform ALPHA06 / ALPHA07 |
 | Combined challenger | Conditional decision only | Platform ALPHA08; implement only through subsequent bounded tasks |
 | Numeric forward evidence | Not started | Platform ALPHA09; actual elapsed time and matured outcomes required |
@@ -307,8 +308,8 @@ old data. Outcome maturity and protected evaluation partitions remain enforced.
 
 See the [platform implementation plan](../ai-treader-platform/tasks/PLAN.md#hosted-agents-call-instructions-and-research-records-approved-2026-10-07)
 for the canonical envelopes and record fields. No new database or vector service is
-required by this design. Platform ALPHA01–02 are complete; the current cross-repository
-critical path is operator/platform ALPHA03, followed by LLM ALPHA02 and platform ALPHA04.
+required by this design. Platform ALPHA01–03 and LLM ALPHA02 are complete; the current
+cross-repository critical path is platform ALPHA04, then ALPHA05.
 HARD01 can proceed in parallel and does not unblock that numeric path.
 
 ## 8. What we want to accomplish

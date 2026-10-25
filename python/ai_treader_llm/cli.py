@@ -33,6 +33,29 @@ def main() -> int:
     forecast.add_argument("--input", type=Path, required=True)
     numeric_hash = commands.add_parser("numeric-hash")
     numeric_hash.add_argument("artifact", type=Path)
+    alpha_train = commands.add_parser("alpha-train", help="ALPHA03 ridge/LightGBM fit (needs the numeric extra)")
+    alpha_train.add_argument("--input", type=Path, required=True, help="platform numeric-input-v1 manifest")
+    alpha_train.add_argument("--labels", type=Path, required=True, help="the export's separate labels.jsonl")
+    alpha_train.add_argument("--labels-sha256", required=True, help="raw sha256 the platform recorded for labels.jsonl")
+    alpha_train.add_argument("--benchmark-listing-id", required=True)
+    alpha_train.add_argument("--horizon", choices=("1m", "3m"), required=True)
+    alpha_train.add_argument("--protocol", type=Path, default=Path("configs/numeric/alpha03-parameters.json"))
+    alpha_train.add_argument("--protocol-sha256", help="defaults to the frozen ALPHA03 parameters hash")
+    alpha_train.add_argument("--out", type=Path, required=True, help="new directory; refused when it exists")
+    alpha_request = commands.add_parser("alpha-request", help="build a request naming a frozen challenger's pins")
+    alpha_request.add_argument("--challengers", type=Path, required=True)
+    alpha_request.add_argument("--arm", choices=("R", "G"), required=True)
+    alpha_request.add_argument("--input", type=Path, required=True)
+    alpha_request.add_argument("--batch-id", required=True)
+    alpha_request.add_argument("--attempt-id", required=True)
+    alpha_request.add_argument("--deadline-seconds", type=int, default=600)
+    alpha_request.add_argument("--out", type=Path, required=True)
+    alpha_predict = commands.add_parser("alpha-predict", help="feature-only batch forecast (needs the numeric extra)")
+    alpha_predict.add_argument("--challengers", type=Path, required=True)
+    alpha_predict.add_argument("--arm", choices=("R", "G"), required=True)
+    alpha_predict.add_argument("--input", type=Path, required=True)
+    alpha_predict.add_argument("--request", type=Path, required=True)
+    alpha_predict.add_argument("--out", type=Path, required=True)
     analysis = commands.add_parser("validate-analysis")
     analysis.add_argument("analysis", type=Path)
     analysis.add_argument("--context", type=Path, required=True)
@@ -132,6 +155,8 @@ def main() -> int:
         if args.command == "numeric-hash":
             print(numeric.artifact_hash(numeric.read_json(args.artifact)))
             return 0
+        if args.command.startswith("alpha-"):
+            return alpha_command(args, contracts)
         if args.command == "validate-numeric-input":
             inputs, _, rows = numeric.load_input(args.manifest, contracts)
             print(json.dumps({"valid": True, "dataset_id": inputs["dataset_id"], "features": len(rows)}))
@@ -208,6 +233,37 @@ def main() -> int:
     except (ContractError, OSError, URLError, ValueError, KeyError, TypeError) as error:
         print(f"error: {error}", file=sys.stderr)
         return 2
+
+
+def alpha_command(args, contracts: Contracts) -> int:
+    from datetime import datetime, timezone
+
+    from ai_treader_llm.alpha import data, predict, protocol, provenance, train
+
+    if args.command == "alpha-train":
+        params, digest = protocol.load(args.protocol, args.protocol_sha256 or protocol.PARAMETERS_SHA256)
+        export = data.load_training(args.input, args.labels, args.labels_sha256, datetime.now(timezone.utc), contracts)
+        print(json.dumps(train.run(export, params, digest, args.horizon, args.benchmark_listing_id, args.out), indent=2))
+        return 0
+    challengers, entry, artifact = predict.load_challenger(args.challengers, args.arm)
+    export = data.load_features(args.input, contracts)
+    if args.out.exists():
+        raise ValueError(f"{args.out} exists; outputs are immutable")
+    if args.command == "alpha-request":
+        now = datetime.now(timezone.utc)
+        request = predict.build_request(challengers, entry, export, args.batch_id, args.attempt_id,
+                                        now, now + timedelta(seconds=args.deadline_seconds))
+        args.out.write_bytes(provenance.canonical(request))
+        print(json.dumps({"request": str(args.out), "batch_id": args.batch_id, "arm": args.arm}))
+        return 0
+    request = numeric.read_json(args.request)
+    forecast = predict.predict(challengers, entry, artifact, export, request, datetime.now(timezone.utc), contracts)
+    args.out.write_bytes(provenance.canonical(forecast))
+    available = sum(row["score"]["status"] == "available" for row in forecast["results"])
+    print(json.dumps({"forecast": str(args.out), "forecast_sha256": forecast["forecast_sha256"],
+                      "results": len(forecast["results"]), "available": available,
+                      "unavailable": len(forecast["results"]) - available}))
+    return 0
 
 
 if __name__ == "__main__":

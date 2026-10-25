@@ -9,6 +9,10 @@ description = "Local LLM contracts, dataset integrity, and evaluation tooling fo
 requires-python = ">=3.11"
 dependencies = ["jsonschema>=4.23,<5", "referencing>=0.36,<0.38", "rfc3339-validator>=0.1.4,<0.2"]
 
+[project.optional-dependencies]
+# ALPHA02 CPU numeric jobs only; the contract tooling never imports these.
+numeric = ["numpy>=2.2,<2.4", "lightgbm==4.6.0"]
+
 [project.scripts]
 ai-treader-llm = "ai_treader_llm.cli:main"
 
