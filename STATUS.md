@@ -38,8 +38,10 @@ See [architecture.md](architecture.md) for the cross-repository component and fl
 ## Next work
 
 HARD01 is the next local task; it is needed before GPU experiments such as ALPHA03.
-On the platform, ALPHA03e (operator freezes ALPHA03 revision 2 citing the re-issued
-pins) gates the forward run (ALPHA09).
+On the platform, ALPHA03 revision 2 is frozen (ALPHA03e, 2026-10-27) and cites the
+re-issued pins; the forward run (ALPHA09) is unblocked. Pinned code must not change while
+it runs. The platform's next queued task is XLLM04, which is this repository's Chronos-2
+challenger (ALPHA03, after HARD01).
 
 ## Known limits
 
