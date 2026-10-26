@@ -1,9 +1,13 @@
-.PHONY: setup setup-numeric test test-numeric check check-core fixtures
+.PHONY: setup setup-numeric setup-chronos test test-numeric test-chronos check check-core fixtures
 setup:
 	uv sync --frozen --python 3.12
 
 setup-numeric:
 	uv sync --frozen --python 3.12 --extra numeric
+
+# Isolated Chronos-2 runtime (own uv.lock; CPU-only torch). The root lock is untouched.
+setup-chronos:
+	uv sync --frozen --project runtimes/chronos
 
 # Contract tooling; the numeric job tests need the numeric extra (and libomp on macOS).
 test:
@@ -11,6 +15,10 @@ test:
 
 test-numeric:
 	uv run --frozen --extra numeric python -m unittest discover -s tests -p 'test_alpha_*.py' -v
+
+# Real Chronos-2 smoke in the isolated runtime; set CHRONOS_WEIGHTS to a chronos-fetch directory.
+test-chronos:
+	uv run --frozen --project runtimes/chronos python -m unittest discover -s tests -p 'test_chronos*.py' -v
 
 fixtures:
 	uv run --frozen ai-treader-llm validate-analysis examples/analysis.json --context examples/context.json
