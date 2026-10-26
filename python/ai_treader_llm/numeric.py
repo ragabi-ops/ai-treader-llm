@@ -216,13 +216,21 @@ def validate_input(value: dict, calendar: dict, rows: list[dict], contracts: Con
     expected = indexed(value['expected_rows'], 'row_id')
     actual = indexed(rows, 'row_id')
     same_keys(actual, expected)
+    closes = {session['session']: timestamp(session['close_at']) for session in calendar['sessions']}
     scopes = set()
     for scope in value['expected_rows']:
         key = (scope['listing_id'], timestamp(scope['as_of_timestamp']), scope['horizon']['label'], scope['horizon']['calendar_sha256'])
         if key in scopes:
             fail('coverage', 'duplicate listing/cutoff/horizon')
         scopes.add(key)
-        if timestamp(scope['as_of_timestamp']) > timestamp(value['created_at']):
+        # An observed input may be created after the decision close and before its
+        # cutoff (forward early capture): its knowledge is then bounded by its
+        # creation, which every source's ingestion is checked against below.
+        earliest = timestamp(scope['as_of_timestamp'])
+        close = closes.get(scope['horizon']['decision_session'])
+        if value['availability_policy'] == 'observed' and close is not None and close < earliest:
+            earliest = close
+        if earliest > timestamp(value['created_at']):
             fail('generation_time', 'input created before its cutoff')
         validate_horizon(scope, calendar)
         row = actual[scope['row_id']]

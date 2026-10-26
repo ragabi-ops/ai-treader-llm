@@ -995,6 +995,158 @@
       ]
     },
     {
+      "name": "observed-early-capture",
+      "operation": "input",
+      "expect": "valid",
+      "changes": [
+        {
+          "path": [
+            "inputs",
+            "expected_rows",
+            2,
+            "as_of_timestamp"
+          ],
+          "value": "2025-03-10T13:29:59Z"
+        },
+        {
+          "path": [
+            "inputs",
+            "expected_rows",
+            3,
+            "as_of_timestamp"
+          ],
+          "value": "2025-03-10T13:29:59Z"
+        },
+        {
+          "path": [
+            "inputs",
+            "input_manifest_sha256"
+          ],
+          "value": "d39cbf6a2e820f1ef364a93f095df0f3b8f67ff0ee9abd68bd61e7884aa5b202"
+        }
+      ]
+    },
+    {
+      "name": "observed-capture-before-close",
+      "operation": "input",
+      "expect": "generation_time",
+      "changes": [
+        {
+          "path": [
+            "inputs",
+            "created_at"
+          ],
+          "value": "2025-03-07T20:59:59Z"
+        },
+        {
+          "path": [
+            "inputs",
+            "expected_rows",
+            2,
+            "as_of_timestamp"
+          ],
+          "value": "2025-03-10T13:29:59Z"
+        },
+        {
+          "path": [
+            "inputs",
+            "expected_rows",
+            3,
+            "as_of_timestamp"
+          ],
+          "value": "2025-03-10T13:29:59Z"
+        },
+        {
+          "path": [
+            "inputs",
+            "input_manifest_sha256"
+          ],
+          "value": "08a7f1bd600e6ca00a180d0e1795e5fbfb768cb7aaab6b675341ea5c22f3ef6f"
+        }
+      ]
+    },
+    {
+      "name": "reconstructed-early-capture",
+      "operation": "input",
+      "expect": "generation_time",
+      "changes": [
+        {
+          "path": [
+            "inputs",
+            "availability_policy"
+          ],
+          "value": "reconstructed"
+        },
+        {
+          "path": [
+            "inputs",
+            "expected_rows",
+            2,
+            "as_of_timestamp"
+          ],
+          "value": "2025-03-10T13:29:59Z"
+        },
+        {
+          "path": [
+            "inputs",
+            "expected_rows",
+            3,
+            "as_of_timestamp"
+          ],
+          "value": "2025-03-10T13:29:59Z"
+        },
+        {
+          "path": [
+            "inputs",
+            "input_manifest_sha256"
+          ],
+          "value": "61b261a29a3b08b3b41f0e0cedf4bc4be995156846a19cddcfc23b9b8fe9a985"
+        }
+      ]
+    },
+    {
+      "name": "observed-early-capture-source-after-creation",
+      "operation": "input",
+      "expect": "source_availability",
+      "changes": [
+        {
+          "path": [
+            "features",
+            2,
+            "sources",
+            0,
+            "ingested_at"
+          ],
+          "value": "2025-03-07T21:00:02Z"
+        },
+        {
+          "path": [
+            "inputs",
+            "expected_rows",
+            2,
+            "as_of_timestamp"
+          ],
+          "value": "2025-03-10T13:29:59Z"
+        },
+        {
+          "path": [
+            "inputs",
+            "expected_rows",
+            3,
+            "as_of_timestamp"
+          ],
+          "value": "2025-03-10T13:29:59Z"
+        },
+        {
+          "path": [
+            "inputs",
+            "input_manifest_sha256"
+          ],
+          "value": "d39cbf6a2e820f1ef364a93f095df0f3b8f67ff0ee9abd68bd61e7884aa5b202"
+        }
+      ]
+    },
+    {
       "name": "observed-late-ingestion",
       "operation": "input",
       "expect": "source_availability",

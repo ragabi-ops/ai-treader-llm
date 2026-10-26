@@ -163,6 +163,14 @@ def suite() -> dict:
     case('mixed-success-and-unavailable', 'forecast')
     case('separate-labels-and-date-grouped-splits', 'dataset')
     case('reconstructed-late-ingestion', 'input', edits=[(('inputs','availability_policy'),'reconstructed'), (('features',0,'sources',0,'ingested_at'),'2025-03-07T21:00:00Z')], reseal=['inputs'])
+    # Forward early capture: the March rows' cutoff is one second before the next
+    # open, and the input is built after the decision close and before it.
+    early = [(('inputs', 'expected_rows', i, 'as_of_timestamp'), '2025-03-10T13:29:59Z') for i in (2, 3)]
+    case('observed-early-capture', 'input', edits=early, reseal=['inputs'])
+    case('observed-capture-before-close', 'input', 'generation_time', early + [(('inputs', 'created_at'), '2025-03-07T20:59:59Z')], ['inputs'])
+    case('reconstructed-early-capture', 'input', 'generation_time', early + [(('inputs', 'availability_policy'), 'reconstructed')], ['inputs'])
+    case('observed-early-capture-source-after-creation', 'input', 'source_availability',
+         early + [(('features', 2, 'sources', 0, 'ingested_at'), '2025-03-07T21:00:02Z')], ['inputs'])
     case('observed-late-ingestion', 'input', 'source_availability', [(('features',0,'sources',0,'ingested_at'),'2025-01-03T21:00:00.000001Z')])
     case('future-source-one-microsecond', 'input', 'source_availability', [(('features',0,'sources',0,'available_at'),'2025-01-03T21:00:00.000001Z'), (('features',0,'sources',0,'ingested_at'),'2025-01-03T21:00:00.000001Z')])
     case('ingestion-before-availability', 'input', 'source_availability', [(('features',0,'sources',0,'ingested_at'),'2025-01-03T20:59:59Z')])
