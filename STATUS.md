@@ -29,8 +29,8 @@ See [architecture.md](architecture.md) for the cross-repository component and fl
   decision close and before its cutoff; sources ingested after creation are still
   refused. Challenger pins were re-issued under the new code hash in
   `/data/training/alpha03/{1m,3m}-xllm06-*`. The model artifacts are byte-identical to
-  the XLLM03 ones, and only `code_sha256` changed. The older pins stop predicting once
-  `/srv/ai-treader` runs this code.
+  the XLLM03 ones, and only `code_sha256` changed. `/srv/ai-treader` runs this code
+  (671f85f), so the older pins no longer predict.
 - DATA01's SEC R11 target plan is a small survivorship-biased reconstruction and not
   training or performance evidence. Chronos-2 (ALPHA03) and text attributes (TEXT01)
   remain planned.
