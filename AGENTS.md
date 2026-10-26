@@ -17,7 +17,7 @@
 
 - The Go platform owns orchestration, deterministic financial calculations, risk,
   persistence, authorization and execution. The LLM is advisory and never approves a trade.
-- No Hermes. Do not add GPU libraries to the Mac/CPU dependency environment.
+- No Hermes, GPU libraries or local LLM runtime (CLEAN02, 2026-10-27); numeric work is CPU only.
 - Contracts reject unknown fields. Preserve exact IDs, UTC cutoffs, hashes, JSON,
   source availability/revisions and typed unavailable data. Outcome labels never enter inputs.
 - Structural grounding and fixture success do not prove semantic truth, performance or
@@ -33,7 +33,7 @@
 ## Validate and hand off
 
 - Run `make check` for code, contract, tracking or documentation changes.
-- Validate Compose rendering and shell syntax for deployment changes; state when target-host
-  GPU validation was not possible.
+- Validate Compose rendering for deployment changes; state when a target-host run was
+  not possible.
 - Update CSV and root STATUS together. Report exact checks, unresolved limits, external
   blockers and the next eligible local task.

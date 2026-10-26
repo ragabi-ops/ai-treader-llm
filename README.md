@@ -1,19 +1,17 @@
 # AI-Treader LLM
 
-CPU-first numeric research tooling plus the retained local inference endpoint for
-AI-Treader. The existing Go platform owns tools, calculations, orchestration,
-portfolio/risk logic, persistence, and trade execution.
+CPU numeric research tooling and shared contracts for AI-Treader. The Go platform owns
+calculations, orchestration, hosted Claude/OpenAI text analysis, portfolio/risk logic,
+persistence and trade execution.
 
-**Accepted hardware boundary:** the current CPU environment and RTX 3080 10 GB.
-Qwen3-8B Q4_K_M remains pinned for the existing L03 experiment; no larger GPU,
-Hermes, Kubernetes, or foundation-model training is planned.
+**Boundary (2026-10-27):** CPU only. No GPU, local LLM, Hermes, Kubernetes or
+foundation-model training.
 
 ## Start here
 
-- [Implementation reference](docs/IMPLEMENTATION_PLAN.md) — hardware, deployment and future integration design; not task state.
+- [Implementation reference](docs/IMPLEMENTATION_PLAN.md) — architecture and research scope; not task state.
 - [Code design](docs/CODE_DESIGN.md) — ownership, APIs, data flow, persistence, and invariants.
-- [Development/server runbook](docs/RUNBOOK.md) — exact setup and first endpoint commands.
-- [Operations dashboard](docs/OBSERVABILITY.md) — live sources and the sanitized pipeline/training status contract.
+- [Development/server runbook](docs/RUNBOOK.md) — setup and numeric job commands.
 - [STATUS.md](STATUS.md) — concise handoff.
 - [tasks/BACKLOG.csv](tasks/BACKLOG.csv) — authoritative local/external task state and order.
 
@@ -44,38 +42,26 @@ uv run --frozen ai-treader-llm validate-alpha examples/numeric-v1/forecast.json 
   --input examples/numeric-v1/input-manifest.json
 ```
 
-The CPU checks need no NVIDIA GPU or Docker daemon. Analysis-sample and numeric
+The checks need no Docker daemon. Analysis-sample and numeric
 examples are synthetic. The SEC review and target plan contain provenance, IDs,
 dates and hashes only; source payloads remain in the platform repository.
 
-Run the versioned endpoint benchmark through the private SSH tunnel; generated reports
-stay in the ignored `artifacts/` directory:
-
-```bash
-uv run --frozen ai-treader-llm benchmark-endpoint \
-  configs/benchmarks/endpoint-v1.json \
-  --output artifacts/benchmarks/endpoint-v1.json
-# disruptive: restarts only the named inference container, then verifies recovery
-uv run --frozen ai-treader-llm benchmark-recovery \
-  --output artifacts/benchmarks/recovery-v1.json
-```
-
 ```text
 contracts/       Versioned JSON Schemas; shared integration boundaries
-configs/         Inference and evaluation settings
-python/          CPU validators, input builder, numeric jobs, evaluator, HTTP smoke client
-scripts/         Model/runtime bootstrap and deployment helpers
-dashboard/       Read-only near-real-time host, inference, and pipeline UI
+configs/         Evaluation and numeric parameters
+python/          CPU validators, input builder, numeric jobs, evaluator
+scripts/         Backlog check
 examples/        Synthetic analysis, sample, context, and prediction fixtures
 tests/           Leakage, contract, and evaluation regression tests
 docker/          CPU jobs image
-compose.yaml     Private GPU inference and optional CPU jobs
+compose.yaml     Optional CPU jobs container
 docs/            Implementation/design references and operating runbooks
 tasks/           Authoritative CSV backlog
 ```
 
 Numeric v1 schemas, Python/Go conformance and platform PIT feature/label export are
-implemented; protocol freeze, CPU model fitting, Chronos evaluation and text evaluation remain unimplemented.
+implemented, as are the frozen protocol and CPU ridge/LightGBM jobs; Chronos-2 (CPU) and
+text evaluation remain unimplemented.
 Local general-LLM RAG, QLoRA, adapter export and deployment promotion are outside the
 approved architecture.
 The offline evaluator measures structural/reference validity. It never certifies

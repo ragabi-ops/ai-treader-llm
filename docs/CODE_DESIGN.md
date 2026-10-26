@@ -7,10 +7,9 @@ Existing Go platform
   hosted research via the Codex/Claude review bridge
     → canonical role/template + bounded evidence → strict review/proposal
     → Go-owned strategy versions/backtests + concise PostgreSQL research records
-  local Qwen analysis workflow (existing L03 only)
-    → provider-neutral LLM client → llama.cpp / future provider
-    → Go-built bounded point-in-time evidence from existing platform services
-    → validated analysis persistence → signal / portfolio / risk pipeline
+  numeric batch orchestration
+    → hashed feature export → isolated CPU job here → strict forecast import
+    → versioned mapping → existing policy / risk → paper ledger
 
 This repository
   contracts/ → Python contract validator
@@ -18,21 +17,14 @@ This repository
              dataset integrity → input builder
                   ↓
              offline evaluation → versioned report
-  deployment scripts → pinned model/runtime → inference container
-  future numeric batch job → locked CPU fit/predict → forecast artifact
+  numeric batch job → locked CPU fit/predict → forecast artifact
 ```
 
 Dependencies flow toward contracts; no module imports trading execution code.
 There is no standalone gateway, queue, vector database, or model registry service.
 
-Runtime placement is an explicit deployment choice, not an API boundary. The
-accepted interim deployment keeps digest-pinned llama.cpp inference in Docker,
-future measured model-evaluation jobs in on-demand containers, and the read-only host
-dashboard in a restricted native systemd process. Reassess native inference at the
-dedicated-host migration, or earlier only for a demonstrated container-specific
-reliability or GPU compatibility blocker. A native candidate must pass the same
-provider contracts and be compared against the container on latency, throughput,
-VRAM, startup/recovery, and reproducible rollback.
+There is no GPU, local LLM or inference service (CLEAN02, 2026-10-27). Jobs run
+one-shot on CPU, on the Mac or the target host.
 
 ## Runnable modules
 
@@ -49,10 +41,6 @@ VRAM, startup/recovery, and reproducible rollback.
 | `datasets/reviews.py` | `validate_source_review` | Real-source receipts, external compressed/decoded bytes, linked target-plan hash and source coverage |
 | `datasets/targets.py` | `validate_data_targets` | Reviewed identities/horizons, cutoff-group splits, explicit session embargo, held-out boundary and absent labels |
 | `evaluation/runner.py` | `evaluate` | Counts every expected sample; missing/invalid responses are failures |
-| `inference/client.py` | `smoke` | Health and first completion; not a production orchestration client |
-| `benchmark.py` | `benchmark-endpoint` | Versioned synthetic latency, throughput, context, concurrency, and sustained-load measurement; never stores prompt or response content |
-| `monitoring/collector.py` | `StatusCollector.snapshot` | Read-only host, GPU, Docker, llama.cpp, deployment, and allowlisted pipeline/training/benchmark telemetry |
-| `monitoring/server.py` | `python -m ai_treader_llm.monitoring.server` | Fixed-route dashboard and same-origin status API; no mutation, file, log, prompt, or response endpoints |
 | `cli.py` | CLI entry point | Local jobs, JSON output, stable success/failure exit codes |
 
 The CLI runs from the repo root by default. For another working directory, supply
@@ -96,58 +84,6 @@ LLM/SFT trainer mount. A separate numeric supervised fit job may read its permit
 training labels; prediction jobs never receive labels. Synthetic examples are not
 financial training data.
 
-## Go integration contract (implement in the platform repository)
-
-Suggested interfaces, not compiled/generated backend code:
-
-```go
-type AnalysisRequest struct {
-    InstrumentID string
-    Symbol       string
-    AsOf         time.Time
-    Horizon      string
-}
-
-type LLMProvider interface {
-    Complete(ctx context.Context, request CompletionRequest) (CompletionResponse, error)
-}
-
-type ToolDispatcher interface {
-    Execute(ctx context.Context, scope TrustedScope, call ToolCall) (ToolResult, error)
-}
-```
-
-`TrustedScope` is created by Go and carries instrument identity, as-of timestamp,
-tenant/portfolio permissions, and replay mode. It is never deserialized from model
-arguments. Completion types encapsulate OpenAI-compatible messages/tools without
-exposing GPU or model-file details. `ToolResult` includes source IDs, availability,
-revision, units/currency, typed data, and an explicit error state.
-
-Workflow:
-
-1. Validate request, resolve immutable deployment, and create run ID.
-2. Build system/user messages and select allowlisted tools.
-3. Fit history, tool definitions/results, and reserved output within context budget.
-4. Call provider with deadline/cancellation. Start with one in-flight request;
-   bound queued requests and return a retriable busy error when full.
-5. Validate proposed tool arguments against the platform-owned versioned tool
-   contracts. Enforce symbol, `start <= end <= as_of`, authorization, and output
-   limits in Go.
-6. Execute tools with timeouts. Preserve tool call IDs; return structured failures.
-7. Stop after six rounds. When gathering is complete, make a final schema-constrained
-   call without tools so tool selection and final JSON constraints do not conflict.
-8. Parse strictly, resolve evidence references, and check trusted request fields.
-   Allow one repair. Persist a failure if still invalid; emit no analysis signal.
-9. Assign server-generated timestamp/provenance and persist the immutable run.
-
-Tool schemas intentionally omit `as_of_timestamp`: the model cannot choose its
-information boundary. JSON Schema handles structure only; business/time rules
-belong to Go. Treat every retrieved string as untrusted data. No executable tools.
-
-Provider contract fixtures must cover JSON Schema support, template/parser tool
-calls, error responses, timeout/cancellation, context overflow, and model identity.
-OpenAI-compatible endpoints do not imply identical capabilities.
-
 ## Persistence mapping
 
 Before creating SQL, inspect the platform's actual migration conventions and reuse
@@ -170,22 +106,20 @@ timestamptz and explicit monetary units.
 - Numeric predict (ALPHA02, `alpha-predict`): frozen challenger + feature-only
   manifest + trusted request → strict alpha-forecast-v1 with complete expected
   coverage; labels are never read.
-- Chronos challenger: isolated pinned runtime and weights → batch forecasts. CPU is
-  the default; an RTX 3080 run requires HARD01 and exclusive scheduling.
+- Chronos challenger (ALPHA03): isolated pinned CPU runtime and weights → batch
+  forecasts, in new modules so the ALPHA02 pinned code stays byte-identical.
 - Text evaluation: reviewed platform export → offline accuracy/failure report and
   numeric fixtures; hosted calls and application writes remain platform-owned.
 
 The retired local general-LLM tool evaluator, RAG, QLoRA, adapter-export and
 deployment-promotion branch has been removed. Reintroducing it requires a new
 architecture decision and measured need. No library or container here loads GPU
-dependencies on the Mac/CPU environment.
+dependencies.
 
 ## Artifact and prompt ownership
 
-Downloaded models receive an immutable manifest beside the artifact. A deployment
-records the base repository/revision, tokenizer/template revision, existing GGUF hash,
-quantization, runtime digest, context/decoding settings, prompt/schema hashes,
-dataset/evaluation hashes, code commit, seed, creation time and lifecycle state.
+Downloaded pretrained weights (Chronos-2) receive an immutable manifest beside the
+artifact: repository/revision, license, file hashes, runtime, code commit and seed.
 Do not invent revisions or provenance for synthetic examples.
 
 Dataset manifests keep artifact paths relative and contained; validate them with
@@ -197,7 +131,7 @@ The runnable dataset builder's initial system prompt lives in
 platform and each run records their content hashes. Retrieved strings are data, never
 instructions; calculations and authorization remain platform-owned.
 
-## Contract v2 (L03a, shared with the platform)
+## Contract v2 (shared with the platform)
 
 v2 is authored here and vendored by the platform (`scripts/llm-contract-sync.sh`
 there, `--check` compares). Both repositories validate the same fixtures in
@@ -255,16 +189,14 @@ uv export --frozen --no-dev --no-emit-project -o requirements.lock.txt
 ```
 
 The CPU image base is pinned to a resolved multi-platform Python image digest.
-Update it deliberately alongside dependency validation. GPU runtime selection is locked by
-the bootstrap script; actual CUDA compatibility is accepted only after server tests.
+Update it deliberately alongside dependency validation.
 
 ## Numeric forecasting boundary (ALPHA01 delivered 2026-10-19)
 
 ALPHA01 introduces a separate numeric contract package and runnable Python
 validators. ALPHA02 (`python/ai_treader_llm/alpha/`) adds the CPU fit/predict jobs;
 platform import is ALPHA04.
-Existing analysis-v2 messages and Qwen serving are unchanged. Numeric scores do
-not reuse the prose-analysis schema.
+Numeric scores do not reuse the prose-analysis schema.
 
 The alpha-forecast-v1 family must bind immutable listing ID, UTC cutoff, exact
 calendar-based horizon, feature schema/version, input manifest hash, model artifact,
