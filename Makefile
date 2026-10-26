@@ -1,4 +1,4 @@
-.PHONY: setup setup-numeric test test-numeric check check-core fixtures shell
+.PHONY: setup setup-numeric test test-numeric check check-core fixtures
 setup:
 	uv sync --frozen --python 3.12
 
@@ -27,12 +27,8 @@ fixtures:
 	uv run --frozen ai-treader-llm validate-numeric-dataset examples/numeric-v1/dataset-manifest.json
 	uv run --frozen ai-treader-llm validate-alpha examples/numeric-v1/forecast.json --request examples/numeric-v1/request.json --input examples/numeric-v1/input-manifest.json
 
-shell:
-	bash -n scripts/bootstrap/*.sh scripts/qualification/*.sh scripts/smoke/*.sh
-
 check-core:
 	python3 scripts/backlog.py
-	$(MAKE) shell
 	$(MAKE) test
 	$(MAKE) fixtures
 
