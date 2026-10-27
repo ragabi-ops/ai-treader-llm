@@ -76,6 +76,8 @@ overlap, measure CPU latency and memory, and export every prediction and failure
 The ALPHA02 pinned code (`alpha/*`, `contracts.py`, `numeric.py`) must not change while
 the platform's ALPHA09 forward run uses its pins, so Chronos lives in new modules with
 its own pins. General forecasting benchmarks are not evidence of trading performance.
+Delivered 2026-10-27 (operator choices: median h-step ratio score, univariate,
+development-only coverage); ALPHA06 scores the frozen version.
 
 ## 5. Evaluation boundaries
 

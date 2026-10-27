@@ -60,8 +60,8 @@ tasks/           Authoritative CSV backlog
 ```
 
 Numeric v1 schemas, Python/Go conformance and platform PIT feature/label export are
-implemented, as are the frozen protocol and CPU ridge/LightGBM jobs; Chronos-2 (CPU) and
-text evaluation remain unimplemented.
+implemented, as are the frozen protocol, CPU ridge/LightGBM jobs and the zero-shot
+Chronos-2 CPU challenger (`runtimes/chronos`); text evaluation remains unimplemented.
 Local general-LLM RAG, QLoRA, adapter export and deployment promotion are outside the
 approved architecture.
 The offline evaluator measures structural/reference validity. It never certifies

@@ -38,19 +38,33 @@ def rate(hits: int, total: int) -> float | None:
     return round(hits / total, 6) if total else None
 
 
+def merged_calendar(exports: list[series.Export]) -> dict:
+    """One session list across exports whose calendar windows overlap and agree session by session."""
+    calendars = sorted((export.calendar for export in exports), key=lambda item: item['coverage_start'])
+    if len({(item['calendar_id'], item['exchange']) for item in calendars}) != 1:
+        fail('calendar', 'exports name different calendars')
+    sessions = {}
+    for previous, current in zip(calendars, calendars[1:]):
+        if current['coverage_start'] > previous['coverage_end']:
+            fail('calendar', 'export calendar windows leave a gap')
+    for item in calendars:
+        for session in item['sessions']:
+            if sessions.setdefault(session['session'], session) != session:
+                fail('calendar', f'export calendars disagree on {session["session"]}')
+    return {'sessions': [sessions[day] for day in sorted(sessions)]}
+
+
 def evaluate(exports: list[series.Export], runs: list[list[dict]], params: dict, horizon: str) -> dict:
     windows = params['windows'][horizon]
     development, fence = windows['development'], windows['label_end_before']
-    calendars = {export.inputs['calendar']['sha256'] for export in exports}
-    if len(calendars) != 1:
-        fail('calendar', 'exports pin different calendars')
+    calendar = merged_calendar(exports)
     rows = [row for export in exports for row in export.rows]
     if len({row.row_id for row in rows}) != len(rows):
         fail('coverage', 'exports overlap')
     for row in rows:
         if not development['first'] <= row.decision <= development['last'] or row.end_session >= fence:
             fail('split_leakage', f'{row.row_id} is outside the {horizon} development window or past the fence {fence}')
-    realized = series.realized(rows, exports[0].calendar)
+    realized = series.realized(rows, calendar)
     records = [record for run in runs for record in run]
     levels = records[0]['quantile_levels'] if records else []
     level_values = [float(level) for level in levels]

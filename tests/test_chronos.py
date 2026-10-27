@@ -185,6 +185,25 @@ class ChronosJobTests(unittest.TestCase):
         self.assertEqual(21, len(report['quantile_hit_rates']))
         self.assertIn('no label artifact read', report['realized_source'])
 
+    def test_coverage_over_split_exports_matches_the_whole(self):
+        parts, runs = [], []
+        for skip in (0, 20):
+            part = chronos_fixture.build(self.dir / f'split-{skip}', decisions=20, skip=skip)
+            export = series.load(part['input'], self.contracts)
+            self.run_batch(chronos_fixture.FakeForecaster([self.fail_length], [self.nan_length]), f'split-run-{skip}', export=export)
+            parts.append(part['input'])
+            runs.append(self.dir / f'split-run-{skip}')
+        split = coverage.run(parts, runs, self.params(), '1m', self.dir / 'coverage-split.json', self.contracts)
+        whole = coverage.run([self.fixture['input']], [self.dir / 'run-a'], self.params(), '1m',
+                             self.dir / 'coverage-whole.json', self.contracts)
+        self.assertEqual(whole['rows'], split['rows'])
+        self.assertEqual(whole['intervals'], split['intervals'])
+        calendar = copy.deepcopy(self.export.calendar)
+        calendar['sessions'][3] = {**calendar['sessions'][3], 'close_at': calendar['sessions'][3]['close_at'].replace('21:', '20:')}
+        with self.assertRaises(numeric.NumericError) as caught:
+            coverage.merged_calendar([self.export, series.Export(self.export.path, self.export.inputs, calendar, ())])
+        self.assertEqual('calendar', caught.exception.code)
+
     def test_coverage_refuses_rows_past_the_development_window(self):
         with self.assertRaises(numeric.NumericError) as caught:
             coverage.run([self.fixture['input']], [self.dir / 'run-a'], self.params(last=self.fixture['decisions'][-2]), '1m',

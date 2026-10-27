@@ -123,7 +123,33 @@ reproduces every file except `run.json` byte for byte. `alpha-predict` reads no
 labels and refuses a request whose model pins or score semantics differ from
 `challengers.json`, or a host whose code or runtime hash differs from the frozen
 one. `alpha-request` builds such a request for local checks; the platform builds
-its own under ALPHA04. Chronos-2 forecasting and text extraction are not available.
+its own under ALPHA04. Text extraction is not available.
+
+**Chronos-2 challenger (ALPHA03).** Its own runtime (`runtimes/chronos`, own `uv.lock`,
+CPU-only torch) so the root lock and the ALPHA02 pins stay unchanged. Input is a
+`platform-daily-series-v1` export (feature-only files; never `labels.jsonl`):
+
+```bash
+make setup-chronos
+R="uv run --frozen --project runtimes/chronos ai-treader-llm"
+$R chronos-fetch --revision <40-char commit> --out /data/models/chronos-2/<commit>
+$R chronos-freeze --weights /data/models/chronos-2/<commit> --input <series input-manifest.json> \
+  --horizon 1m --benchmark-listing-id 11 --target-definition-sha256 <label definition> \
+  --out /data/training/alpha03/chronos-1m-<commit[:8]>
+$R chronos-request --challenger <dir>/challenger.json --input <manifest> --batch-id <id> --attempt-id 1 --out request.json
+$R chronos-predict --challenger <dir>/challenger.json --input <manifest> --request request.json --out <run dir>
+$R chronos-coverage --input <manifest> --run <run dir> [--input … --run …] --horizon 1m --out coverage.json
+```
+
+`chronos-fetch` checks the commit and Apache-2.0 license tag and hashes the files.
+`chronos-freeze` writes `freeze-manifest.json` (weights, config, disclosure, code and
+runtime) and `challenger.json` before any score exists. `chronos-predict` refuses
+changed pins, code, runtime or weights; it writes `forecast.json` (alpha-forecast-v1),
+`quantiles.jsonl` (21 quantiles of the h-step close ratio per scored row) and
+`run.json` (latency, peak RSS; outside every hash). It stops scoring 30 s before the
+deadline and types the rest `timeout`. `chronos-coverage` refuses rows outside the
+ALPHA03 development window and reads no labels. `CHRONOS_WEIGHTS=<dir> make
+test-chronos` runs the real-model smoke.
 Keep models, datasets and generated reports out of Git. All numeric work runs on CPU;
 GPU packages are not dependencies.
 
