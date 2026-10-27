@@ -25,8 +25,8 @@
 - Keep models, datasets, secrets and generated artifacts out of Git. Pin model/runtime/
   adapter/dataset/prompt/schema provenance before claiming a reproducible deployment.
 - Shared contract changes require a new version and passing fixtures in both repositories.
-- CPU numeric fitting (ALPHA02) is delivered; Chronos and text evaluation remain
-  unimplemented until their backlog rows close. Local general-LLM RAG, QLoRA, adapter export and deployment promotion are
+- CPU numeric fitting (ALPHA02) and the Chronos-2 challenger (ALPHA03) are delivered; text
+  evaluation remains unimplemented until its backlog row closes. Local general-LLM RAG, QLoRA, adapter export and deployment promotion are
   outside the approved architecture; reintroducing them requires a new explicit task.
   Any model decision never grants platform execution authority.
 

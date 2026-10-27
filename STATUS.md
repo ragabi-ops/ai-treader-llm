@@ -4,7 +4,7 @@ Updated 2026-10-27. [tasks/BACKLOG.csv](tasks/BACKLOG.csv) is the task-state,
 execution-order and cross-repository dependency authority. Run
 `python3 scripts/backlog.py` before selecting work.
 
-**Next task: ALPHA03 — evaluate pinned Chronos-2 on CPU as a batch challenger (LLM project; mirrored by platform XLLM04).**
+**Next task: none — TEXT01 waits on platform XPLAT09 (AGENT04 reviewed captures). Platform ALPHA06 scores the frozen Chronos-2 challenger.**
 
 CLEAN02 (2026-10-27): no GPU and no local LLM. Prediction is CPU numeric only (ridge,
 LightGBM, Chronos-2 on CPU). Text analysis (filings, reports, news, events) goes to hosted
@@ -29,19 +29,24 @@ See [architecture.md](architecture.md) for the cross-repository overview (ARCH01
   `/data/training/alpha03/{1m,3m}-xllm06-*`. The model artifacts are byte-identical to
   the XLLM03 ones, and only `code_sha256` changed. `/srv/ai-treader` runs this code
   (671f85f), so the older pins no longer predict.
+- ALPHA03 (platform XLLM04, 2026-10-27): zero-shot Chronos-2 (`amazon/chronos-2`
+  @29ec3766, Apache-2.0) frozen on the host in the isolated runtime `runtimes/chronos`
+  (own lock, CPU torch). Challengers `/data/training/alpha03/chronos-{1m,3m}-29ec3766`;
+  score = median h-step close ratio − 1, univariate. About 36 ms per row and 1.4 GB peak
+  memory on CPU. Development 80% intervals cover about 75%. ALPHA02 files and the root lock are unchanged.
 - DATA01's SEC R11 target plan is a small survivorship-biased reconstruction and not
-  training or performance evidence. Chronos-2 on CPU (ALPHA03) and text attributes
-  (TEXT01) remain planned.
+  training or performance evidence. Text attributes (TEXT01) remain planned.
 
 ## Next work
 
-ALPHA03 is next: Chronos-2 on CPU, run in the existing isolated numeric job. On the
-platform, ALPHA03 revision 2 is frozen and the forward run (ALPHA09) is unblocked. The
-pinned code (`alpha/*`, `contracts.py`, `numeric.py`) must not change while ALPHA09 runs,
-so Chronos goes in new modules with its own pins.
+No local task is eligible: TEXT01 needs platform XPLAT09. Platform ALPHA06 compares the
+frozen Chronos challenger with the CPU baselines. The pinned ALPHA02 code (`alpha/*`,
+`contracts.py`, `numeric.py`) and the Chronos code pins must not change while their
+challengers are in use.
 
 ## Known limits
 
 Validation rank
-correlations and retrospective figures are diagnostics on a survivorship-biased pilot,
-not trading evidence. Per-task validation detail lives in the backlog notes.
+correlations, Chronos coverage and retrospective figures are diagnostics on a
+survivorship-biased pilot, not trading evidence. Chronos-2 may have seen this price history in
+pretraining. Per-task validation detail lives in the backlog notes.

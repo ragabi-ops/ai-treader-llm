@@ -72,8 +72,8 @@ def main():
             for row in unfinished:
                 pending = [dep for dep in dependencies(row) if by_id[dep]["status"] != "done"]
                 waiting.append(f"{row['id']} ({', '.join(pending) if pending else row['status']})")
+            # Waiting on an external gate is a valid state, not a tracking failure.
             print("BLOCKED: no eligible local task; " + "; ".join(waiting))
-            return 1
         return 0
     except (OSError, ValueError, KeyError) as exc:
         print(f"FAIL: {exc}", file=sys.stderr)

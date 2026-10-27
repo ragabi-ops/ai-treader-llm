@@ -106,8 +106,9 @@ timestamptz and explicit monetary units.
 - Numeric predict (ALPHA02, `alpha-predict`): frozen challenger + feature-only
   manifest + trusted request → strict alpha-forecast-v1 with complete expected
   coverage; labels are never read.
-- Chronos challenger (ALPHA03): isolated pinned CPU runtime and weights → batch
-  forecasts, in new modules so the ALPHA02 pinned code stays byte-identical.
+- Chronos challenger (ALPHA03, `chronos/`): isolated runtime `runtimes/chronos` and
+  pinned weights → frozen challenger → feature-only batch forecasts and quantiles;
+  coverage on development rows only. The ALPHA02 code and root lock stay byte-identical.
 - Text evaluation: reviewed platform export → offline accuracy/failure report and
   numeric fixtures; hosted calls and application writes remain platform-owned.
 

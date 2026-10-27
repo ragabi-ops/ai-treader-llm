@@ -1,0 +1,25 @@
+# Isolated ALPHA03 Chronos-2 CPU runtime. Its own lock keeps the root uv.lock, and so
+# the frozen ALPHA02 runtime_sha256, unchanged. torch comes from the PyTorch CPU index
+# on Linux (no CUDA wheels); macOS wheels on PyPI are CPU-only.
+[project]
+name = "ai-treader-chronos-runtime"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "ai-treader-llm",
+    "chronos-forecasting==2.3.2",
+    "torch==2.9.1",
+    "huggingface-hub>=0.34,<1",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+ai-treader-llm = { path = "../..", editable = true }
+torch = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux'" }]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true

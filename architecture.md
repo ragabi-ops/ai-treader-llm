@@ -25,7 +25,7 @@ This document is a picture, not a backlog. Task state and order live in the
 | PostgreSQL | Identities, revisions, datasets, runs, decisions, paper ledger, outcomes | Platform | Delivered |
 | Hosted agent bridge | Listing analysis, declarative proposals, reviewed text attributes, as-of summaries | Platform CLI adapters; provider inference | AGENT01–06 delivered; no forward protocol frozen |
 | Ridge / LightGBM | Relative-return scores | Isolated CPU batch job (target host) | ALPHA02 delivered; frozen 1m/3m pins |
-| Chronos-2 | Pretrained time-series challenger | Isolated CPU batch job | LLM ALPHA03 / platform XLLM04 next |
+| Chronos-2 | Pretrained time-series challenger | Isolated CPU batch job | LLM ALPHA03 / platform XLLM04 (frozen) |
 | Reviewed text attributes | Cited guidance, liquidity and event attributes; accuracy and numeric usefulness | Platform captures; LLM repo evaluation | Workflow delivered; reviewed export absent (TEXT01) |
 | Contract validators | Reject malformed, out-of-scope or mismatched results | Python here; Go on the platform | Analysis v2 and numeric v1 conformance delivered |
 | Paper engine and journal | Orders, risk, fills, costs, holdings, matured outcomes | Go + PostgreSQL | Delivered |
@@ -50,7 +50,7 @@ flowchart TB
 
     subgraph Jobs["ai-treader-llm — isolated CPU batch jobs"]
         Trees["Ridge / LightGBM"]
-        Chronos["Chronos-2 (planned)"]
+        Chronos["Chronos-2 (frozen)"]
     end
 
     Hosted["Claude / OpenAI agents<br/>Text: filings, reports, news, events"]
@@ -104,7 +104,7 @@ combined model is considered only after incremental evidence (platform ALPHA08).
 | Data and paper foundation | Identity, revisions, PIT, policy/risk, ledger, journal | Broader historical universe |
 | Hosted agents | AGENT01–06; live benchmark below do-nothing | Platform AGENT07 (also gates B00s) |
 | Numeric CPU models | Contracts, PIT export, frozen ALPHA03, ridge/LightGBM pins, 2025 retrospective read once | Platform ALPHA09 forward run |
-| Chronos-2 (CPU) | Planned | LLM ALPHA03 → platform XLLM04 / ALPHA06 |
+| Chronos-2 (CPU) | Frozen challenger | LLM ALPHA03 → platform XLLM04; ALPHA06 next |
 | Text attributes | Workflow delivered; no reviewed export | LLM TEXT01 → platform XLLM05 / ALPHA07 |
 | Local LLM / GPU | Retired 2026-10-27 (L03, HARD01, CTX01) | Reintroduce only through a new explicit decision |
 | Broker and live | None | Platform B00s–B03 |
